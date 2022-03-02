@@ -1,0 +1,67 @@
+
+.chat-terminal {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 5px 5px 0 5px;
+  height: 100%;
+  color: var(--foreground);
+  
+  .command-lines {
+    overflow-y: auto;
+
+    .command-line {
+      min-height: 30px;
+      padding: 5px 5px;
+      border-bottom: 1px solid black;
+      .date {
+        margin-right: 5px;
+        color: var(--brightBlack);
+      }
+      .from {margin-right: 5px;}
+    }
+    .user-message {
+      display: flex;
+      word-break: break-word;
+      
+      .date {
+        justify-self: flex-end;
+      }
+      .from {
+        color: var(--blue);
+      }
+      .text {
+        color: var(--grey);
+      }
+    }
+    .server-log {
+      color: var(--gray);
+      .from {
+  
+      }
+      .text {
+      }
+    }
+  }
+  .command-line-input {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    bottom: 0;
+    min-height: 30px;
+    background-color: var(--background);
+    width: 100%;
+    padding-left: 5px;
+
+    .command-input {
+      color: var(--red);
+      padding-left: 10px;
+      width: 100%;
+      background: none;
+      border: none;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,68 @@
+
+.user-form {
+
+  &__username {
+    margin-bottom: 10px;
+    .title {
+      color: var(--blue);
+      display: flex;
+      margin-bottom: 5px;
+    }
+    .username-form {
+      display: flex;
+      align-items: center;
+      background-color: #171718;
+      height: 25px;
+      padding: 2px 5px;
+      outline: 1px black solid;
+      border-bottom: 1px solid black;
+
+      .username-input {
+        color: var(--foreground);
+        background-color: transparent;
+        width: 100%;
+        border: none;
+        outline: none;
+      }
+      .unique-id {
+        color: var(--gray);
+        margin-right: 10px;
+      }
+      button {
+        color: inherit;
+        background: none;
+        border: none;
+        cursor: pointer;
+        
+        &:hover {
+          color: var(--purple);
+        }
+      }
+      &.invalid {
+        border-bottom: 1px solid #5c2327;
+      }
+    }
+  }
+  &__connect {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+
+    .connect-user-btn {
+      padding: 2px 5px;
+      border: none;
+      width: 100px;
+      border-radius: 3px;
+      cursor: pointer;
+      &:active {
+        transform: scale(0.97);
+      }
+    }
+    .connect-user-btn{
+      background-color: var(--green);
+    }
+    .disconnect-user-btn {
+      background-color: var(--red);
+    }
+  }
+}

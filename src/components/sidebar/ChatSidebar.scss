@@ -1,0 +1,49 @@
+.chat-sidebar {
+  position: relative;
+  padding: 20px 10px;
+  overflow-y: scroll;
+  
+  .user-information {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+    &__username {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      .title {
+        color: var(--purple);
+        margin-bottom: 5px;
+      }
+      .username {
+        color: var(--gray);
+        margin-bottom: 10px;
+        background-color: var(--brightBlack);
+      }
+    }
+    .disconnect-user-btn {
+      padding: 2px 5px;
+      background-color: var(--red);
+      border: none;
+      width: 100px;
+      border-radius: 3px;
+      cursor: pointer;
+      &:active {
+        transform: scale(0.97);
+      }
+    }
+  }
+  .chat-information {
+    .sidebar-section {
+      margin-bottom: 10px;
+      .title {
+        color: var(--brightRed);
+        padding-bottom: 2px;
+      }
+      .content {
+        color: var(--gray);
+      }
+    }
+  }
+}
