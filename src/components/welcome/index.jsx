@@ -1,34 +1,47 @@
 import UserForm from './UserForm';
+import {motion} from 'framer-motion';
 import './Welcome.scss';
 
 function WelcomeWindow() {
 
   return (
-    <div className='welcome'>
-      <div className='logo'>〰CLOSED MIND〰</div>
+    <motion.div className='welcome' initial={{opacity: 0}} animate={{
+      opacity: 1
+    }}>
+      <div className='logo'>〰closed mind〰</div>
       <div className='slogan'>
-        A secure text messaging for the 21<sup>st</sup> century
+        minimalist and fugacious chats (<i>if you want</i>)
       </div>
-      <div className='cards'>
+      <motion.div
+        className='cards'
+        initial={{y: 10}}
+        animate={{y: 0}}
+        transition={{duration: 1, delay: 0}}
+      >
+      
         <div className='card'><UserForm/></div>
         <div className='card'>
           <div className='features'>
-            <div className='commands'>
-              <div>{`/create`}</div>
-              <div>{`/connect`}</div>
-              <div>{`/leave`}</div>
-              <div>{`/ban`}</div>
+            <div className='snippet'>
+              <div className='command'>{`/create`}</div>
+              <div className='argument'>{`<room-name>`}</div>
             </div>
-            <div className='arguments'>
-              <div>{`<room-id>`}</div>
-              <div>{`<room-id>`}</div>
-              <div>{`<farewell>`}</div>
-              <div>{`<poor-user>`}</div>
+            <div className='snippet'>
+              <div className='command'>{`/connect`}</div>
+              <div className='argument'>{`<room-name>`}</div>
+            </div>
+            <div className='snippet'>
+              <div className='command'>{`/leave`}</div>
+              <div className='argument'>{`<farewell>`}</div>
+            </div>
+            <div className='snippet'>
+              <div className='command'>{`/ban`}</div>
+              <div className='argument'>{`<dummy-user>`}</div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 

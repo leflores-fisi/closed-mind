@@ -1,6 +1,6 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import useAppReducer from "../../hooks/useAppReducer"
-import { connectSocket, disconnectSocket, setGlobalUsername } from "../../context/actions";
+import { connectSocket, setGlobalUsername } from "../../context/actions";
 import { userSocket } from "../userSocket";
 import './UserForm.scss'
 
@@ -13,7 +13,6 @@ function UserInformation() {
   const inputRef = useRef(null);
 
   const handleUsernameInput = (e) => {
-    
     let usernameInput = e.target.value;
     setUsername(usernameInput);
     generateUserId(usernameInput);
@@ -35,6 +34,10 @@ function UserInformation() {
       dispatch(connectSocket({}))
     }
   }
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [])
+  
 
   return (
     <div className='user-form'>

@@ -9,11 +9,12 @@
     font-family: consolas;
     font-size: 2rem;
     text-align: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   .slogan {
     color: var(--blue);
     text-align: center;
+    font-size: 0.95rem;
     margin-bottom: 30px;
   }
   @media only screen and( max-width: 920px) {
@@ -40,16 +41,24 @@
       }
       .features {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100%;
         
-        .commands {
-          color: var(--cyan);
-          margin-right: 15px;
-        }
-        .arguments {
-          color: var(--gray);
+        .snippet {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+
+          .command {
+            text-align: left;
+            color: var(--cyan);
+            min-width: 100px;
+            margin-right: 15px;
+          }
+          .argument {
+            color: var(--gray);
+          }
         }
       }
     }
