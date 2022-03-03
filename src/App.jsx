@@ -12,9 +12,9 @@ function App() {
     <div className="app">
       <Header/>
       <div className='app-content'>
-        {store.is_connected && <Sidebar/>}
+        {store.socket_is_connected && <Sidebar/>}
         <div className='main-window'>
-          {store.is_connected
+          {store.socket_is_connected
             ? <ChatTerminal/>
             : <WelcomeWindow/>}
         </div>

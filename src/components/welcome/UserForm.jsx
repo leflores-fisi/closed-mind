@@ -1,14 +1,16 @@
 import { useRef, useState, useEffect } from "react";
 import useAppReducer from "../../hooks/useAppReducer"
-import { connectSocket, setGlobalUsername } from "../../context/actions";
+import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/actions";
 import { userSocket } from "../userSocket";
 import './UserForm.scss'
+import ColorPicker from "./ColorPicker";
 
 function UserInformation() {
 
   const {store, dispatch} = useAppReducer();
   const [username, setUsername] = useState(store.username);
   const [userCode, setUserCode] = useState(store.user_code || `#${randomIdCode(4)}`);
+  const [userColor, setUserColor] = useState(store.user_color || 'gray');
   const [isValidUsername, setIsValidUsername] = useState(true);
   const inputRef = useRef(null);
 
@@ -41,11 +43,11 @@ function UserInformation() {
 
   return (
     <div className='user-form'>
-      <form className='user-form__username' onSubmit={connectIntoServer}>
+      <form className='user-form__username' onSubmit={connectIntoServer} id='connect-socket-form'>
         <div className='title'>Username:</div>
           <div className={'username-form' + (isValidUsername ? '' : ' invalid')}>
             <input
-              className='username-input'
+              className={`username-input ${userColor}`}
               ref={inputRef}
               value={username}
               onChange={handleUsernameInput}>
@@ -55,15 +57,21 @@ function UserInformation() {
             </div>
             <button
               title='Regenerate id'
+              type='button'
               onClick={() => generateUserId(inputRef.current.value)}
             >♻</button>
           </div>
+          <ColorPicker onPick={(color) => {
+            setUserColor(color);
+            dispatch(setGlobalColor({color}))
+          }}/>
       </form>
 
       <div className='user-form__connect'>
         <button
           className='connect-user-btn'
-          onClick={connectIntoServer}
+          type='submit'
+          form='connect-socket-form'
         >Connect</button>
       </div>
     </div>

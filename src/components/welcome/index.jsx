@@ -19,7 +19,10 @@ function WelcomeWindow() {
         transition={{duration: 1, delay: 0}}
       >
       
-        <div className='card'><UserForm/></div>
+        <div className='card'>
+          <UserForm/>
+        </div>
+
         <div className='card'>
           <div className='features'>
             <div className='snippet'>
@@ -27,7 +30,7 @@ function WelcomeWindow() {
               <div className='argument'>{`<room-name>`}</div>
             </div>
             <div className='snippet'>
-              <div className='command'>{`/connect`}</div>
+              <div className='command'>{`/join`}</div>
               <div className='argument'>{`<room-name>`}</div>
             </div>
             <div className='snippet'>

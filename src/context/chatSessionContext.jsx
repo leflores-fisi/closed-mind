@@ -8,10 +8,11 @@ export function ChatSessionContextProvider ({ children }) {
   //const [id, setId] = useState('6216710863e5fff221c16a54');
 
   const initialAppState = {
-    is_connected: false,
+    socket_is_connected: false,
     username: '',  // "guest"
-    user_code: '', // "guest#af12"
-    user_id: '',
+    user_code: '', // "#af12"
+    user_id: '', // "guest#af12"
+    user_color: '', // css var name
     room_id: '',
     host: '',
     created_date: undefined,

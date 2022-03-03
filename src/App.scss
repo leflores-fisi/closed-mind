@@ -21,12 +21,14 @@
     display: flex;
     max-height: calc(100vh - var(--header-height));
     flex: 1;
+    overflow: auto;
     width: 100%;
     
     .chat-sidebar {
       min-width: var(--sidebar-width);
       border: 1px var(--purple) solid;
       margin: 5px;
+      overflow: auto;
     }
     .main-window {
       display: flex;
@@ -37,6 +39,7 @@
       margin: 5px;
       color: var(--foreground);
       transition: width 1s;
+      overflow: auto;
     }
   }
 }

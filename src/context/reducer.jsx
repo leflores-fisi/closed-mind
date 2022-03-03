@@ -2,7 +2,8 @@
 
 export const reducer = (state, action) => {
 
-  console.log('On reducer:', action, state)
+  console.log('On reducer:', action, state);
+
   switch (action.type) {
 
     case '@user/setUsername':
@@ -12,16 +13,21 @@ export const reducer = (state, action) => {
         user_code: action.payload.userCode,
         user_id: action.payload.username + action.payload.userCode
       };
+    case '@user/setColor':
+      return {
+        ...state,
+        user_color: action.payload.color
+      };
 
     case '@socket/connect':
     return {
       ...state,
-      is_connected: true
+      socket_is_connected: true
     };
     case '@socket/disconnect':
       return {
         ...state,
-        is_connected: false
+        socket_is_connected: false
       };
 
     case '@commands/create':
@@ -31,7 +37,7 @@ export const reducer = (state, action) => {
 
       return {
         ...state,
-        room_id: chatRoom.id,
+        room_id: chatRoom.code,
         host: chatRoom.host,
         created_date: chatRoom.created_date,
         is_open: chatRoom.is_open,
@@ -47,6 +53,11 @@ export const reducer = (state, action) => {
         created_date: undefined,
         is_open: undefined,
         users: [],
+        messages: []
+      };
+    case '@commands/clear':
+      return {
+        ...state,
         messages: []
       };
 
@@ -78,6 +89,17 @@ export const reducer = (state, action) => {
           date: action.payload.date,
           from: action.payload.user_id || '??',
           text: action.payload.message,
+          color: action.payload.user_color
+        })
+      };
+    case '@terminal/appendErrorMessage':
+
+      return {
+        ...state,
+        messages: state.messages.concat({
+          date: undefined,
+          from: 'ErrorHandler',
+          text: action.payload.message
         })
       };
     case '@terminal/saveLineToHistory':

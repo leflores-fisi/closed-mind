@@ -1,26 +1,11 @@
 import { useState, forwardRef, useEffect } from 'react';
+import useAppReducer from '../../hooks/useAppReducer';
 
 function CommandInput(props, ref) {
 
-  const commands = ['/create <room name>', '/connect <room-name>', '/leave', '/ban <dummy>']
+  const {store} = useAppReducer();
+  const commands = ['/create <room name>', '/join <room-name>', '/leave', '/ban <dummy>']
   const [autocomplete, setAutocomplete] = useState('');
-
-  console.log('rendering', autocomplete)
-
-  useEffect(() => {
-    console.log('saving ref:', ref);
-  }, [autocomplete])
-  
-  const handleOnInput = (e) => {
-    let inputLine = e.target.value;
-    if (inputLine.startsWith('/')) {
-      for (let command of commands) {
-        if (command.startsWith(inputLine))
-          setAutocomplete(command);
-      }
-    }
-    else setAutocomplete('')
-  }
 
   return (
     <div className='command-line-input'>
@@ -31,8 +16,14 @@ function CommandInput(props, ref) {
           ref={ref}
           onChange={(e) => {
             let inputLine = e.target.value;
-            if (inputLine.startsWith('/') && commands.some(command => command.startsWith(inputLine))) {
-              for (let command of commands) {
+            let availableCommands = commands.concat(store.users.filter(user => user.user_id !== store.user_id).map(user => `/ban ${user.user_id}`))
+            
+            if (inputLine.startsWith('/') && availableCommands.some(command => command.startsWith(inputLine))) {
+              if (inputLine === '/') {
+                setAutocomplete('/commands');
+                return;
+              };
+              for (let command of availableCommands) {
                 if (command.startsWith(inputLine))
                   setAutocomplete(command);
               }

@@ -4,7 +4,7 @@
   &__username {
     margin-bottom: 10px;
     .title {
-      color: var(--blue);
+      color: var(--brightBlue);
       display: flex;
       margin-bottom: 5px;
     }
@@ -35,7 +35,7 @@
         cursor: pointer;
         
         &:hover {
-          color: var(--purple);
+          color: var(--brightPurple);
         }
       }
       &.invalid {
@@ -59,7 +59,7 @@
       }
     }
     .connect-user-btn{
-      background-color: var(--green);
+      background-color: var(--brightGreen);
     }
     .disconnect-user-btn {
       background-color: var(--red);

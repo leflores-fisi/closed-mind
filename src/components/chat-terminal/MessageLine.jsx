@@ -1,20 +1,22 @@
 
-function MessageLine({ username, text, date }) {
+function MessageLine({ username, userColor, text, date }) {
 
-  let d = new Date(date);
-
-  let hour = new Intl.DateTimeFormat('en', { hour: '2-digit' }).format(d);
-  let minute = new Intl.DateTimeFormat('en', { minute: '2-digit' }).format(d);
+  let d, hour, minute;
+  if (date) {
+    d = new Date(date);
+    hour = new Intl.DateTimeFormat('en', { hour: '2-digit', hour12: false }).format(d);
+    minute = new Intl.DateTimeFormat('en', { minute: '2-digit' }).format(d);
+  }
 
   return (
     <div className='user-message command-line'>
       <div>
-        <span className='date'>{`${hour.replace(/ PM| AM/, '')}:${minute}`}</span>
-        <span className='from'>{`[${username || '???'}]:`}</span>
+        {date && <span className='date'>{`${hour.replace(/ PM| AM/, '')}:${minute}`}</span>}
+        <span className={`from ${userColor}`}>{`[${username || '???'}]:`}</span>
         <span className='text'>{text}</span>
       </div>
     </div>
   )
 }
 
-export default MessageLine
+export default MessageLine;

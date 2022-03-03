@@ -7,7 +7,7 @@ import './ChatSidebar.scss';
 
 function Sidebar() {
 
-  const {store, dispatch} = useAppReducer();
+  const {store} = useAppReducer();
   const chatSession = store;
 
   return (
@@ -15,7 +15,10 @@ function Sidebar() {
       <div className='user-information'>
         <div className='user-information__username'>
           <div className='title'>Username:</div>
-          <div className='username'>{store.user_id}</div>
+          <div className={`username`}>
+            <span className={`${store.user_color}`}>{store.username}</span>
+            <span>{store.user_code}</span>
+          </div>
         </div>
         <button
           className='disconnect-user-btn'

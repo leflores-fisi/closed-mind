@@ -28,11 +28,14 @@
         justify-self: flex-end;
       }
       .from {
-        color: var(--blue);
+        color: var(--brightBlue);
       }
       .text {
         color: var(--grey);
       }
+    }
+    .error-message {
+      color: var(--red);
     }
     .server-log {
       color: var(--gray);
@@ -55,8 +58,11 @@
 
     .input-wrapper {
       padding-left: 10px;
+      width: 100%;
 
       .command-input {
+        resize: none;
+        caret-color: var(--purple);
         position: relative;
         color: var(--red);
         width: 100%;

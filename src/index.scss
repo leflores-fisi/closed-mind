@@ -4,28 +4,73 @@
   --sidebar-width: 300px;
   --header-height: 40px;
 
-  --background: #0e0d0e;
-  --foreground: #949b92;
-  --cursorColor: #4FA160;
+  --background:          #101011;
+  --foreground:          #949b92;
+  --cursorColor:         #4FA160;
   --selectionBackground: #4F5C56;
-  --black: #181818;
-  --brightBlack: #252527;
-  --gray: #6d706e;
-  --blue: #4a5579;
-  --brightBlue: #2EFAEB;
-  --cyan: #3f7962;
-  --brightCyan: #3CFAC8;
-  --green: #3e8837;
-  --brightGreen: #AEFB86;
-  --purple: #645385;
-  --brightPurple: #A850FA;
-  --red: #854d4f;
-  --brightRed: #ce7266;
-  --white: #C2D6CC;
-  --brightWhite: #EBF5E9;
-  --yellow: #a89c31;
+  --black:        #181818;
+  --brightBlack:  #444347;
+  --gray:         #6d706e;
+  --white:        #C2D6CC;
+  --brightWhite:  #EBF5E9;
+
+  --red:          #9b595b;
+  --brightRed:    #ce7266;
+  --yellow:       #d4c85b;
   --brightYellow: #FAF287;
+  --green:        #569450;
+  --brightGreen:  #86b86b;
+  --cyan:         #457763;
+  --brightCyan:   #50a891;
+  --blue:         #4a5179;
+  --brightBlue:   #5d688a;
+  --purple:       #584a79;
+  --brightPurple: #6c5d8f;
+
+  --red:          #6A3F41;
+  --brightRed:    #a06264;
+  --yellow:       #ad9144;
+  --brightYellow: #b9af58;
+  --green:        #3D663A;
+  --brightGreen:  #569450;
+  --cyan:         #325346;
+  --brightCyan:   #457763;
+  --blue:         #404864;
+  --brightBlue:   #4a5c79;
+  --purple:       #684974;
+  --brightPurple: #7f5394;
 }
+.black         {color: var(--black)  !important;}
+.gray          {color: var(--gray)   !important;}
+.white         {color: var(--white)  !important;}
+.red           {color: var(--red)          !important;}
+.brightRed     {color: var(--brightRed)    !important;}
+.yellow        {color: var(--yellow)       !important;}
+.brightYellow  {color: var(--brightYellow) !important;}
+.green         {color: var(--green)        !important;}
+.brightGreen   {color: var(--brightGreen)  !important;}
+.cyan          {color: var(--cyan)         !important;}
+.brightCyan    {color: var(--brightCyan)   !important;}
+.blue          {color: var(--blue)         !important;}
+.brightBlue    {color: var(--brightBlue)   !important;}
+.purple        {color: var(--purple)       !important;}
+.brightPurple  {color: var(--brightPurple) !important;}
+
+.bg-black         {background-color: var(--black)        !important;}
+.bg-gray          {background-color: var(--gray)         !important;}
+.bg-white         {background-color: var(--white)        !important;}
+.bg-red           {background-color: var(--red)          !important;}
+.bg-brightRed     {background-color: var(--brightRed)    !important;}
+.bg-yellow        {background-color: var(--yellow)       !important;}
+.bg-brightYellow  {background-color: var(--brightYellow) !important;}
+.bg-green         {background-color: var(--green)        !important;}
+.bg-brightGreen   {background-color: var(--brightGreen) !important;}
+.bg-cyan          {background-color: var(--cyan)         !important;}
+.bg-brightCyan    {background-color: var(--brightCyan)   !important;}
+.bg-blue          {background-color: var(--blue)         !important;}
+.bg-brightBlue    {background-color: var(--brightBlue)   !important;}
+.bg-purple        {background-color: var(--purple)       !important;}
+.bg-brightPurple  {background-color: var(--brightPurple) !important;}
 
 @font-face {
   font-family: 'Cascadia Mono PL';

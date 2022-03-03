@@ -12,7 +12,7 @@
     margin-bottom: 10px;
   }
   .slogan {
-    color: var(--blue);
+    color: var(--brightBlue);
     text-align: center;
     font-size: 0.95rem;
     margin-bottom: 30px;
@@ -33,7 +33,7 @@
       width: 100%;
       max-width: 500px;
       height: 200px;
-      outline: 1px #362b41 solid;
+      outline: 1px var(--purple) solid;
       margin: 5px;
 
       .user-form {
@@ -52,7 +52,7 @@
 
           .command {
             text-align: left;
-            color: var(--cyan);
+            color: var(--brightCyan);
             min-width: 100px;
             margin-right: 15px;
           }

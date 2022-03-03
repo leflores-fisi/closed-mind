@@ -6,8 +6,13 @@ const chatRoomSchema = new mongoose.Schema({
   host: String,
   created_date: String,
   is_open: Boolean,
-  users: [{ user_id: String }],
-  messages: [{ from: String, text: String, date: String }]
+  users: [{ user_id: String, color: String }],
+  messages: [new mongoose.Schema({
+    from: String,
+    text: String,
+    color: String,
+    date: String
+  }, {strict: false})]
 });
 chatRoomSchema.set('toJSON', {
   transform: (document, returnedObject) => {

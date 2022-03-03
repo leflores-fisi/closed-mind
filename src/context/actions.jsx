@@ -6,6 +6,12 @@ export const setGlobalUsername = ({ username, userCode }) => {
     payload: { username, userCode }
   };
 };
+export const setGlobalColor = ({ color }) => {
+  return {
+    type: '@user/setColor',
+    payload: { color }
+  };
+};
 
 export const connectSocket = () => {
   return {
@@ -34,8 +40,12 @@ export const connectToRoom = ({ chatRoom }) => {
 };
 export const disconnectFromRoom = () => {
   return {
-    type: '@commands/leave',
-    payload: {}
+    type: '@commands/leave'
+  };
+};
+export const clearTerminal = () => {
+  return {
+    type: '@commands/clear'
   };
 };
 
@@ -51,10 +61,16 @@ export const popUser = ({ date, user_id }) => {
     payload: { date, user_id }
   };
 };
-export const appendMessage = ({ date, user_id, message }) => {
+export const appendMessage = ({ date, user_id, user_color, message }) => {
   return {
     type: '@terminal/appendMessage',
-    payload: { date, user_id, message }
+    payload: { date, user_id, user_color, message }
+  };
+};
+export const appendErrorMessage = ({ message }) => {
+  return {
+    type: '@terminal/appendErrorMessage',
+    payload: { message }
   };
 };
 export const saveLineToHistory = ({ line }) => {

@@ -1,13 +1,14 @@
 import { useEffect,  useRef, useState } from "react";
 import { nanoid } from "nanoid";
-import { connectToRoom, disconnectFromRoom, saveLineToHistory, appendMessage, appendUser, popUser, disconnectSocket } from "../../context/actions";
+import { connectToRoom, disconnectFromRoom, saveLineToHistory, appendMessage, appendUser, popUser, disconnectSocket, appendErrorMessage, clearTerminal } from "../../context/actions";
 import useAppReducer from "../../hooks/useAppReducer";
 import CommandInput from "./CommandInput";
 import CommandLine from "./CommandLine";
 import MessageLine from "./MessageLine";
 import {userSocket} from '../userSocket'
 import ServerLogLine from "./ServerLogLine";
-import './ChatTerminal.scss'
+import './ChatTerminal.scss';
+import ErrorLine from "./ErrorLine";
 
 function ChatTerminal() {
 
@@ -16,18 +17,35 @@ function ChatTerminal() {
   const [index, setIndex] = useState(0);
 
   const CONSOLE_ACTIONS = {
-    "/create": () => {
-      userSocket.emit('creating-chat-room', {host: store.user_id})
+    "/create": (room_id) => {
+      userSocket.emit('creating-chat-room', {room_id: room_id, host: store.user_id})
     },
-    "/connect": (id) => {
-      userSocket.emit('joining-to-chat', {room_id: id, user_id: store.user_id});
+    "/join": (room_id) => {
+      if (!store.room_id)
+        userSocket.emit('joining-to-chat', {room_id: room_id, user_id: store.user_id});
+      else dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
+    },
+    "/ban": (user_id) => {
+      if (!store.room_id) {
+        dispatch(appendErrorMessage({message: 'There are no dummies near, use "/join" first'}));
+        return;
+      }
+      if (store.user_id === store.host) console.log('Banning', user_id);
+      else dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
+    },
+    "/clear": () => {
+      dispatch(clearTerminal());
     },
     "/leave": () => {
-      userSocket.emit('leaving-from-chat', {room_id: store.room_id, user_id: store.user_id});
+      if (store.room_id)
+        userSocket.emit('leaving-from-chat', {room_id: store.room_id, user_id: store.user_id});
+      else dispatch(appendErrorMessage({message: 'You should be on a room first'}));
     },
     "send_message": (message) => {
-      if (store.is_connected)
-        userSocket.emit('sending-message', {user_id: store.user_id, message: message})
+      if (store.room_id) {
+        userSocket.emit('sending-message', {user_id: store.user_id, user_color: store.user_color, message: message});
+      }
+      else dispatch(appendMessage({date: new Date().toUTCString(), user_id: store.user_id, user_color: store.user_color, message}));
     }
   };
 
@@ -36,19 +54,19 @@ function ChatTerminal() {
     switch (e.key) {
       case 'Enter':
         let user_input = inputRef.current.value;
+        if (!user_input) return;
 
         if (user_input.startsWith('/')) {
-          let args = user_input.split(' ');
-          let command = args[0];
-          if (CONSOLE_ACTIONS.hasOwnProperty(command)) {
-            CONSOLE_ACTIONS[command](args[1]);
-          }
+          let words = user_input.split(' ');
+          let command = words[0];
+          let args = words.slice(1);
+
+          if (CONSOLE_ACTIONS.hasOwnProperty(command))
+            CONSOLE_ACTIONS[command](args[0]);
+          else dispatch(appendErrorMessage({message: `Command "${command}" not recognized, type "/commands" for a hug`}));
         }
-        else {
-          if (user_input) {
-            CONSOLE_ACTIONS['send_message'](user_input);
-          }
-        }
+        else CONSOLE_ACTIONS['send_message'](user_input);
+
         inputRef.current.value = '';
         dispatch(saveLineToHistory({line: user_input}));
         setIndex(0);
@@ -78,28 +96,33 @@ function ChatTerminal() {
 
   useEffect(() => {
 
+    // listeners to <socket.emit(...)>
     userSocket.on('room-created', ({createdChatRoom}) => {
       dispatch(connectToRoom({chatRoom: createdChatRoom}));
       console.log(createdChatRoom);
-    })
+    });
     userSocket.on('joined', (chatRoom) => {
       dispatch(connectToRoom({chatRoom: chatRoom}));
-    })
-    userSocket.on('message-sended', ({date, user_id, message}) => {
-      dispatch(appendMessage({date, user_id, message}));
-    })
+    });
+    userSocket.on('message-sended', ({date, user_id, user_color, message}) => {
+      dispatch(appendMessage({date, user_id, user_color, message}));
+    });
     userSocket.on('disconnected', () => {
       dispatch(disconnectFromRoom());
-    })
+    });
+    userSocket.on('error', ({message}) => {
+      dispatch(appendErrorMessage({message}));
+    });
 
-    // listeners to <socket.to(room).emit(...)> from backend
+    // listeners to <socket.to(room).emit(...)>
     userSocket.on('user-connected', ({date, user_id}) => {
       dispatch(appendUser({date: date, user_id: user_id}))
-    })
+    });
     userSocket.on('user-disconnected', ({date, user_id}) => {
       dispatch(popUser({date: date, user_id: user_id}))
-    })
+    });
 
+    // socket.io events
     userSocket.on('disconnect', () => {
       console.log('DISCONNECTING WITH OLD STORE??:', store);
       if (store.room_id)  {
@@ -112,7 +135,7 @@ function ChatTerminal() {
         dispatch(disconnectSocket({}))
         console.log('disconnecting 2...', store);
       }
-    })
+    });
     userSocket.on("connect_error", (err) => {
       console.log('CONNECTION ERROR:', err.message);
       setTimeout(() => {
@@ -142,21 +165,27 @@ function ChatTerminal() {
     }}>
       <div className='command-lines'>
 
-        <CommandLine text={'〰Closed mind〰 [v1.0]'}/>
-        <CommandLine text={'(c) Leflores-fisi. All rights reserved.'}/>
+        <CommandLine text={'〰Closed mind〰 v1.0'}/>
+        <CommandLine text={'Type "/commands" to see all the commands'}/>
         {
-          store.messages.map(messageDB => (
-            messageDB.from === 'Server' ?
+          store.messages.map(DBmessage => (
+            DBmessage.from === 'Server' ?
               <ServerLogLine
-                date={messageDB.date}
-                log={messageDB.text}
+                date={DBmessage.date}
+                log={DBmessage.text}
                 key={nanoid()}
               />
-              :
+            : DBmessage.from === 'ErrorHandler' ?
+              <ErrorLine
+                text={DBmessage.text}
+                key={nanoid()}
+              />
+            :
               <MessageLine
-                username={messageDB.from}
-                text={messageDB.text}
-                date={messageDB.date}
+                username={DBmessage.from}
+                userColor={DBmessage.color}
+                text={DBmessage.text}
+                date={DBmessage.date}
                 key={nanoid()}
               />
           ))
