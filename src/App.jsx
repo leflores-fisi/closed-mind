@@ -1,4 +1,3 @@
-import Header from './components/Header';
 import Sidebar from './components/sidebar';
 import WelcomeWindow from './components/welcome'
 import useAppReducer from './hooks/useAppReducer';
@@ -10,7 +9,6 @@ function App() {
 
   return (
     <div className="app">
-      <Header/>
       <div className='app-content'>
         {store.socket_is_connected && <Sidebar/>}
         <div className='main-window'>

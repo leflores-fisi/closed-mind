@@ -46,7 +46,7 @@
   &__connect {
     display: flex;
     justify-content: space-around;
-    margin-top: 15px;
+    margin-top: 25px;
 
     .connect-user-btn {
       padding: 2px 5px;
@@ -60,9 +60,6 @@
     }
     .connect-user-btn{
       background-color: var(--brightGreen);
-    }
-    .disconnect-user-btn {
-      background-color: var(--red);
     }
   }
 }

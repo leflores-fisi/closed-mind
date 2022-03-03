@@ -1,16 +1,15 @@
 .chat-sidebar {
-  position: relative;
-  padding: 20px 10px;
-  overflow-y: scroll;
   
   .user-information {
     display: flex;
     align-items: center;
     flex-direction: column;
     margin-bottom: 30px;
+
     &__username {
       display: flex;
       flex-direction: column;
+      padding: 0 10px;
       width: 100%;
       .title {
         color: var(--purple);
@@ -28,7 +27,7 @@
     }
     .disconnect-user-btn {
       padding: 2px 5px;
-      background-color: var(--red);
+      background-color: var(--brightRed);
       border: none;
       width: 100px;
       border-radius: 3px;
@@ -39,10 +38,13 @@
     }
   }
   .chat-information {
+    padding: 0 10px;
+
     .sidebar-section {
       margin-bottom: 10px;
+      
       .title {
-        color: var(--brightRed);
+        color: var(--brightBlue);
         padding-bottom: 2px;
       }
       .content {

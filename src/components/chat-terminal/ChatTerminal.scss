@@ -3,12 +3,12 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  padding: 5px 5px 0 5px;
   height: 100%;
   color: var(--foreground);
   
   .command-lines {
     overflow-y: auto;
+    padding: 0 5px;
 
     .command-line {
       min-height: 30px;
@@ -35,15 +35,10 @@
       }
     }
     .error-message {
-      color: var(--red);
+      color: var(--brightRed);
     }
     .server-log {
       color: var(--gray);
-      .from {
-  
-      }
-      .text {
-      }
     }
   }
   .command-line-input {
@@ -54,7 +49,7 @@
     min-height: 30px;
     background-color: var(--background);
     width: 100%;
-    padding-left: 5px;
+    padding: 0 5px 0px 10px;
 
     .input-wrapper {
       padding-left: 10px;

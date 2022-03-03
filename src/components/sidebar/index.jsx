@@ -1,8 +1,8 @@
 import { nanoid } from 'nanoid';
-import useAppReducer from './../../hooks/useAppReducer';
-import { disconnectSocket } from '../../context/actions';
-import SidebarSection from './SidebarSection';
 import { userSocket } from '../userSocket';
+import useAppReducer from './../../hooks/useAppReducer';
+import SidebarSection from './SidebarSection';
+import WindowHeader from '../WindowHeader';
 import './ChatSidebar.scss';
 
 function Sidebar() {
@@ -12,6 +12,7 @@ function Sidebar() {
 
   return (
     <fieldset className='chat-sidebar'>
+      <WindowHeader title='Sidebar'/>
       <div className='user-information'>
         <div className='user-information__username'>
           <div className='title'>Username:</div>

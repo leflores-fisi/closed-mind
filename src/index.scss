@@ -2,17 +2,17 @@
   font-size: 16px;
 
   --sidebar-width: 300px;
-  --header-height: 40px;
+  --app-color: #615970;
 
-  --background:          #101011;
-  --foreground:          #949b92;
+  --background:          #141414;
+  --foreground:          #c0bec2;
   --cursorColor:         #4FA160;
   --selectionBackground: #4F5C56;
   --black:        #181818;
   --brightBlack:  #444347;
-  --gray:         #6d706e;
-  --white:        #C2D6CC;
-  --brightWhite:  #EBF5E9;
+  --gray:         #767779;
+  --white:        #b5b7c0;
+  --brightWhite:  #f5e9f5;
 
   --red:          #9b595b;
   --brightRed:    #ce7266;
@@ -23,7 +23,7 @@
   --cyan:         #457763;
   --brightCyan:   #50a891;
   --blue:         #4a5179;
-  --brightBlue:   #5d688a;
+  --brightBlue:   #6f7999;
   --purple:       #584a79;
   --brightPurple: #6c5d8f;
 
@@ -73,13 +73,18 @@
 .bg-brightPurple  {background-color: var(--brightPurple) !important;}
 
 @font-face {
-  font-family: 'Cascadia Mono PL';
+  font-family: 'Cascadia Mono normal';
   font-style: normal;
-  src: local('Cascadia Mono PL'), url(./assets/CascadiaMonoPL-Regular.otf) format('opentype');
+  src: local('Cascadia Mono normal'), url(./assets/CascadiaMono-Regular.otf) format('opentype');
+}
+@font-face {
+  font-family: 'Cascadia Mono light';
+  font-style: normal;
+  src: local('Cascadia Mono light'), url(./assets/CascadiaMono-Light.otf) format('opentype');
 }
 
 * {
-  font-family: 'Cascadia Mono PL', Consolas, monospace;
+  font-family: 'Cascadia Mono normal', consolas, monospace;
   text-rendering: optimizeLegibility;
   -webkit-text-stroke: 0.1px;
 }

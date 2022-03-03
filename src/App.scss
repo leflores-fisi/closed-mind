@@ -6,46 +6,45 @@
   background-color: var(--background);
   min-height: 100vh;
 
-  .app-header {
-    display: flex;
-    align-items: center;
-    font-family: consolas;
-    padding-left: 10px;
-    color: var(--gray);
-    background-color: var(--background);
-    width: 100%;
-    height: var(--header-height);
-    font-size: 1.2rem;
-  }
   .app-content {
     display: flex;
-    max-height: calc(100vh - var(--header-height));
+    max-height: calc(100vh);
     flex: 1;
     overflow: auto;
     width: 100%;
     
     .chat-sidebar {
+      position: relative;
       min-width: var(--sidebar-width);
-      border: 1px var(--purple) solid;
-      margin: 5px;
+      border: 1px var(--app-color) solid;
+      margin: 10px 5px 10px 10px;
       overflow: auto;
     }
     .main-window {
       display: flex;
       flex-direction: column;
-      width: calc(100vw - var(--sidebar-width));
+      border: 1px var(--app-color) solid;
       width: 100%;
-      border: 1px var(--purple) solid;
-      margin: 5px;
-      color: var(--foreground);
+      margin: 10px 10px 10px 5px;
       transition: width 1s;
       overflow: auto;
     }
   }
 }
 
-
-
-button {
-  font-size: calc(10px + 2vmin);
+.window-header {
+  display: flex;
+  justify-content: flex-start;
+  color: var(--background);
+  background-color: var(--app-color);
+  margin-bottom: 10px;
+  width: 100%;
+  height: 17px;
+  
+  .window-title {
+    padding: 0 10px;
+    align-items: center;
+    font-size: 0.9rem;
+    height: 100%;
+  }
 }

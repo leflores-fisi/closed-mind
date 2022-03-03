@@ -1,14 +1,15 @@
-import { useEffect,  useRef, useState } from "react";
-import { nanoid } from "nanoid";
-import { connectToRoom, disconnectFromRoom, saveLineToHistory, appendMessage, appendUser, popUser, disconnectSocket, appendErrorMessage, clearTerminal } from "../../context/actions";
-import useAppReducer from "../../hooks/useAppReducer";
-import CommandInput from "./CommandInput";
-import CommandLine from "./CommandLine";
-import MessageLine from "./MessageLine";
+import { useEffect,  useRef, useState } from 'react';
+import { nanoid } from 'nanoid';
+import { connectToRoom, disconnectFromRoom, saveLineToHistory, appendMessage, appendUser, popUser, disconnectSocket, appendErrorMessage, clearTerminal } from '../../context/actions';
 import {userSocket} from '../userSocket'
-import ServerLogLine from "./ServerLogLine";
+import useAppReducer from '../../hooks/useAppReducer';
+import CommandInput from './CommandInput';
+import CommandLine from './CommandLine';
+import MessageLine from './MessageLine';
+import ServerLogLine from './ServerLogLine';
+import WindowHeader from './../WindowHeader';
 import './ChatTerminal.scss';
-import ErrorLine from "./ErrorLine";
+import ErrorLine from './ErrorLine';
 
 function ChatTerminal() {
 
@@ -17,15 +18,15 @@ function ChatTerminal() {
   const [index, setIndex] = useState(0);
 
   const CONSOLE_ACTIONS = {
-    "/create": (room_id) => {
+    '/create': (room_id) => {
       userSocket.emit('creating-chat-room', {room_id: room_id, host: store.user_id})
     },
-    "/join": (room_id) => {
+    '/join': (room_id) => {
       if (!store.room_id)
         userSocket.emit('joining-to-chat', {room_id: room_id, user_id: store.user_id});
       else dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
     },
-    "/ban": (user_id) => {
+    '/ban': (user_id) => {
       if (!store.room_id) {
         dispatch(appendErrorMessage({message: 'There are no dummies near, use "/join" first'}));
         return;
@@ -33,15 +34,15 @@ function ChatTerminal() {
       if (store.user_id === store.host) console.log('Banning', user_id);
       else dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
     },
-    "/clear": () => {
+    '/clear': () => {
       dispatch(clearTerminal());
     },
-    "/leave": () => {
+    '/leave': () => {
       if (store.room_id)
         userSocket.emit('leaving-from-chat', {room_id: store.room_id, user_id: store.user_id});
       else dispatch(appendErrorMessage({message: 'You should be on a room first'}));
     },
-    "send_message": (message) => {
+    'send_message': (message) => {
       if (store.room_id) {
         userSocket.emit('sending-message', {user_id: store.user_id, user_color: store.user_color, message: message});
       }
@@ -63,7 +64,7 @@ function ChatTerminal() {
 
           if (CONSOLE_ACTIONS.hasOwnProperty(command))
             CONSOLE_ACTIONS[command](args[0]);
-          else dispatch(appendErrorMessage({message: `Command "${command}" not recognized, type "/commands" for a hug`}));
+          else dispatch(appendErrorMessage({message: `Command '${command}' not recognized, type "/commands" for a hug`}));
         }
         else CONSOLE_ACTIONS['send_message'](user_input);
 
@@ -136,7 +137,7 @@ function ChatTerminal() {
         console.log('disconnecting 2...', store);
       }
     });
-    userSocket.on("connect_error", (err) => {
+    userSocket.on('connect_error', (err) => {
       console.log('CONNECTION ERROR:', err.message);
       setTimeout(() => {
         userSocket.connect();
@@ -163,6 +164,7 @@ function ChatTerminal() {
       if (!e.target.classList.contains('command-line__text'))
         inputRef.current.focus()
     }}>
+      <WindowHeader title='Chat'/>
       <div className='command-lines'>
 
         <CommandLine text={'〰Closed mind〰 v1.0'}/>
