@@ -1,13 +1,16 @@
 require('dotenv').config();
 require('./mongo');
 
-const express = require('express');
+const express    = require('express');
 const { Server } = require('socket.io');
-const http = require('http');
-const cors = require('cors');
+const http       = require('http');
+const cors       = require('cors');
 
-const ChatRoom = require('./models/ChatRoom');
-const apiRoutes = require('./routes/api.routes');
+const ChatRoom   = require('./models/ChatRoom');
+const apiRoutes  = require('./routes/api.routes');
+
+const generateHashCode = require('./helpers/randomHashCode');
+
 const PORT = Number(process.env.PORT);
 
 function main() {
@@ -35,7 +38,10 @@ function main() {
     console.log('[New socket connection]');
     console.log(io.allSockets())
 
-    socket.on('creating-chat-room', ({room_id, host}) => {
+    socket.on('creating-chat-room', ({room_name, host}) => {
+
+      const room_id = room_name + generateHashCode();
+      
       const newChatRoom = new ChatRoom({
         host: host,
         code: room_id,
@@ -100,6 +106,9 @@ function main() {
         io.to(socket.currentRoomId).emit('message-sended', {date, user_id, user_color, message})
       }).catch(error => console.log('Error on socket->message', error));
     })
+    socket.on('kicking-user', ({user_id, reason}) => {
+
+    })
     socket.on('leaving-from-chat', ({room_id, user_id}) => {
       let date = new Date().toUTCString()
       ChatRoom.findOneAndUpdate({code: room_id}, {
@@ -154,8 +163,9 @@ function main() {
     res.status(404).end();
   });
   app.use((error, req, res, next) => {
-    console.log('Final middleware reached, so... FATAL ERROR:', error.name);
-    res.status(500).end();
+    console.log('Final middleware reached:', error.name);
+    if (error.name === 'SyntaxError') res.status(404).end();
+    else res.status(500).end();
   });
 
   httpServer.listen(PORT, () => {

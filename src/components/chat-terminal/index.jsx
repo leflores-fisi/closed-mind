@@ -18,28 +18,46 @@ function ChatTerminal() {
   const [index, setIndex] = useState(0);
 
   const CONSOLE_ACTIONS = {
-    '/create': (room_id) => {
-      userSocket.emit('creating-chat-room', {room_id: room_id, host: store.user_id})
+    '/create': (args) => {
+      if (args.length > 1 || args.length === 0) {
+        dispatch(appendErrorMessage({message: `Expected one argument for <room-name>, given ${args.length}`}))
+      }
+      else {
+        let room_name = args[0];
+        userSocket.emit('creating-chat-room', {room_name: room_name, host: store.user_id});
+      }
     },
-    '/join': (room_id) => {
-      if (!store.room_id)
+    '/join': (args) => {
+      if (args.length > 1 || args.length === 0) {
+        dispatch(appendErrorMessage({message: `Expected one argument for <room-id>, given ${args.length}`}))
+      }
+      else if (!store.room_id) {
         userSocket.emit('joining-to-chat', {room_id: room_id, user_id: store.user_id});
+      }
       else dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
     },
-    '/ban': (user_id) => {
-      if (!store.room_id) {
+    '/ban': (args) => {
+      if (args.length > 1 || args.length === 0) {
+        dispatch(appendErrorMessage({message: `Expected one argument for <dummy-user>, given ${args.length}`}))
+      }
+      else if (!store.room_id) {
         dispatch(appendErrorMessage({message: 'There are no dummies near, use "/join" first'}));
         return;
       }
-      if (store.user_id === store.host) console.log('Banning', user_id);
-      else dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
+      else {
+        let user_id = args[0];
+        if (store.user_id === store.host) console.log('Banning', user_id);
+        else dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
+      }
     },
     '/clear': () => {
       dispatch(clearTerminal());
     },
-    '/leave': () => {
-      if (store.room_id)
+    '/leave': (args) => {
+      if (store.room_id) {
+        let farewell = args.join(' ');
         userSocket.emit('leaving-from-chat', {room_id: store.room_id, user_id: store.user_id});
+      }
       else dispatch(appendErrorMessage({message: 'You should be on a room first'}));
     },
     'send_message': (message) => {
@@ -58,13 +76,13 @@ function ChatTerminal() {
         if (!user_input) return;
 
         if (user_input.startsWith('/')) {
-          let words = user_input.split(' ');
+          let words   = user_input.split(' ');
           let command = words[0];
-          let args = words.slice(1);
-
-          if (CONSOLE_ACTIONS.hasOwnProperty(command))
-            CONSOLE_ACTIONS[command](args[0]);
-          else dispatch(appendErrorMessage({message: `Command '${command}' not recognized, type "/commands" for a hug`}));
+          let args    = words.slice(1);
+          
+          if (!CONSOLE_ACTIONS.hasOwnProperty(command))
+            dispatch(appendErrorMessage({message: `Command '${command}' not recognized, type "/commands" for a hug`}));
+          else CONSOLE_ACTIONS[command](args);
         }
         else CONSOLE_ACTIONS['send_message'](user_input);
 
@@ -81,6 +99,8 @@ function ChatTerminal() {
           }
           return prev;
         })
+        e.preventDefault();
+        inputRef.current.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length);
         break;
       case 'ArrowDown':
         setIndex(prev => {
@@ -90,6 +110,7 @@ function ChatTerminal() {
           }
           return prev;
         })
+        inputRef.current.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length);
         break;
     }
    
@@ -152,6 +173,7 @@ function ChatTerminal() {
   }, [store.room_id])
 
   useEffect(() => {
+    inputRef.current.focus();
     inputRef.current.addEventListener('keydown', handleCommands);
     return () => {
       if (inputRef.current)
@@ -161,7 +183,7 @@ function ChatTerminal() {
 
   return (
     <div className='chat-terminal' onMouseUp={(e) => {
-      if (!e.target.classList.contains('command-line__text'))
+      if (window.getSelection().toString() === '')
         inputRef.current.focus()
     }}>
       <WindowHeader title='Chat'/>

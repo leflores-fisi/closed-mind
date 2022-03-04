@@ -46,13 +46,14 @@
   &__connect {
     display: flex;
     justify-content: space-around;
-    margin-top: 25px;
+    margin-top: 20px;
 
     .connect-user-btn {
       padding: 2px 5px;
       border: none;
       width: 100px;
       border-radius: 3px;
+      margin-bottom: 10px;
       cursor: pointer;
       &:active {
         transform: scale(0.97);
@@ -60,6 +61,17 @@
     }
     .connect-user-btn{
       background-color: var(--brightGreen);
+    }
+  }
+  .form-feedback {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .feedback {
+      font-size: 0.8rem;
+      text-align: center;
+      font-family: 'Cascadia Mono light', consolas, monospace;
     }
   }
 }

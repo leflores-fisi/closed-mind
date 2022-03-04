@@ -1,7 +1,9 @@
-const { Router } = require('express');
+const { Router }          = require('express');
 const { isValidObjectId } = require('mongoose');
+
+const ChatRoom         = require('../models/ChatRoom');
+const validateUsername = require('../helpers/validateUser');
 const router = Router();
-const ChatRoom = require('../models/ChatRoom');
 
 // home
 router.get('/', (req, res) => {
@@ -89,4 +91,18 @@ router.delete('/sessions/:id', (req, res) => {
   else res.status(400).end();
 });
 
+
+// Username validation
+router.post('/username_validation', (req, res) => {
+
+  const {username} = req.body;
+
+  if (validateUsername(username) === 'OK')
+    res.status(200).send('OK');
+  else {
+    let invalidReason = validateUsername(username);
+    res.status(422).send({reason: invalidReason});
+    console.log(invalidReason)
+  }
+})
 module.exports = router;
