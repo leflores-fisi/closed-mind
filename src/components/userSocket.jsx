@@ -5,3 +5,6 @@ export const userSocket = io('http://localhost:8001', {
   autoConnect: false,
   requestTimeout: 5000
 });
+userSocket.onAny((event, ...args) => {
+  console.log('Incoming:', event, args);
+});

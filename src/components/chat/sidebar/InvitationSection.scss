@@ -1,0 +1,131 @@
+.sidebar-invitation {
+
+  display: flex;
+  transition: all 2s;
+
+  .no-invitation-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      width: 100%;
+
+      .title {
+        color: var(--purple);
+        margin-bottom: 2px;
+        font-size: 0.9rem;
+      }
+      .subtitle {
+        color: var(--gray);
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+      }
+    }
+    .generate-invitation-btn {
+      font-family: 'Cascadia Mono Light', consolas, monospace;
+      width: 100%;
+      font-size: 0.85rem;
+      padding: 2px 7px;
+      width: fit-content;
+      background-color: var(--blue);
+    }
+  }
+  .invitation-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0;
+
+    .form-input {
+      width: 100%;
+      resize: none;
+      background-color: var(--black);
+      color: var(--gray);
+      border: none;
+      height: 100px;
+      padding: 5px;
+      font-family: 'Cascadia Mono Light', consolas, monospace;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      outline: 1px var(--background) solid;
+      transition: outline 0.1s;
+      &:focus {
+        outline: 1px black solid;
+      }
+    }
+    .form-buttons {
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+
+      button {
+        width: 90px;
+        padding: 1px 0;
+        font-size: 0.85rem;
+        background-color: var(--app-color);
+      }
+    }
+  }
+  .created-invitation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .invitation {
+      display: flex;
+      color: var(--gray);
+      font-family: 'Cascadia Mono Light', consolas, monospace;
+      font-size: 0.9rem;
+      width: 100%;
+      border-top-right-radius: 3px;
+      border-bottom-right-radius: 3px;
+      border: 1px black solid;
+      transition: border 0.1s;
+      margin-bottom: 10px;
+  
+      .link {
+        width: 100%;
+        background-color: var(--black);
+        color: var(--gray);
+        border: none;
+        padding: 4px 3px;
+        &:focus {
+          outline: none;
+        }
+      }
+      .copy-btn {
+        color: var(--background);
+        background-color: var(--app-color);
+        padding: 0 4px;
+      }
+      &.copied {
+        border: 1px var(--app-color) solid;
+      }
+    }
+    p {
+      word-break: break-word;
+      width: 100%;
+      font-size: 0.75rem;
+      color: var(--gray);
+      font-family: consolas, monospace;
+
+      .delete-invitation-btn {
+        background-color: transparent;
+        outline: none;
+        color: var(--red);
+        margin-bottom: 2px;
+        transition: background-color 0.15s, color 0.15s;
+  
+        &:hover {
+          color: var(--brightRed);
+        }
+      }
+    }
+  }
+}

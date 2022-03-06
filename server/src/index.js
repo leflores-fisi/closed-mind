@@ -28,7 +28,7 @@ function main() {
   app.use(express.static(__dirname+'/../public/'));
 
   app.use((req, res, next) => {
-    console.log(`Request '${req.method}' received at PORT: ${req.socket.remotePort} for ${req.path}`);
+    console.log(`Request '${req.method}' received at ${req.url} for ${req.path}`);
     next();
   });
   app.use(apiRoutes);
@@ -123,10 +123,11 @@ function main() {
           }
         }
       }, {new: true}).then(updatedChatRoom => {
-        socket.leave(socket.currentRoomId)
+
+        socket.leave(socket.currentRoomId);
         io.to(room_id).emit('user-disconnected', {date, user_id});
-        socket.emit('disconnected', user_id);
-        console.log(`${user_id} has disconnected (->leaving)`);
+        socket.emit('disconnected-from-room', user_id);
+        console.log(`${user_id} has disconnected (->leaving) from ${updatedChatRoom.code}`);
         socket.currentRoomId = '';
 
       }).catch(error => console.log('Error on socket->leave', error));
@@ -149,8 +150,13 @@ function main() {
             }
           }
         }, {new: true}).then(updatedRoom => {
+          socket.leave(socket.currentRoomId);
           io.to(socket.currentRoomId).emit('user-disconnected', {date, user_id: socket.currentUserId});
-          console.log(`${socket.currentUserId} has disconnected (->disconnected)`);
+          // socket.emit('disconnected-from-room', user_id); ?
+          // (NO, because the socket has disconnected, so the event will never come
+          //  unless the socket connects again, which could lead to bugs)
+          console.log(`${socket.currentUserId} has disconnected (->disconnect) from ${socket.currentRoomId}`);
+          socket.currentRoomId = '';
         }).catch(error => console.log('Error on socket->disconnect', error));
       }
       console.log(io.allSockets());

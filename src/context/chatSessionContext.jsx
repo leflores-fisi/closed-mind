@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, useState } from 'react'
+import { createContext, useEffect, useReducer } from 'react'
 import { reducer } from './reducer';
 
 export const chatSessionContext = createContext();
@@ -22,16 +22,9 @@ export function ChatSessionContextProvider ({ children }) {
     commands_history: []
   };
 
-  // useEffect(() => {
-  //   const asyncFetch = async () => {
-  //     const session = await fetch(`http://localhost:8001/sessions/${id}`)
-  //       .then(res => res.json());
-  //     setChatSession(session);
-  //   }
-  //   asyncFetch();
-  // }, [id]);
+
   useEffect(() => {
-    console.log("Changing state:", store)
+    //console.log("Changing state:", store)
   })
 
   const [store, dispatch] = useReducer(reducer, initialAppState);

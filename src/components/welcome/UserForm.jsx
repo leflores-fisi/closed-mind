@@ -1,11 +1,11 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from 'react';
 import useAppReducer from "../../hooks/useAppReducer"
 import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/actions";
 import { userSocket } from "../userSocket";
 import './UserForm.scss'
 import ColorPicker from "./ColorPicker";
 
-function UserInformation() {
+function UserForm({ onSubmit = () => {}}) {
 
   const {store, dispatch} = useAppReducer();
 
@@ -52,6 +52,7 @@ function UserInformation() {
         setInvalidReason('');
         setValidatingUsername(false);
         userSocket.removeAllListeners();
+        console.log('Removing socket listeners from UserForm')
         dispatch(connectSocket());
       }
       else if (response.status === 422) {
@@ -74,7 +75,12 @@ function UserInformation() {
 
   return (
     <div className='user-form'>
-      <form className='user-form__username' onSubmit={connectIntoServer} id='connect-socket-form'>
+      <form className='user-form__username' id='connect-socket-form' 
+        onSubmit={(e) => {
+          connectIntoServer(e);
+          onSubmit();
+        }
+      }>
         <div className='title'>Username:</div>
         <div className={'username-form' + (isValidUsername ? '' : ' invalid')}>
           <input
@@ -136,4 +142,4 @@ function validateUsername(username) {
   );
 }
 
-export default UserInformation;
+export default UserForm;

@@ -10,7 +10,7 @@ function ServerLogLine({date, log}) {
   return (
     <div className='server-log command-line'>
       <div>
-        <span className='date'>{`${hour.replace(/ PM| AM/, '')}:${minute}`}</span>
+        <time className='date'>{`${hour.replace(/ PM| AM/, '')}:${minute}`}</time>
         <span className='from'>{`[Server]:`}</span>
         <span className='text'>{log}</span>
       </div>

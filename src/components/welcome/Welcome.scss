@@ -1,9 +1,4 @@
 .welcome {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  padding: 20vh 10px;
 
   .logo {
     font-family: consolas;
@@ -64,5 +59,20 @@
       }
     }
   
+  }
+  .closed-mind-github {
+    position: absolute;
+    bottom: 10px;
+    font-size: 0.8rem;
+    opacity: 0.5;
+    color: var(--purple);
+
+    a {
+      color: var(--purple);
+
+      &:visited {
+        color: var(--purple);
+      }
+    }
   }
 }

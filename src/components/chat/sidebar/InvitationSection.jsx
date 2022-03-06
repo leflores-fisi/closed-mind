@@ -1,0 +1,94 @@
+import { useRef, useState } from 'react';
+import useAppReducer from '../../../hooks/useAppReducer';
+import NewInvitationForm from './NewInvitationForm';
+import './InvitationSection.scss';
+
+function InvitationLink() {
+
+  const {store} = useAppReducer();
+  const inputRef = useRef();
+  const [isCopied, setIsCopied] = useState(false);
+  const [creatingInvitation, setCreatingInvitation] = useState(false);
+  const [fetchedInvitation, setFetchedInvitation] = useState(undefined);
+  
+  const handleCopy = () => {
+    inputRef.current.select();
+    if (!isCopied) {
+      document.execCommand('copy');
+      setIsCopied(true)
+      setTimeout(() => {
+        setIsCopied(false)
+      }, 1000)
+    }
+  }
+  const handleFocus = () => {
+    inputRef.current.select();
+  }
+  const handleGenerating = async (invitation_description) => {
+    console.log('Fetching:', JSON.parse(JSON.stringify({
+      room_code: store.room_id,
+      host: store.user_id,
+      description: invitation_description
+    })))
+    try {
+      let url = 'http://localhost:8001/invitations'
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          room_code: store.room_id,
+          host: store.user_id,
+          description: invitation_description
+        })
+      })
+      const invitation = await response.json();
+      setFetchedInvitation(invitation);
+      setCreatingInvitation(false);
+    }
+    catch (error) {
+      console.log('Fetching ERROR: InvitationLink:', error);
+    }
+  }
+  const cancelForm = () => {
+    setCreatingInvitation(false);
+  }
+
+  return (
+    <section className='sidebar-invitation'>
+      {
+        creatingInvitation && !fetchedInvitation ?
+          <NewInvitationForm onSubmit={handleGenerating} onCancel={cancelForm}/>
+        :
+        fetchedInvitation ?
+          <section className='created-invitation'>
+            <div className={`invitation ${isCopied ? 'copied' : ''}`}>
+              <input
+                className='link'
+                ref={inputRef}
+                onFocus={handleFocus}
+                onChange={() => {}}
+                value={`localhost:3000/invite/${fetchedInvitation.invitation_code}`}
+              />
+              <button className='copy-btn' onClick={handleCopy}>{isCopied ? 'Yes!' : 'Copy'}</button>
+            </div>
+            <p>
+              This link expires on 7 days.
+              <button className='delete-invitation-btn' onClick={() => {
+                setFetchedInvitation(null);
+              }}>Delete now</button>
+            </p>
+          </section>
+        :
+          <section className='no-invitation-section'>
+            <header>
+              <h3 className='title'>Invite people</h3>
+              <p className='subtitle'>This is better with friends!</p>
+            </header>
+            <button className='generate-invitation-btn' onClick={() => {setCreatingInvitation(true)}}>Generate invitation link</button>
+          </section>
+      }
+    </section>
+  )
+}
+
+export default InvitationLink;

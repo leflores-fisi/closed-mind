@@ -2,7 +2,9 @@ const { Router }          = require('express');
 const { isValidObjectId } = require('mongoose');
 
 const ChatRoom         = require('../models/ChatRoom');
+const RoomInvitation   = require('../models/RoomInvitation');
 const validateUsername = require('../helpers/validateUser');
+const generateInvitationCode = require('../helpers/generateInvitationCode');
 const router = Router();
 
 // home
@@ -12,39 +14,36 @@ router.get('/', (req, res) => {
   `);
 });
 
-// Get all current sessions
-router.get('/sessions', (req, res) => {
-  ChatRoom.find({}).then(sessions => {
-    res.json(sessions);
+// Get all current rooms
+router.get('/rooms', (req, res) => {
+  ChatRoom.find({}).then(rooms => {
+    res.json(rooms);
   });
 });
-// Ger a session by id
-router.get('/sessions/:id', (req, res, next) => {
-  const { id } = req.params;
+// Get a chat room by his room_code
+router.get('/rooms/:code', (req, res, next) => {
+  const {code} = req.params;
 
-  if (isValidObjectId(id)) {
-    ChatRoom.findById(id).then(session => {
-      if (!session) res.status(404).end();
-      res.json(session);
-    }).catch(error => next(error));
-  }
-  else res.status(400).end();
+  ChatRoom.findOne({code: code}).then(room => {
+    if (!room) res.status(404).end();
+    res.json(room);
+  }).catch(error => next(error));
 });
 
-router.put('/sessions/:id', (req, res) => {
+router.put('/rooms/:id', (req, res, next) => {
   const { id } = req.params;
-  const session = req.body;
+  const room = req.body;
 
-  const newSessionInfo = {
-    is_open: session.is_open,
-    users: session.users,
-    messages: session.messages
+  const newRoomInfo = {
+    is_open: room.is_open,
+    users: room.users,
+    messages: room.messages
   };
-  ChatRoom.findByIdAndUpdate(id, newSessionInfo, {new: true}).then(updatedSession => {
-    res.json(updatedSession);
+  ChatRoom.findByIdAndUpdate(id, newRoomInfo, {new: true}).then(updatedRoom => {
+    res.json(updatedRoom);
   }).catch(error => next(error));
 })
-router.put('/sessions/:id/messages/', (req, res) => {
+router.put('/rooms/:id/messages/', (req, res, next) => {
   const { id } = req.params;
   const newMessage = req.body;
   const {username, message} = newMessage;
@@ -56,31 +55,31 @@ router.put('/sessions/:id/messages/', (req, res) => {
         date: new Date()
       }
     }
-  }, {new: true}).then(updatedSession => {
-    res.json(updatedSession);
+  }, {new: true}).then(updatedRoom => {
+    res.json(updatedRoom);
   }).catch(error => next(error));
 })
 
-router.post('/sessions', (req, res) => {
+router.post('/rooms', (req, res, next) => {
 
-  const session = req.body;
-  if (!session) res.status(400).end();
+  const room = req.body;
+  if (!room) res.status(400).end();
   else {
-    const newSession = new Session({
-      code: session.code,
-      host: session.host,
+    const newRoom = new ChatRoom({
+      code: room.code,
+      host: room.host,
       created_date: new Date(),
       is_open: true,
-      users: [{ username: session.host }],
+      users: [{ username: room.host }],
       messages: []
     });
-    newSession.save().then(savedSession => {
-      res.json(savedSession);
-    })
+    newRoom.save().then(savedRoom => {
+      res.json(savedRoom);
+    }).catch(error => next(error))
   }
 });
 
-router.delete('/sessions/:id', (req, res) => {
+router.delete('/rooms/:id', (req, res, next) => {
   const { id } = req.params;
 
   if (isValidObjectId(id)) {
@@ -91,6 +90,49 @@ router.delete('/sessions/:id', (req, res) => {
   else res.status(400).end();
 });
 
+router.get('/invitations', (req, res, next) => {
+  RoomInvitation.find({}).then(roomInvitations => {
+    res.send(roomInvitations);
+  })
+})
+router.post('/invitations', (req, res, next) => {
+
+  const invitation = req.body;
+  if (!invitation) res.status(400).end();
+  else {
+    const newInvitation = new RoomInvitation({
+      invitation_code: generateInvitationCode(),
+      room_code: invitation.room_code,
+      host: invitation.host,
+      description: invitation.description,
+    });
+    newInvitation.save().then(savedInvitation => {
+      res.json(savedInvitation);
+    }).catch(error => next(error))
+  }
+})
+router.get('/invitations/:code', (req, res, next) => {
+  const {code} = req.params;
+
+  RoomInvitation.findOne({invitation_code: code}).then(invitation => {
+    if (!invitation) res.send(404).end();
+    else res.json(invitation);
+  }).catch(error => next(error))
+})
+router.delete('/invitations', (req, res, next) => {
+
+  RoomInvitation.deleteMany({}).then(deleteInformation => {
+    res.json(deleteInformation);
+  }).catch(error => next(error))
+})
+router.delete('/invitations/:code', (req, res, next) => {
+  const {code} = req.params;
+
+  RoomInvitation.findOneAndDelete({invitation_code: code}).then(deletedInvitation => {
+    if (!deletedInvitation) res.send(404).end();
+    else res.json(deletedInvitation);
+  }).catch(error => next(error))
+})
 
 // Username validation
 router.post('/username_validation', (req, res) => {

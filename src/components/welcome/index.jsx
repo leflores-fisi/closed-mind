@@ -5,13 +5,15 @@ import './Welcome.scss';
 function WelcomeWindow() {
 
   return (
-    <motion.div className='welcome' initial={{opacity: 0}} animate={{
+    <motion.div className='welcome page' initial={{opacity: 0}} animate={{
       opacity: 1
     }}>
-      <div className='logo'>〰closed mind〰</div>
-      <div className='slogan'>
-        minimalist and fugacious chats (<i>if you want</i>)
-      </div>
+      <figure>
+        <h1 className='logo'>〰closed mind〰</h1>
+        <h3 className='slogan'>
+          minimalist and fugacious chats (<i>if you want</i>)
+        </h3>
+      </figure>
       <motion.div
         className='cards'
         initial={{y: 10}}
@@ -24,26 +26,29 @@ function WelcomeWindow() {
         </div>
 
         <div className='card'>
-          <div className='features'>
-            <div className='snippet'>
+          <ul className='features'>
+            <li className='snippet'>
               <div className='command'>{`/create`}</div>
               <div className='argument'>{`<room-name>`}</div>
-            </div>
-            <div className='snippet'>
+            </li>
+            <li className='snippet'>
               <div className='command'>{`/join`}</div>
               <div className='argument'>{`<room-name>`}</div>
-            </div>
-            <div className='snippet'>
+            </li>
+            <li className='snippet'>
               <div className='command'>{`/leave`}</div>
               <div className='argument'>{`<farewell>`}</div>
-            </div>
-            <div className='snippet'>
+            </li>
+            <li className='snippet'>
               <div className='command'>{`/ban`}</div>
               <div className='argument'>{`<dummy-user>`}</div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </motion.div>
+      <footer className='closed-mind-github'>
+        Check the project on <a target='_blank' href='https://github.com/leflores-fisi/closed-mind'>github 💖</a>
+      </footer>
     </motion.div>
   )
 }

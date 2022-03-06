@@ -1,0 +1,22 @@
+.invitation-window {
+  
+  .invitation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px var(--app-color) solid;
+    color: var(--foreground);
+
+    padding: 20px 50px;
+    
+    .title {
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+    .description {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+  }
+}

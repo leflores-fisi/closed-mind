@@ -1,3 +1,4 @@
+
 // ah, shit... here we go again
 
 export const setGlobalUsername = ({ username, userCode }) => {
@@ -21,17 +22,10 @@ export const connectSocket = () => {
 };
 export const disconnectSocket = ({}) => {
   return {
-    type: '@socket/disconnect',
-    payload: {}
+    type: '@socket/disconnect'
   };
 };
 
-export const createChat = ({ code, host }) => {
-  return {
-    type: '@commands/create',
-    payload: { code, host }
-  };
-};
 export const connectToRoom = ({ chatRoom }) => {
   return {
     type: '@commands/connect',

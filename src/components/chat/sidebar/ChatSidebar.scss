@@ -1,0 +1,75 @@
+.chat-sidebar {
+  position: relative;
+  
+  .sidebar-information {
+    flex: auto;
+
+    .user-information {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-bottom: 30px;
+  
+      &__username {
+        display: flex;
+        flex-direction: column;
+        padding: 0 10px;
+        width: 100%;
+        .title {
+          color: var(--purple);
+          margin-bottom: 5px;
+        }
+        .username {
+          display: flex;
+          align-items: center;
+          color: var(--gray);
+          background-color: var(--black);
+          margin-bottom: 10px;
+          padding-left: 5px;
+          height: 25px;
+        }
+      }
+      .disconnect-user-btn {
+        background-color: transparent;
+        outline: 1px var(--red) solid;
+        color: var(--brightRed);
+        font-size: 0.95rem;
+        margin-bottom: 2px;
+        padding: 2px 8px;
+        transition: background-color 0.15s, color 0.15s;
+        font-family: 'Cascadia Mono Light', consolas, monospace;
+
+        &:hover {
+          background-color: var(--red);
+          color: black;
+          outline: 1px black solid;
+        }
+      }
+    }
+    .room-information {
+      padding: 0 10px;
+  
+      .sidebar-section {
+        margin-bottom: 15px;
+        
+        .title {
+          color: var(--brightBlue);
+          padding-bottom: 3px;
+        }
+        .content {
+          color: var(--gray);
+        }
+      }
+    }
+  }
+  .sidebar-invitation {
+    border-top: 1px var(--app-color) solid;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    width: 100%;
+    justify-self: flex-end;
+    background-color: var(--background);
+    flex: 0;
+  }
+}

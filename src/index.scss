@@ -3,11 +3,12 @@
 
   --sidebar-width: 300px;
   --app-color: #615970;
+  --loading-box-color: #3c3941;
 
   --background:          #141414;
   --foreground:          #c0bec2;
   --cursorColor:         #4FA160;
-  --selectionBackground: #4F5C56;
+  --selectionBackground: #4f5c5b;
   --black:        #181818;
   --brightBlack:  #444347;
   --gray:         #767779;
@@ -37,7 +38,7 @@
   --brightCyan:   #457763;
   --blue:         #404864;
   --brightBlue:   #4a5c79;
-  --purple:       #684974;
+  --purple:       #665074;
   --brightPurple: #7f5394;
 }
 .black         {color: var(--black)  !important;}
@@ -83,6 +84,9 @@
   src: local('Cascadia Mono light'), url(./assets/CascadiaMono-Light.otf) format('opentype');
 }
 
+body {
+  background-color: var(--background);
+}
 * {
   font-family: 'Cascadia Mono normal', consolas, monospace;
   text-rendering: optimizeLegibility;
@@ -92,8 +96,16 @@
 // Text selection colors
 ::selection, ::-moz-selection {
   background: var(--selectionBackground);
+  color: black;
 }
 *[contenteditable="true"] {
   display: inline-block;
   outline: 0px solid transparent;
+}
+
+button {
+  border: none;
+  padding: 2px 5px;
+  border-radius: 3px;
+  cursor: pointer;
 }

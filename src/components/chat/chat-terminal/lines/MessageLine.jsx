@@ -1,7 +1,7 @@
 
 function MessageLine({ username, userColor, text, date }) {
 
-  let d, hour, minute;
+  let d = '', hour = '', minute = '';
   if (date) {
     d = new Date(date);
     hour = new Intl.DateTimeFormat('en', { hour: '2-digit', hour12: false }).format(d);
@@ -11,7 +11,7 @@ function MessageLine({ username, userColor, text, date }) {
   return (
     <div className='user-message command-line'>
       <div>
-        {date && <span className='date'>{`${hour.replace(/ PM| AM/, '')}:${minute}`}</span>}
+        <time className='date'>{date ? `${hour.replace(/ PM| AM/, '')}:${minute}` : '??:??'}</time>
         <span className={`from ${userColor}`}>{`[${username || '???'}]:`}</span>
         <span className='text'>{text}</span>
       </div>

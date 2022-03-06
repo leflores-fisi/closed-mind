@@ -1,17 +1,19 @@
 import { useEffect,  useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
-import { connectToRoom, disconnectFromRoom, saveLineToHistory, appendMessage, appendUser, popUser, disconnectSocket, appendErrorMessage, clearTerminal } from '../../context/actions';
-import {userSocket} from '../userSocket'
-import useAppReducer from '../../hooks/useAppReducer';
-import CommandInput from './CommandInput';
-import CommandLine from './CommandLine';
-import MessageLine from './MessageLine';
-import ServerLogLine from './ServerLogLine';
-import WindowHeader from './../WindowHeader';
-import './ChatTerminal.scss';
-import ErrorLine from './ErrorLine';
+import { connectToRoom, disconnectFromRoom, saveLineToHistory, appendMessage, appendUser, popUser, disconnectSocket, appendErrorMessage, clearTerminal } from '../../../context/actions';
 
-function ChatTerminal() {
+import { userSocket } from '../../userSocket'
+import useAppReducer  from '../../../hooks/useAppReducer';
+
+import WindowHeader  from '../../WindowHeader';
+import CommandInput  from './CommandInput';
+import CommandLine   from './lines/CommandLine';
+import MessageLine   from './lines/MessageLine';
+import ServerLogLine from './lines/ServerLogLine';
+import ErrorLine     from './lines/ErrorLine';
+import './ChatTerminal.scss';
+
+function ChatTerminal({ locationParams = {} }) {
 
   const inputRef = useRef(null);
   const {store, dispatch} = useAppReducer();
@@ -21,6 +23,9 @@ function ChatTerminal() {
     '/create': (args) => {
       if (args.length > 1 || args.length === 0) {
         dispatch(appendErrorMessage({message: `Expected one argument for <room-name>, given ${args.length}`}))
+      }
+      else if (store.room_id) {
+        dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
       }
       else {
         let room_name = args[0];
@@ -32,6 +37,7 @@ function ChatTerminal() {
         dispatch(appendErrorMessage({message: `Expected one argument for <room-id>, given ${args.length}`}))
       }
       else if (!store.room_id) {
+        let room_id = args[0];
         userSocket.emit('joining-to-chat', {room_id: room_id, user_id: store.user_id});
       }
       else dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
@@ -118,19 +124,26 @@ function ChatTerminal() {
 
   useEffect(() => {
 
+    console.log('🐢 Setting all socket listeners');
+
+    // if exist a room id on the path (/room/:id) it joins automatically
+    if (locationParams.room)
+      CONSOLE_ACTIONS['/join']([locationParams.room])
+
     // listeners to <socket.emit(...)>
     userSocket.on('room-created', ({createdChatRoom}) => {
       dispatch(connectToRoom({chatRoom: createdChatRoom}));
-      console.log(createdChatRoom);
     });
     userSocket.on('joined', (chatRoom) => {
       dispatch(connectToRoom({chatRoom: chatRoom}));
+      console.log(chatRoom)
     });
     userSocket.on('message-sended', ({date, user_id, user_color, message}) => {
       dispatch(appendMessage({date, user_id, user_color, message}));
     });
-    userSocket.on('disconnected', () => {
+    userSocket.on('disconnected-from-room', () => {
       dispatch(disconnectFromRoom());
+      console.log('🦎 Leaving from chat finished and room disconnected!');
     });
     userSocket.on('error', ({message}) => {
       dispatch(appendErrorMessage({message}));
@@ -146,16 +159,15 @@ function ChatTerminal() {
 
     // socket.io events
     userSocket.on('disconnect', () => {
-      console.log('DISCONNECTING WITH OLD STORE??:', store);
+
       if (store.room_id)  {
+        console.log('😖 Emitting leaving from chat (should NOT return disconnected event) !!!!, with: {room_id:', store.room_id, ', user:', store.user_id,'}');
         dispatch(disconnectFromRoom());
-        dispatch(disconnectSocket({}))
-        userSocket.emit('leaving-from-chat', {room_id: store.room_id, user: store.user_id});
-        console.log('disconnecting 1...', store.room_id)
+        dispatch(disconnectSocket({}));
       }
       else {
         dispatch(disconnectSocket({}))
-        console.log('disconnecting 2...', store);
+        console.log('Disconnecting without room id...');
       }
     });
     userSocket.on('connect_error', (err) => {
@@ -165,10 +177,10 @@ function ChatTerminal() {
       }, 1000);
     });
     
-    userSocket.onAny((event, ...args) => {
-      console.log('Incoming:', event, args);
-    });
-    return () => userSocket.removeAllListeners()
+    return () => {
+      userSocket.removeAllListeners();
+      console.log('🐌 Removing all socket listeners');
+    };
 
   }, [store.room_id])
 

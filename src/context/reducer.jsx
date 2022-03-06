@@ -1,8 +1,8 @@
-
+//import { useLocation } from 'wouter';
 
 export const reducer = (state, action) => {
 
-  console.log('On reducer:', action, state);
+  console.log('On reducer:', action.type);
 
   switch (action.type) {
 
@@ -30,8 +30,6 @@ export const reducer = (state, action) => {
         socket_is_connected: false
       };
 
-    case '@commands/create':
-      return state;
     case '@commands/connect':
       let {chatRoom} = action.payload;
 
@@ -45,7 +43,6 @@ export const reducer = (state, action) => {
         messages: chatRoom.messages
       };
     case '@commands/leave':
-
       return {
         ...state,
         room_id: '',

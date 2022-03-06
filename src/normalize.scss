@@ -38,17 +38,11 @@ main {
   display: block;
 }
 
-/**
- * Correct the font size and margin on `h1` elements within `section` and
- * `article` contexts in Chrome, Firefox, and Safari.
- */
 
-/*(Removed by me)*/
-/*
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}*/
+h1, h2, h3, h4 {
+  font-size: 1rem;
+  font-weight: normal;
+}
 
 /* Grouping content
    ========================================================================== */
@@ -93,7 +87,6 @@ a {
 abbr[title] {
   border-bottom: none; /* 1 */
   text-decoration: underline; /* 2 */
-  text-decoration: underline dotted; /* 2 */
 }
 
 /**
