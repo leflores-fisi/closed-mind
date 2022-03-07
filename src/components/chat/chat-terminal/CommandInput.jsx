@@ -7,6 +7,10 @@ function CommandInput(props, ref) {
   const commands = ['/create <room name>', '/join <room-name>', '/leave', '/ban <dummy>']
   const [autocomplete, setAutocomplete] = useState('');
 
+  useEffect(() => {
+    console.log('Autocompleted')
+  })
+
   return (
     <div className='command-line-input'>
       <div>{'>'}</div>

@@ -49,10 +49,10 @@ export const appendUser = ({ date, user_id }) => {
     payload: { date, user_id }
   };
 };
-export const popUser = ({ date, user_id }) => {
+export const popUser = ({ user_id, server_log }) => {
   return {
     type: '@terminal/popUser',
-    payload: { date, user_id }
+    payload: { user_id, server_log }
   };
 };
 export const appendMessage = ({ date, user_id, user_color, message }) => {

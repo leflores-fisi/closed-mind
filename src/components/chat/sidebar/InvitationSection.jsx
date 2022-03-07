@@ -24,12 +24,7 @@ function InvitationLink() {
   const handleFocus = () => {
     inputRef.current.select();
   }
-  const handleGenerating = async (invitation_description) => {
-    console.log('Fetching:', JSON.parse(JSON.stringify({
-      room_code: store.room_id,
-      host: store.user_id,
-      description: invitation_description
-    })))
+  const generateInvitation = async (invitation_description) => {
     try {
       let url = 'http://localhost:8001/invitations'
       const response = await fetch(url, {
@@ -49,6 +44,14 @@ function InvitationLink() {
       console.log('Fetching ERROR: InvitationLink:', error);
     }
   }
+  const deleteInvitation = async () => {
+    let url = `http://localhost:8001/invitations/${fetchedInvitation.invitation_code}`
+    const response = await fetch(url, {
+      method: 'DELETE',
+    });
+    setFetchedInvitation(null);
+    setCreatingInvitation(false);
+  }
   const cancelForm = () => {
     setCreatingInvitation(false);
   }
@@ -57,7 +60,7 @@ function InvitationLink() {
     <section className='sidebar-invitation'>
       {
         creatingInvitation && !fetchedInvitation ?
-          <NewInvitationForm onSubmit={handleGenerating} onCancel={cancelForm}/>
+          <NewInvitationForm onSubmit={generateInvitation} onCancel={cancelForm}/>
         :
         fetchedInvitation ?
           <section className='created-invitation'>
@@ -72,10 +75,8 @@ function InvitationLink() {
               <button className='copy-btn' onClick={handleCopy}>{isCopied ? 'Yes!' : 'Copy'}</button>
             </div>
             <p>
-              This link expires on 7 days.
-              <button className='delete-invitation-btn' onClick={() => {
-                setFetchedInvitation(null);
-              }}>Delete now</button>
+              <span>This link expires on 7 days. </span>
+              <button className='delete-invitation-btn' onClick={deleteInvitation}>Delete now.</button>
             </p>
           </section>
         :

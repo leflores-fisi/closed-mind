@@ -62,11 +62,7 @@ export const reducer = (state, action) => {
       return {
         ...state,
         users: state.users.filter(user => user.user_id !== action.payload.user_id),
-        messages: state.messages.concat({
-          from: 'Server',
-          text: `${action.payload.user_id} has disconnected`,
-          date: action.payload.date
-        })
+        messages: state.messages.concat(action.payload.server_log)
       };
     case '@terminal/appendUser': 
       return {

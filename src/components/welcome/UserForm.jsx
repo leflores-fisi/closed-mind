@@ -102,22 +102,21 @@ function UserForm({ onSubmit = () => {}}) {
           setUserColor(color);
           dispatch(setGlobalColor({color}))
         }}/>
+        <div className='user-form__connect'>
+          <button
+            className='connect-user-btn'
+            type='submit'
+            form='connect-socket-form'
+          >Connect</button>
+        </div>
+        <div className='form-feedback'>
+          {
+            validatingUsername ? <div className='feedback gray'>Connecting...</div>
+            : !isValidUsername ? <div className='feedback brightRed'>{invalidReason}</div>
+            : null
+          }
+        </div>
       </form>
-
-      <div className='user-form__connect'>
-        <button
-          className='connect-user-btn'
-          type='submit'
-          form='connect-socket-form'
-        >Connect</button>
-      </div>
-      <div className='form-feedback'>
-        {
-          validatingUsername ? <div className='feedback gray'>Connecting...</div>
-          : !isValidUsername ? <div className='feedback brightRed'>{invalidReason}</div>
-          : null
-        }
-      </div>
     </div>
   )
 }

@@ -13,7 +13,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-
       width: 100%;
 
       .title {
@@ -43,18 +42,19 @@
     padding: 0 0;
 
     .form-input {
-      width: 100%;
-      resize: none;
+      font-family: 'Cascadia Mono Light', consolas, monospace;
+      outline: 1px var(--background) solid;
       background-color: var(--black);
       color: var(--gray);
-      border: none;
-      height: 100px;
-      padding: 5px;
-      font-family: 'Cascadia Mono Light', consolas, monospace;
       font-size: 0.9rem;
+      width: 100%;
+      height: 70px;
+      padding: 5px;
       margin-bottom: 10px;
-      outline: 1px var(--background) solid;
+      resize: none;
+      border: none;
       transition: outline 0.1s;
+
       &:focus {
         outline: 1px black solid;
       }
@@ -104,22 +104,25 @@
         background-color: var(--app-color);
         padding: 0 4px;
       }
-      &.copied {
-        border: 1px var(--app-color) solid;
-      }
+      &.copied { border: 1px var(--app-color) solid;}
     }
     p {
-      word-break: break-word;
       width: 100%;
-      font-size: 0.75rem;
-      color: var(--gray);
-      font-family: consolas, monospace;
-
+      word-break: break-all;
+      
+      span {
+        color: var(--gray);
+        font-family: consolas, monospace;
+        font-size: 0.75rem;
+        width: 100%;
+      }
       .delete-invitation-btn {
         background-color: transparent;
-        outline: none;
         color: var(--red);
-        margin-bottom: 2px;
+        font-family: consolas, monospace;
+        font-size: 0.75rem;
+        padding: 0;
+        outline: none;
         transition: background-color 0.15s, color 0.15s;
   
         &:hover {

@@ -1,5 +1,4 @@
-import { useEffect,  useRef, useState } from 'react';
-import { nanoid } from 'nanoid';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { connectToRoom, disconnectFromRoom, saveLineToHistory, appendMessage, appendUser, popUser, disconnectSocket, appendErrorMessage, clearTerminal } from '../../../context/actions';
 
 import { userSocket } from '../../userSocket'
@@ -7,25 +6,32 @@ import useAppReducer  from '../../../hooks/useAppReducer';
 
 import WindowHeader  from '../../WindowHeader';
 import CommandInput  from './CommandInput';
-import CommandLine   from './lines/CommandLine';
-import MessageLine   from './lines/MessageLine';
-import ServerLogLine from './lines/ServerLogLine';
-import ErrorLine     from './lines/ErrorLine';
+import TerminalLines from './TerminalLines';
 import './ChatTerminal.scss';
 
 function ChatTerminal({ locationParams = {} }) {
 
-  const inputRef = useRef(null);
+  const inputRef    = useRef(null);
+  const terminalRef = useRef(null);
   const {store, dispatch} = useAppReducer();
   const [index, setIndex] = useState(0);
+  console.log('🥶 Whole render1')
+
+  useEffect(() => {
+    console.log('🥶 Whole render2')
+  })
+  useLayoutEffect(() => {
+    console.log('🥶 Whole render3')
+  })
 
   const CONSOLE_ACTIONS = {
+    
     '/create': (args) => {
-      if (args.length > 1 || args.length === 0) {
-        dispatch(appendErrorMessage({message: `Expected one argument for <room-name>, given ${args.length}`}))
-      }
-      else if (store.room_id) {
+      if (store.room_id) {
         dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
+      }
+      else if (args.length > 1 || args.length === 0) {
+        dispatch(appendErrorMessage({message: `Expected one argument for <room-name>, given ${args.length}`}))
       }
       else {
         let room_name = args[0];
@@ -33,47 +39,68 @@ function ChatTerminal({ locationParams = {} }) {
       }
     },
     '/join': (args) => {
-      if (args.length > 1 || args.length === 0) {
+      if (store.room_id) {
+        dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
+      }
+      else if (args.length > 1 || args.length === 0) {
         dispatch(appendErrorMessage({message: `Expected one argument for <room-id>, given ${args.length}`}))
       }
-      else if (!store.room_id) {
+      else  {
         let room_id = args[0];
         userSocket.emit('joining-to-chat', {room_id: room_id, user_id: store.user_id});
       }
-      else dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
     },
     '/ban': (args) => {
-      if (args.length > 1 || args.length === 0) {
-        dispatch(appendErrorMessage({message: `Expected one argument for <dummy-user>, given ${args.length}`}))
+      if (!store.room_id) {
+        dispatch(appendErrorMessage({message: 'There are no dummies near, use join to a room first'}));
       }
-      else if (!store.room_id) {
-        dispatch(appendErrorMessage({message: 'There are no dummies near, use "/join" first'}));
-        return;
+      else if (store.user_id !== store.host) {
+        dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
+      }
+      else if (args.length === 0) {
+        dispatch(appendErrorMessage({message: `Expected one or more arguments for <dummy-users>, given ${args.length}`}))
       }
       else {
-        let user_id = args[0];
-        if (store.user_id === store.host) console.log('Banning', user_id);
-        else dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
+        let dummies = args;
+        console.log('Banning dummies:', dummies, 'from', store.users);
+
+        for (let dummy_id of dummies) {
+          if (store.users.some(user => user.user_id === dummy_id))
+            userSocket.emit('banning-user', {user_id: dummy_id, reason: ' Im sorry...'});
+          else dispatch(appendErrorMessage({message: `This is shameful, ${dummy_id} does'nt exist`}));
+        }
       }
     },
     '/clear': () => {
       dispatch(clearTerminal());
     },
     '/leave': (args) => {
-      if (store.room_id) {
-        let farewell = args.join(' ');
-        userSocket.emit('leaving-from-chat', {room_id: store.room_id, user_id: store.user_id});
+      if (!store.room_id) {
+        dispatch(appendErrorMessage({message: 'You should be on a room first'}));
       }
-      else dispatch(appendErrorMessage({message: 'You should be on a room first'}));
+      else {
+        let farewell = args.join(' ');
+        userSocket.emit('leaving-from-chat', {
+          room_id: store.room_id,
+          user_id: store.user_id,
+          farewell
+        });
+      }
     },
     'send_message': (message) => {
-      if (store.room_id) {
-        userSocket.emit('sending-message', {user_id: store.user_id, user_color: store.user_color, message: message});
+      if (!store.room_id) {
+        dispatch(appendMessage({date: new Date().toUTCString(), user_id: store.user_id, user_color: store.user_color, message}));
       }
-      else dispatch(appendMessage({date: new Date().toUTCString(), user_id: store.user_id, user_color: store.user_color, message}));
+      else {
+        terminalRef.current.scrollTo({top: terminalRef.current.scrollHeight, behavior: 'smooth'});
+        userSocket.emit('sending-message', {
+          user_id: store.user_id,
+          user_color: store.user_color,
+          message: message
+        });
+      }
     }
   };
-
   const handleCommands = (e) => {
 
     switch (e.key) {
@@ -81,8 +108,8 @@ function ChatTerminal({ locationParams = {} }) {
         let user_input = inputRef.current.value;
         if (!user_input) return;
 
-        if (user_input.startsWith('/')) {
-          let words   = user_input.split(' ');
+        if (user_input.trim().startsWith('/')) {
+          let words   = user_input.trim().split(' ');
           let command = words[0];
           let args    = words.slice(1);
           
@@ -143,7 +170,6 @@ function ChatTerminal({ locationParams = {} }) {
     });
     userSocket.on('disconnected-from-room', () => {
       dispatch(disconnectFromRoom());
-      console.log('🦎 Leaving from chat finished and room disconnected!');
     });
     userSocket.on('error', ({message}) => {
       dispatch(appendErrorMessage({message}));
@@ -151,23 +177,23 @@ function ChatTerminal({ locationParams = {} }) {
 
     // listeners to <socket.to(room).emit(...)>
     userSocket.on('user-connected', ({date, user_id}) => {
-      dispatch(appendUser({date: date, user_id: user_id}))
+      dispatch(appendUser({date: date, user_id: user_id}));
     });
-    userSocket.on('user-disconnected', ({date, user_id}) => {
-      dispatch(popUser({date: date, user_id: user_id}))
+    userSocket.on('user-disconnected', ({user_id, server_log}) => {
+      dispatch(popUser({user_id, server_log}));
     });
 
     // socket.io events
     userSocket.on('disconnect', () => {
 
       if (store.room_id)  {
-        console.log('😖 Emitting leaving from chat (should NOT return disconnected event) !!!!, with: {room_id:', store.room_id, ', user:', store.user_id,'}');
+        console.log('Disconnecting with room code: {room_id:', store.room_id, ', user:', store.user_id,'}');
         dispatch(disconnectFromRoom());
         dispatch(disconnectSocket({}));
       }
       else {
         dispatch(disconnectSocket({}))
-        console.log('Disconnecting without room id...');
+        console.log('Disconnecting without room code...');
       }
     });
     userSocket.on('connect_error', (err) => {
@@ -185,48 +211,26 @@ function ChatTerminal({ locationParams = {} }) {
   }, [store.room_id])
 
   useEffect(() => {
+    console.log('Setting up key event listener (handleCommands)')
+
     inputRef.current.focus();
     inputRef.current.addEventListener('keydown', handleCommands);
     return () => {
       if (inputRef.current)
         inputRef.current.removeEventListener('keydown', handleCommands);
     }
-  }, [store.commands_history, index, store.room_id, store.user_id]);
+  }, [store.commands_history, store.room_id]);
 
   return (
-    <div className='chat-terminal' onMouseUp={(e) => {
-      if (window.getSelection().toString() === '')
-        inputRef.current.focus()
-    }}>
+    <div className='chat-terminal'
+      onMouseUp={(e) => {
+        if (window.getSelection().toString() === '')
+          inputRef.current.focus()
+      }}
+      ref={terminalRef}
+    >
       <WindowHeader title='Chat'/>
-      <div className='command-lines'>
-
-        <CommandLine text={'〰Closed mind〰 v1.0'}/>
-        <CommandLine text={'Type "/commands" to see all the commands'}/>
-        {
-          store.messages.map(DBmessage => (
-            DBmessage.from === 'Server' ?
-              <ServerLogLine
-                date={DBmessage.date}
-                log={DBmessage.text}
-                key={nanoid()}
-              />
-            : DBmessage.from === 'ErrorHandler' ?
-              <ErrorLine
-                text={DBmessage.text}
-                key={nanoid()}
-              />
-            :
-              <MessageLine
-                username={DBmessage.from}
-                userColor={DBmessage.color}
-                text={DBmessage.text}
-                date={DBmessage.date}
-                key={nanoid()}
-              />
-          ))
-        }
-      </div>
+      <TerminalLines lines={store.messages}/>
       <CommandInput ref={inputRef}/>
     </div>
   );

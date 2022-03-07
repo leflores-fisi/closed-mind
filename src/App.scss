@@ -1,19 +1,33 @@
-.app {
+#root {
   display: flex;
-  align-items: center;
-  flex-direction: column;
-
+  height: 100%;
+}
+.app {
+  flex: 1;
   background-color: var(--background);
-  min-height: 100vh;
 
   .app-content {
     display: flex;
+    justify-content: center;
     max-height: calc(100vh);
-    overflow: auto;
     width: 100%;
     height: 100%;
     flex: 1;
-
+    
+    .page {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      align-items: center;
+      border: 1px var(--app-color) solid;
+      flex: 1;
+      transition: width 1s;
+      margin: 10px;
+      .wrapper {
+        padding: 0 10px;
+        overflow: auto;
+      }
+    }
     .modal-window {
       display: flex;
       flex-direction: column;
@@ -26,20 +40,8 @@
       height: 280px;
       transform: translateY(100%);
     }
-    .page {
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: auto;
-      align-items: center;
-      border: 1px var(--app-color) solid;
-      width: 100%;
-      transition: width 1s;
-      margin: 10px;
-    }
     
-    .welcome {
-      padding: 20vh 10px;
+    .page.welcome {
     }
     .chat-sidebar {
       display: flex;

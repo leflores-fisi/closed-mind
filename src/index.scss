@@ -5,7 +5,7 @@
   --app-color: #615970;
   --loading-box-color: #3c3941;
 
-  --background:          #141414;
+  --background:          #111011;
   --foreground:          #c0bec2;
   --cursorColor:         #4FA160;
   --selectionBackground: #4f5c5b;
@@ -40,6 +40,7 @@
   --brightBlue:   #4a5c79;
   --purple:       #665074;
   --brightPurple: #7f5394;
+  color-scheme: dark;
 }
 .black         {color: var(--black)  !important;}
 .gray          {color: var(--gray)   !important;}
@@ -84,13 +85,23 @@
   src: local('Cascadia Mono light'), url(./assets/CascadiaMono-Light.otf) format('opentype');
 }
 
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
 body {
   background-color: var(--background);
+  height: 100%;
 }
 * {
   font-family: 'Cascadia Mono normal', consolas, monospace;
   text-rendering: optimizeLegibility;
   -webkit-text-stroke: 0.1px;
+  // -webkit-font-smoothing: antialiased !important;
+  // text-rendering: optimizeLegibility  !important;
+  // -moz-osx-font-smoothing: grayscale  !important;
+  // text-shadow: rgba(0,0,0,.01) 0 0 1px;
 }
 
 // Text selection colors
