@@ -49,7 +49,7 @@ function InvitationWindow({ params }) {
               <p className='description'>{fetchedInvitation.description}</p>
               <UserForm onSubmit={() => {
                 userSocket.emit('joining-to-chat', {
-                  room_id: fetchedInvitation.room_code,
+                  room_code: fetchedInvitation.room_code,
                   user_id: store.user_id
                 });
               }}/>

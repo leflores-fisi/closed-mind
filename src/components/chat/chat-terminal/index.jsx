@@ -63,8 +63,8 @@ function ChatTerminal() {
     // socket.io events
     userSocket.on('disconnect', () => {
 
-      if (store.room_id)  {
-        console.log('Disconnecting with room code: {room_id:', store.room_id, ', user:', store.user_id,'}');
+      if (store.room_code)  {
+        console.log('Disconnecting with room code: {room_code:', store.room_code, ', user:', store.user_id,'}');
         dispatch(disconnectFromRoom());
         dispatch(disconnectSocket({}));
       }
@@ -85,7 +85,7 @@ function ChatTerminal() {
       console.log('🐌 Removing all socket listeners');
     };
 
-  }, [store.room_id])
+  }, [store.room_code])
 
   useEffect(() => {
     inputRef.current.focus();

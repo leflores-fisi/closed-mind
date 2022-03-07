@@ -15,7 +15,7 @@ function SelMessageLine({ text, date }) {
   }
 
   useEffect(() => {
-    if (!sended && store.room_id) {
+    if (!sended && store.room_code) {
       console.log('not sended! (listening)')
       userSocket.on('message-sended', () => {
         setSended(true);

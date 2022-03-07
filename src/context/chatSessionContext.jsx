@@ -9,11 +9,11 @@ export function ChatSessionContextProvider ({ children }) {
 
   const initialAppState = {
     socket_is_connected: false,
-    username: '',  // "guest"
-    user_code: '', // "#af12"
-    user_id: '', // "guest#af12"
+    username: '',   // "myUsername"
+    user_code: '',  // "#af12"
+    user_id: '',    // "myUsername#af12"
     user_color: '', // css var name
-    room_id: '',
+    room_code: '',  // "room#10a2"
     host: '',
     created_date: undefined,
     is_open: undefined,

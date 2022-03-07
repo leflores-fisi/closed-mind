@@ -35,7 +35,7 @@ export const reducer = (state, action) => {
 
       return {
         ...state,
-        room_id: chatRoom.code,
+        room_code: chatRoom.code,
         host: chatRoom.host,
         created_date: chatRoom.created_date,
         is_open: chatRoom.is_open,
@@ -45,7 +45,7 @@ export const reducer = (state, action) => {
     case '@commands/leave':
       return {
         ...state,
-        room_id: '',
+        room_code: '',
         host: '',
         created_date: undefined,
         is_open: undefined,

@@ -9,7 +9,6 @@ import InvitationSection from './InvitationSection';
 function Sidebar() {
 
   const {store} = useAppReducer();
-  const chatSession = store;
 
   return (
     <aside className='chat-sidebar'>
@@ -31,17 +30,17 @@ function Sidebar() {
           >Disconnect</button>
         </section>
         <section className='room-information'>
-          <SidebarSection title={'📎 Room code:'}   content={chatSession.room_id}/>
-          <SidebarSection title={'👤 Host:'}       content={chatSession.host}/>
-          <SidebarSection title={'🌚 Created at:'} content={chatSession.created_date}/>
+          <SidebarSection title={'📎 Room code:'}   content={store.room_code}/>
+          <SidebarSection title={'👤 Host:'}       content={store.host}/>
+          <SidebarSection title={'🌚 Created at:'} content={store.created_date}/>
           <SidebarSection title={'👥 Users:'}      content={
-            chatSession.users ?
-              chatSession.users.map((user) => <div key={nanoid()}>- {user.user_id}</div>)
+            store.users ?
+              store.users.map((user) => <div key={nanoid()}>- {user.user_id}</div>)
             : null
           }/>
         </section>
       </section>
-      {store.room_id && store.host === store.user_id
+      {store.room_code && store.host === store.user_id
         ? <InvitationSection/>
         : null
       }

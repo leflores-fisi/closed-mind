@@ -56,7 +56,7 @@ function JoiningRoomWindow({ params }) {
               </div>
               <UserForm onSubmit={() => {
                 userSocket.emit('joining-to-chat', {
-                  room_id: fetchedRoom.code,
+                  room_code: fetchedRoom.code,
                   user_id: store.user_id
                 });
               }}/>

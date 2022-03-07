@@ -31,7 +31,7 @@ function InvitationLink() {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          room_code: store.room_id,
+          room_code: store.room_code,
           host: store.user_id,
           description: invitation_description
         })
