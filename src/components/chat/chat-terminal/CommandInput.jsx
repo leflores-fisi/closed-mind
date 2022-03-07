@@ -79,11 +79,22 @@ function CommandInput(props, ref) {
       }
     },
     'send_message': (message) => {
+      let date = new Date().toUTCString();
       if (!store.room_id) {
-        dispatch(appendMessage({date: new Date().toUTCString(), user_id: store.user_id, user_color: store.user_color, message}));
+        dispatch(appendMessage({
+          date,
+          from: '@senders/SELF',
+          text: message
+        }));
       }
       else {
+        dispatch(appendMessage({
+          date,
+          from: '@senders/SELF',
+          text: message
+        }));
         userSocket.emit('sending-message', {
+          date: date,
           user_id: store.user_id,
           user_color: store.user_color,
           message: message

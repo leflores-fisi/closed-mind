@@ -30,6 +30,14 @@
         font-family: 'Cascadia Mono light', consolas, monospace;
       }
     }
+    .user-message.self {
+      &.sended {
+        opacity: 1;
+      }
+      &:not(.sended) {
+        opacity: 0.5;
+      }
+    }
     .error-message {
       color: var(--brightRed);
     }

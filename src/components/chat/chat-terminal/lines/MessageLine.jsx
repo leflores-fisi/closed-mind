@@ -2,8 +2,6 @@ import { memo, useEffect } from 'react';
 
 function MessageLine({ username, userColor, text, date }) {
 
-  console.log('🦧', text)
-
   let d = '', hour = '', minute = '';
   if (date) {
     d      = new Date(date);
@@ -11,8 +9,8 @@ function MessageLine({ username, userColor, text, date }) {
     minute = new Intl.DateTimeFormat('en', { minute: '2-digit' }).format(d);
   }
   useEffect(() => {
-    console.log('🦧 Finished message render')
-  })
+    console.log('🦧 Rendered:', text)
+  }, [])
 
   return (
     <div className='user-message command-line'>

@@ -96,8 +96,8 @@ function main() {
 
       // else res.status(400).end(); Handle this
     })
-    socket.on('sending-message', ({user_id, user_color, message}) => {
-      let date = new Date().toUTCString();
+    socket.on('sending-message', ({user_id, user_color, date, message}) => {
+
       ChatRoom.findOneAndUpdate({code: socket.currentRoomId}, {
         $push: {
           messages: {
@@ -109,7 +109,9 @@ function main() {
         }
       }, {new: true}).then(updatedChatRoom => {
         console.log(`🐌 <${socket.currentRoomId}> ${user_id} says:  ${message}`);
-        io.to(socket.currentRoomId).emit('message-sended', {date, user_id, user_color, message})
+        // Emitting the event for all the sockets in its room, except itself
+        socket.broadcast.to(socket.currentRoomId).emit('message-received', {date, user_id, user_color, message});
+        io.to(socket.id).emit('message-sended');
       }).catch(error => console.log('Error on socket->message', error));
     })
     socket.on('banning-user', ({user_id, reason}) => {

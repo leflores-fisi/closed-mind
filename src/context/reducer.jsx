@@ -80,9 +80,9 @@ export const reducer = (state, action) => {
         ...state,
         messages: state.messages.concat({
           date: action.payload.date,
-          from: action.payload.user_id || '??',
-          text: action.payload.message,
-          color: action.payload.user_color
+          from: action.payload.from || '??',
+          text: action.payload.text,
+          color: action.payload.color
         })
       };
     case '@terminal/appendErrorMessage':

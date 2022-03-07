@@ -55,10 +55,10 @@ export const popUser = ({ user_id, server_log }) => {
     payload: { user_id, server_log }
   };
 };
-export const appendMessage = ({ date, user_id, user_color, message }) => {
+export const appendMessage = ({ date, from, color, text }) => {
   return {
     type: '@terminal/appendMessage',
-    payload: { date, user_id, user_color, message }
+    payload: { date, from, color, text }
   };
 };
 export const appendErrorMessage = ({ message }) => {

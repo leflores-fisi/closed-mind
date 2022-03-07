@@ -35,8 +35,13 @@ function ChatTerminal() {
       dispatch(connectToRoom({chatRoom: chatRoom}));
       console.log(chatRoom)
     });
-    userSocket.on('message-sended', ({date, user_id, user_color, message}) => {
-      dispatch(appendMessage({date, user_id, user_color, message}));
+    userSocket.on('message-received', ({date, user_id, user_color, message}) => {
+      dispatch(appendMessage({
+        date,
+        from: user_id,
+        color: user_color,
+        text: message
+      }));
       terminalRef.current.scrollTo({top: terminalRef.current.scrollHeight, behavior: 'smooth'});
     });
     userSocket.on('disconnected-from-room', () => {
