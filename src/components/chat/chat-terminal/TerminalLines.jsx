@@ -4,6 +4,7 @@ import CommandLine   from './lines/CommandLine';
 import MessageLine   from './lines/MessageLine';
 import ServerLogLine from './lines/ServerLogLine';
 import ErrorLine     from './lines/ErrorLine';
+import useAppReducer from '../../../hooks/useAppReducer';
 
 function TerminalLines({ lines }) {
   
@@ -13,7 +14,7 @@ function TerminalLines({ lines }) {
       <CommandLine text={'Type "/commands" to see all the commands'}/>
       {
         lines.map((DBmessage, i) => {
-          console.log('🐌 Rendering message...')
+          console.log('🐌 mapping message...')
           return (
             DBmessage.from === 'Server' ?
               <ServerLogLine

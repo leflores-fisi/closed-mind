@@ -1,12 +1,18 @@
+import { memo, useEffect } from 'react';
 
 function MessageLine({ username, userColor, text, date }) {
 
+  console.log('🦧', text)
+
   let d = '', hour = '', minute = '';
   if (date) {
-    d = new Date(date);
-    hour = new Intl.DateTimeFormat('en', { hour: '2-digit', hour12: false }).format(d);
+    d      = new Date(date);
+    hour   = new Intl.DateTimeFormat('en', { hour: '2-digit', hour12: false }).format(d);
     minute = new Intl.DateTimeFormat('en', { minute: '2-digit' }).format(d);
   }
+  useEffect(() => {
+    console.log('🦧 Finished message render')
+  })
 
   return (
     <div className='user-message command-line'>
@@ -19,4 +25,4 @@ function MessageLine({ username, userColor, text, date }) {
   )
 }
 
-export default MessageLine;
+export default memo(MessageLine);
