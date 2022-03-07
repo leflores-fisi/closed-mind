@@ -27,7 +27,7 @@
       }
       .text {
         color: var(--grey);
-        font-family: 'Cascadia Mono light', consolas, monospace;
+        font-family: var(--fontLight);
       }
     }
     .user-message.self {

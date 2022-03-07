@@ -39,8 +39,8 @@ function InvitationWindow({ params }) {
           ?
             <motion.div
               className='invitation modal-window'
-              initial={{y: '90%', opacity: 0}}
-              animate={{y: '100%', opacity: 1}}
+              initial={{y: '-20px', opacity: 0}}
+              animate={{y: '0', opacity: 1}}
               transition={{ease: [.24, .72, .74, 1.2]}}
             >
               <header className='title'>

@@ -41,7 +41,48 @@
   --purple:       #665074;
   --brightPurple: #7f5394;
   color-scheme: dark;
+
+  --fontRegular: 'Cascadia Mono normal', consolas, monospace;
+  --fontLight:   'Cascadia Mono light',  consolas, monospace;
 }
+
+@font-face {
+  font-family: 'Cascadia Mono normal';
+  font-style: normal;
+  src: local('Cascadia Mono normal'), url(./assets/CascadiaMono-Regular.otf) format('opentype');
+}
+@font-face {
+  font-family: 'Cascadia Mono light';
+  font-style: normal;
+  src: local('Cascadia Mono light'), url(./assets/CascadiaMono-Light.otf) format('opentype');
+}
+
+
+* {
+  font-family: var(--fontRegular);
+  text-rendering: optimizeLegibility;
+  -webkit-text-stroke: 0.1px;
+  // -webkit-font-smoothing: antialiased !important;
+  // text-rendering: optimizeLegibility  !important;
+  // -moz-osx-font-smoothing: grayscale  !important;
+  // text-shadow: rgba(0,0,0,.01) 0 0 1px;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
+body {
+  background-color: var(--background);
+  height: 100%;
+}
+
+// Text selection colors
+::selection, ::-moz-selection {
+  background: var(--selectionBackground);
+  color: black;
+}
+
 .black         {color: var(--black)  !important;}
 .gray          {color: var(--gray)   !important;}
 .white         {color: var(--white)  !important;}
@@ -66,53 +107,13 @@
 .bg-yellow        {background-color: var(--yellow)       !important;}
 .bg-brightYellow  {background-color: var(--brightYellow) !important;}
 .bg-green         {background-color: var(--green)        !important;}
-.bg-brightGreen   {background-color: var(--brightGreen) !important;}
+.bg-brightGreen   {background-color: var(--brightGreen)  !important;}
 .bg-cyan          {background-color: var(--cyan)         !important;}
 .bg-brightCyan    {background-color: var(--brightCyan)   !important;}
 .bg-blue          {background-color: var(--blue)         !important;}
 .bg-brightBlue    {background-color: var(--brightBlue)   !important;}
 .bg-purple        {background-color: var(--purple)       !important;}
 .bg-brightPurple  {background-color: var(--brightPurple) !important;}
-
-@font-face {
-  font-family: 'Cascadia Mono normal';
-  font-style: normal;
-  src: local('Cascadia Mono normal'), url(./assets/CascadiaMono-Regular.otf) format('opentype');
-}
-@font-face {
-  font-family: 'Cascadia Mono light';
-  font-style: normal;
-  src: local('Cascadia Mono light'), url(./assets/CascadiaMono-Light.otf) format('opentype');
-}
-
-html {
-  scroll-behavior: smooth;
-  height: 100%;
-}
-
-body {
-  background-color: var(--background);
-  height: 100%;
-}
-* {
-  font-family: 'Cascadia Mono normal', consolas, monospace;
-  text-rendering: optimizeLegibility;
-  -webkit-text-stroke: 0.1px;
-  // -webkit-font-smoothing: antialiased !important;
-  // text-rendering: optimizeLegibility  !important;
-  // -moz-osx-font-smoothing: grayscale  !important;
-  // text-shadow: rgba(0,0,0,.01) 0 0 1px;
-}
-
-// Text selection colors
-::selection, ::-moz-selection {
-  background: var(--selectionBackground);
-  color: black;
-}
-*[contenteditable="true"] {
-  display: inline-block;
-  outline: 0px solid transparent;
-}
 
 button {
   border: none;

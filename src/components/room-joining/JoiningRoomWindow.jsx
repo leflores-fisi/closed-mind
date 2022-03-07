@@ -11,10 +11,15 @@ function JoiningRoomWindow({ params }) {
   const [isValid, setIsValid] = useState(false);
   const [fetchedRoom, setFetchedRoom] = useState({});
 
+  /** Not implemented yet
+   * TODO: avoid hashes on URL
+   * use: /room/a69wf4
+  */
+
   useEffect(async () => {
 
     try {
-      const url = `http://localhost:8001/sessions/${params.room}`
+      const url = `http://localhost:8001/rooms/${params.room}`
       const response = await fetch(url);
   
       if (response.status === 200) {

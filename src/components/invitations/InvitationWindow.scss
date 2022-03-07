@@ -1,11 +1,13 @@
 .invitation-window {
-  
+  justify-content: center;
+
   .invitation {
     display: flex;
     flex-direction: column;
     align-items: center;
     border: 1px var(--app-color) solid;
     color: var(--foreground);
+    margin-bottom: 50px;
 
     padding: 20px 50px;
     

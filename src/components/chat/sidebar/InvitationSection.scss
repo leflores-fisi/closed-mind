@@ -27,7 +27,7 @@
       }
     }
     .generate-invitation-btn {
-      font-family: 'Cascadia Mono Light', consolas, monospace;
+      font-family: var(--fontLight);
       width: 100%;
       font-size: 0.85rem;
       padding: 2px 7px;
@@ -43,7 +43,7 @@
     padding: 0 0;
 
     .form-input {
-      font-family: 'Cascadia Mono Light', consolas, monospace;
+      font-family: var(--fontLight);
       outline: 1px var(--background) solid;
       background-color: var(--black);
       color: var(--gray);
@@ -81,7 +81,7 @@
     .invitation {
       display: flex;
       color: var(--gray);
-      font-family: 'Cascadia Mono Light', consolas, monospace;
+      font-family: var(--fontLight);
       font-size: 0.9rem;
       width: 100%;
       border-top-right-radius: 3px;
