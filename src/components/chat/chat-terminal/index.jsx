@@ -5,7 +5,7 @@ import { userSocket } from '../../userSocket'
 import useAppReducer  from '../../../hooks/useAppReducer';
 
 import WindowHeader  from '../../WindowHeader';
-import CommandInput  from './CommandInput';
+import CommandInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
 import './ChatTerminal.scss';
 

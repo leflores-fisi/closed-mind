@@ -1,15 +1,17 @@
 import { useState, forwardRef, useRef, useEffect } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import { userSocket } from '../../userSocket';
 import useAppReducer from '../../../hooks/useAppReducer';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '../../../context/actions';
-
+import './TerminalInput.scss';
 
 function CommandInput(props, ref) {
 
   const {store, dispatch} = useAppReducer();
-  const commands = ['/create <room-code>', '/join <room-code>', '/leave', '/ban <dummy>']
+  const commands = ['/create <room-code>', '/join <room-code>', '/leave', '/ban <dummy>'];
   const [autocomplete, setAutocomplete] = useState('');
-  const index = useRef(0)
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const focusedRow = useRef(0);
 
   useEffect(() => {
     console.log('Autocompleted')
@@ -80,6 +82,7 @@ function CommandInput(props, ref) {
     },
     'send_message': (message) => {
       let date = new Date().toUTCString();
+      // If is not connected, only appends the message
       if (!store.room_code) {
         dispatch(appendMessage({
           date,
@@ -104,14 +107,19 @@ function CommandInput(props, ref) {
   };
 
   const handleCommands = (e) => {
+    if (e.shiftKey) return;
+
+    focusedRow.current = ref.current.value.substring(0, ref.current.selectionEnd).split('\n').length;
+    let total_rows = ref.current.value.split('\n').length;
 
     switch (e.key) {
       case 'Enter':
-        let user_input = ref.current.value;
+        e.preventDefault();
+        let user_input = ref.current.value.trim();
         if (!user_input) return;
 
-        if (user_input.trim().startsWith('/')) {
-          let words   = user_input.trim().split(' ');
+        if (user_input.startsWith('/')) {
+          let words   = user_input.split(' ');
           let command = words[0];
           let args    = words.slice(1);
           
@@ -123,25 +131,31 @@ function CommandInput(props, ref) {
 
         ref.current.value = '';
         dispatch(saveLineToHistory({line: user_input}));
-        index.current = 0;
+        setHistoryIndex(0);
       break;
 
       case 'ArrowUp':
-        console.log(index.current)
-        if (store.commands_history.at(index.current-1) !== undefined) {
-          ref.current.value = store.commands_history.at(index.current-1);
-          index.current -= 1;
+        // "If exist the line on history AND (the input has multiple lines and you are on the top OR you have only one line)"
+        if ((store.commands_history.at(historyIndex-1) !== undefined)
+          && ((total_rows > 0 && ref.current.selectionStart === 0) || (total_rows === 1))) {
+            
+          ref.current.value = store.commands_history.at(historyIndex-1);
+          setHistoryIndex(prev => prev-1);
+          ref.current.setSelectionRange(ref.current.value.length, ref.current.value.length);
+          e.preventDefault();
         }
-        e.preventDefault();
-        ref.current.setSelectionRange(ref.current.value.length, ref.current.value.length);
         break;
       case 'ArrowDown':
-        console.log(index.current)
-        if (store.commands_history.at(index.current+1) !== undefined && index.current < -1) {
-          ref.current.value = store.commands_history.at(index.current+1);
-          index.current += 1;
+        // "If exist the line on history AND the index will not go out of range AND caret is in the bottom row"
+        if ((store.commands_history.at(historyIndex+1) !== undefined)
+          && (historyIndex < -1)
+          && (focusedRow.current === total_rows)) {
+
+          ref.current.value = store.commands_history.at(historyIndex+1);
+          setHistoryIndex(prev => prev+1);
+          ref.current.setSelectionRange(ref.current.value.length, ref.current.value.length);
+          e.preventDefault();
         }
-        ref.current.setSelectionRange(ref.current.value.length, ref.current.value.length);
         break;
     }
   };
@@ -162,18 +176,22 @@ function CommandInput(props, ref) {
     }
     else setAutocomplete('');
   }
+  const handleNewLine = () => {
+    focusedRow.current = ref.current.value.substring(0, ref.current.selectionEnd).split('\n').length;
+  }
 
   return (
-    <div className='command-line-input'>
+    <div className='terminal-input-container'>
       <div>{'>'}</div>
       <div className='input-wrapper'>
-        <input
-          className='command-input'
+        <TextareaAutosize
+          className='textarea-input'
           ref={ref}
+          placeholder={'Type something'}
           onChange={handleChange}
           onKeyDown={handleCommands}
-        >
-        </input>
+          onHeightChange={handleNewLine}
+        />
         <div className='autocomplete'>{autocomplete}</div>
       </div>
     </div>

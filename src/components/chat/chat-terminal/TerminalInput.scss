@@ -1,0 +1,47 @@
+.terminal-input-container {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  background-color: var(--background);
+  width: 100%;
+  padding: 0 5px 0px 10px;
+  
+  .input-wrapper {
+    padding-left: 10px;
+    width: 100%;
+    
+    .textarea-input {
+      display: flex;
+      align-items: center;
+      padding: 6px 0;
+      position: relative;
+      caret-color: var(--purple);
+      color: var(--gray);
+      width: 100%;
+      min-height: 30px;
+
+      background: none;
+      border: none;
+      resize: none;
+      &:focus {
+        outline: none;
+      }
+      &::placeholder {
+        color: var(--brightBlack);
+      }
+    }
+    .autocomplete {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      z-index: -1000;
+      color: var(--gray);
+      top: 0;
+      min-height: 30px;
+      max-height: 30px;
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+  }
+}

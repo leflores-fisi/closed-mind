@@ -9,7 +9,7 @@
   --foreground:          #c0bec2;
   --cursorColor:         #4FA160;
   --selectionBackground: #4f5c5b;
-  --black:        #181818;
+  --black:        #161616;
   --brightBlack:  #444347;
   --gray:         #767779;
   --white:        #b5b7c0;
@@ -62,6 +62,8 @@
   font-family: var(--fontRegular);
   text-rendering: optimizeLegibility;
   -webkit-text-stroke: 0.1px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--brightBlack) var(--black);
   // -webkit-font-smoothing: antialiased !important;
   // text-rendering: optimizeLegibility  !important;
   // -moz-osx-font-smoothing: grayscale  !important;
