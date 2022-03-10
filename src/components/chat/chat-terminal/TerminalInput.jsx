@@ -5,17 +5,21 @@ import useAppReducer from '../../../hooks/useAppReducer';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '../../../context/actions';
 import './TerminalInput.scss';
 
+// forward ref
 function CommandInput(props, ref) {
 
   const {store, dispatch} = useAppReducer();
-  const commands = ['/create <room-code>', '/join <room-code>', '/leave', '/ban <dummy>'];
-  const [autocomplete, setAutocomplete] = useState('');
+
+  const [isAutocompleting, setIsAutocompleting] = useState(false);
+  const [autocompletePlaceholder, setAutocompletePlaceholder] = useState('');
+  const [textToAutocomplete, setTextToAutocomplete] = useState('');
+
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
 
   useEffect(() => {
-    console.log('Autocompleted')
-  })
+    console.log('Autocompleted');
+  });
 
   const CONSOLE_ACTIONS = {
     
@@ -24,7 +28,7 @@ function CommandInput(props, ref) {
         dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
       }
       else if (args.length > 1 || args.length === 0) {
-        dispatch(appendErrorMessage({message: `Expected one argument for <room-code>, given ${args.length}`}))
+        dispatch(appendErrorMessage({message: `Expected one argument for <room-code>, given ${args.length}`}));
       }
       else {
         let room_name = args[0];
@@ -50,18 +54,16 @@ function CommandInput(props, ref) {
       else if (store.user_id !== store.host) {
         dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
       }
-      else if (args.length === 0) {
-        dispatch(appendErrorMessage({message: `Expected one or more arguments for <dummy-users>, given ${args.length}`}))
+      else if (args.length === 0 || args.length > 2) {
+        dispatch(appendErrorMessage({message: `Expected one or two arguments for <dummy-user> <reason>, given ${args.length}`}));
       }
       else {
-        let dummies = args;
-        console.log('Banning dummies:', dummies, 'from', store.users);
+        let dummyId = args[0];
+        let banReason = args[1];
 
-        for (let dummy_id of dummies) {
-          if (store.users.some(user => user.user_id === dummy_id))
-            userSocket.emit('banning-user', {user_id: dummy_id, reason: ' Im sorry...'});
-          else dispatch(appendErrorMessage({message: `This is shameful, ${dummy_id} does'nt exist`}));
-        }
+        if (store.users.some(user => user.user_id === dummyId))
+          userSocket.emit('banning-user', {user_id: dummyId, reason: banReason});
+        else dispatch(appendErrorMessage({message: `This is shameful, ${dummyId} does'nt exist`}));
       }
     },
     '/clear': () => {
@@ -106,7 +108,106 @@ function CommandInput(props, ref) {
     }
   };
 
-  const handleCommands = (e) => {
+  const handleAutocomplete = (e) => {
+    let availableCommands = [
+      {
+        key: '/commands',
+        arguments: []
+      },
+      {
+        key: '/create',
+        arguments: ['<room-name>']
+      },
+      {
+        key: '/join',
+        arguments: ['<room-code>']
+      },
+      {
+        key: '/clear',
+        arguments: []
+      },
+      {
+        key: '/leave',
+        arguments: ['<farewell?>']
+      },
+      {
+        key: '/ban',
+        arguments: ['<dummy-user>', '<reason>']
+      }
+    ];
+    let userInput = e.target.value;
+
+    
+    if (userInput.trim().startsWith('/')) {
+      
+      setIsAutocompleting(true);
+      if (userInput === '/') {
+        setAutocompletePlaceholder('/commands');
+        setTextToAutocomplete('/commands');
+        return;
+      }
+      let userCommand = userInput.split(' ')[0];
+      let userArguments = userInput.split(' ').slice(1).filter(arg => arg.length > 0)
+      console.log(userCommand, userArguments);
+
+      for (let command of availableCommands) {
+
+        if (userCommand === command.key) {
+
+          // has no arguments
+          if (userArguments.length === 0 && userInput === command.key + ' ') {
+            setAutocompletePlaceholder(command.key + ' ' + command.arguments.join(' '));
+            setTextToAutocomplete('');
+            break;
+          }
+          else {
+            if (command.key === '/ban') {
+              let availableUsers = store.users.map(user => user.user_id).filter(user_id => store.user_id !== user_id);
+              let matchedUser = '';
+
+              if (userArguments.length === 1) {
+                for (let user_id of availableUsers) {
+                  if (user_id.startsWith(userArguments[0]))
+                    matchedUser = user_id;
+                }
+                matchedUser ||= userArguments[0];
+                setAutocompletePlaceholder(command.key + ' ' + matchedUser + ' <reason>')
+                setTextToAutocomplete(command.key + ' ' + matchedUser);
+              }
+              else if (userArguments.length === 2) {
+                setAutocompletePlaceholder('')
+                setTextToAutocomplete('');
+              }
+            }
+            else {
+              setAutocompletePlaceholder(command.key);
+              setTextToAutocomplete('');
+            }
+            break;
+          }
+        }
+        else if (command.key.startsWith(userInput)) {
+          setAutocompletePlaceholder(command.key);
+          setTextToAutocomplete(command.key);
+          break;
+        }
+        else {
+          setAutocompletePlaceholder('');
+          setTextToAutocomplete('');
+        }
+      }
+    }
+    else {
+      setIsAutocompleting(false);
+      setAutocompletePlaceholder('');
+      setTextToAutocomplete('');
+    }
+  }
+  const handleNewLine = () => {
+    focusedRow.current = ref.current.value.substring(0, ref.current.selectionEnd).split('\n').length;
+  }
+
+  const handleKeys = (e) => {
     if (e.shiftKey) return;
 
     focusedRow.current = ref.current.value.substring(0, ref.current.selectionEnd).split('\n').length;
@@ -122,7 +223,7 @@ function CommandInput(props, ref) {
           let words   = user_input.split(' ');
           let command = words[0];
           let args    = words.slice(1);
-          
+
           if (!CONSOLE_ACTIONS.hasOwnProperty(command))
             dispatch(appendErrorMessage({message: `Command '${command}' not recognized, type "/commands" for a hug`}));
           else CONSOLE_ACTIONS[command](args);
@@ -132,6 +233,12 @@ function CommandInput(props, ref) {
         ref.current.value = '';
         dispatch(saveLineToHistory({line: user_input}));
         setHistoryIndex(0);
+      break;
+      case 'Tab':
+        e.preventDefault();
+        if (isAutocompleting && textToAutocomplete) {
+          ref.current.value = textToAutocomplete;
+        }
       break;
 
       case 'ArrowUp':
@@ -158,27 +265,8 @@ function CommandInput(props, ref) {
         }
         break;
     }
+    handleAutocomplete(e);
   };
-  
-  const handleChange = (e) => {
-    let inputLine = e.target.value;
-    let availableCommands = commands.concat(store.users.filter(user => user.user_id !== store.user_id).map(user => `/ban ${user.user_id}`))
-    
-    if (inputLine.startsWith('/') && availableCommands.some(command => command.startsWith(inputLine))) {
-      if (inputLine === '/') {
-        setAutocomplete('/commands');
-        return;
-      };
-      for (let command of availableCommands) {
-        if (command.startsWith(inputLine))
-          setAutocomplete(command);
-      }
-    }
-    else setAutocomplete('');
-  }
-  const handleNewLine = () => {
-    focusedRow.current = ref.current.value.substring(0, ref.current.selectionEnd).split('\n').length;
-  }
 
   return (
     <div className='terminal-input-container'>
@@ -188,11 +276,13 @@ function CommandInput(props, ref) {
           className='textarea-input'
           ref={ref}
           placeholder={'Type something'}
-          onChange={handleChange}
-          onKeyDown={handleCommands}
+          onChange={handleAutocomplete}
+          onKeyDown={handleKeys}
           onHeightChange={handleNewLine}
         />
-        <div className='autocomplete'>{autocomplete}</div>
+        <div
+          className='autocomplete'
+        >{autocompletePlaceholder}</div>
       </div>
     </div>
   )

@@ -12,11 +12,10 @@ import './ChatTerminal.scss';
 function ChatTerminal() {
 
   const inputRef    = useRef(null);
-  const terminalRef = useRef(null);
   const {store, dispatch} = useAppReducer();
 
   useEffect(() => {
-    console.log('🥶 Finished whole render')
+    console.log('🥶 Finished whole render');
   })
 
   useEffect(() => {
@@ -42,14 +41,12 @@ function ChatTerminal() {
         color: user_color,
         text: message
       }));
-      terminalRef.current.scrollTo({top: terminalRef.current.scrollHeight, behavior: 'smooth'});
     });
     userSocket.on('disconnected-from-room', () => {
       dispatch(disconnectFromRoom());
     });
     userSocket.on('error', ({message}) => {
       dispatch(appendErrorMessage({message}));
-      terminalRef.current.scrollTo({top: terminalRef.current.scrollHeight, behavior: 'smooth'});
     });
 
     // listeners to <socket.to(room).emit(...)>
@@ -97,7 +94,6 @@ function ChatTerminal() {
         if (window.getSelection().toString() === '')
           inputRef.current.focus()
       }}
-      ref={terminalRef}
     >
       <WindowHeader title='Chat'/>
       <TerminalLines lines={store.messages}/>

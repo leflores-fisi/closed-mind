@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { memo } from 'react';
+import { useEffect, memo, useRef } from 'react';
 import CommandLine   from './lines/CommandLine';
 import MessageLine   from './lines/MessageLine';
 import ServerLogLine from './lines/ServerLogLine';
@@ -8,8 +8,15 @@ import SelfMessageLine from './lines/SelfMessageLine';
 
 function TerminalLines({ lines }) {
   
+  const linesRef = useRef();
+
+  useEffect(() => {
+    console.log('Rendered all lines!');
+    linesRef.current.lastChild.scrollIntoView()
+  })
+
   return (
-    <div className='command-lines'>
+    <div className='command-lines' ref={linesRef}>
       <CommandLine text={'〰Closed mind〰 v1.0'}/>
       <CommandLine text={'Type "/commands" to see all the commands'}/>
       {

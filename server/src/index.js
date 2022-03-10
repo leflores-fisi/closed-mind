@@ -85,7 +85,7 @@ function main() {
           socket.currentUserId = user_id;
           console.log(`🐌 <${joinedChatRoom.code}> ${user_id} joined`);
           console.log('🙂 Joined');
-          console.timeEnd('fetching')
+          console.timeEnd('fetching');
         }
         else {
           socket.emit('error', {
@@ -115,12 +115,12 @@ function main() {
       }).catch(error => console.log('Error on socket->message', error));
     })
     socket.on('banning-user', ({user_id, reason}) => {
-      let date = new Date().toUTCString()
+      let date = new Date().toUTCString();
       let server_log = {
         from: 'Server',
-        text: `${user_id} has been banned, Reason: ${reason}`,
+        text: `Goodbye! ${user_id} has been banned${reason ? ` Reason: ${reason}` : ''}`,
         date: date
-      }
+      };
       ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
         $pull: {
           users: {user_id: user_id}
@@ -128,24 +128,27 @@ function main() {
         $push: {
           messages: server_log
         }
-      }, {new: true}).then(updatedChatRoom => io.to(updatedChatRoom.code).fetchSockets())
-      .then(roomSockets => {
-        for (let userSocket of roomSockets) {
-          if (userSocket.currentUserId === user_id) {
-            io.to(socket.currentRoomCode).emit('user-disconnected', {user_id, server_log});
-            userSocket.emit('disconnected-from-room', user_id);
-            userSocket.leave(socket.currentRoomCode);
-            console.log(`🐌 <${socket.currentRoomCode}> ${user_id} has been banned (->banning)`);
-            userSocket.currentRoomCode = '';
+      }, {new: true})
+        .then(updatedChatRoom => {
+          return io.to(updatedChatRoom.code).fetchSockets()
+        })
+        .then(roomSockets => {
+          for (let userSocket of roomSockets) {
+            if (userSocket.currentUserId === user_id) {
+              io.to(socket.currentRoomCode).emit('user-disconnected', {user_id, server_log});
+              userSocket.emit('disconnected-from-room', user_id);
+              userSocket.leave(socket.currentRoomCode);
+              console.log(`🐌 <${socket.currentRoomCode}> ${user_id} has been banned (->banning)`);
+              userSocket.currentRoomCode = '';
+            }
           }
-        }
-      });
+        });
     })
     socket.on('leaving-from-chat', ({room_code, user_id, farewell}) => {
       let date = new Date().toUTCString()
       let server_log = {
         from: 'Server',
-        text: `${user_id} has disconnected` + farewell ? `: "${farewell}"` : '',
+        text: `${user_id} has disconnected` + (farewell ? ` saying: ${farewell}` : ''),
         date: date
       }
       ChatRoom.findOneAndUpdate({code: room_code}, {
@@ -196,6 +199,9 @@ function main() {
       }
       socket.disconnect();
     })
+    io.engine.on('connection_error', (err) => {
+      console.log('ENGINE ERROR', err)
+    })
   })
 
   // No path found
@@ -211,5 +217,25 @@ function main() {
   httpServer.listen(PORT, () => {
     console.log('Server running on port', PORT);
   });
+  let wasCleanedUp = false;
+
+  const runBeforeExiting = (fun) => {
+    const exitSignals = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException'];
+    for (const signal of exitSignals) {
+      process.on(signal, async () => {
+        if (!wasCleanedUp) {
+          await fun();
+          wasCleanedUp = true;
+        }
+        process.exit();
+      });
+    }
+  };
+
+  // And then before starting your server...
+  runBeforeExiting(() => {
+    console.log('clean my application, close the DB connection, etc');
+  });
+
 }
 if (require.main === module) main();
