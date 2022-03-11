@@ -55,7 +55,7 @@ function main() {
       newChatRoom.save().then(createdChatRoom => {
         socket.join(room_code);
         socket.currentRoomCode = room_code;
-        socket.currentUserId = host;
+        socket.currentUserId = host.user_id;
         console.log('\n🗣 New room created:', room_code)
         socket.emit('room-created', {createdChatRoom})
       })

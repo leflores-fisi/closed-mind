@@ -58,12 +58,29 @@
         }
         .content {
           color: var(--gray);
-          .censored {
-            outline: 1px black solid;
+
+          .room-code-box {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: fit-content;
+            border: 1px black solid;
             background-color: var(--black);
-            span {
-              cursor: default;
-              opacity: 0;
+
+            .room-code {
+              padding: 2px 10px 2px 5px;
+              transition: opacity 0.05s;
+              color: var(--gray);
+              background-color: var(--background);
+              border: none;
+
+              &:focus {
+                outline: none;
+              }
+              &.censored {
+                cursor: default;
+                opacity: 0;
+              }
             }
           }
         }
