@@ -34,7 +34,7 @@ function ChatTerminal() {
       dispatch(connectToRoom({chatRoom: chatRoom}));
       console.log(chatRoom)
     });
-    userSocket.on('message-received', ({date, user_id, user_color, message}) => {
+    userSocket.on('message-received', ({ date, user_id, user_color, message }) => {
       dispatch(appendMessage({
         date,
         from: user_id,
@@ -45,16 +45,16 @@ function ChatTerminal() {
     userSocket.on('disconnected-from-room', () => {
       dispatch(disconnectFromRoom());
     });
-    userSocket.on('error', ({message}) => {
-      dispatch(appendErrorMessage({message}));
+    userSocket.on('error', ({ message }) => {
+      dispatch(appendErrorMessage({ message }));
     });
 
     // listeners to <socket.to(room).emit(...)>
-    userSocket.on('user-connected', ({date, user_id}) => {
-      dispatch(appendUser({date: date, user_id: user_id}));
+    userSocket.on('user-connected', ({user, server_log}) => {
+      dispatch(appendUser({ user, server_log }));
     });
     userSocket.on('user-disconnected', ({user_id, server_log}) => {
-      dispatch(popUser({user_id, server_log}));
+      dispatch(popUser({ user_id, server_log }));
     });
 
     // socket.io events

@@ -28,16 +28,16 @@
   --purple:       #584a79;
   --brightPurple: #6c5d8f;
 
-  --red:          #6A3F41;
+  --red:          #804B4D;
   --brightRed:    #a06264;
   --yellow:       #ad9144;
-  --brightYellow: #b9af58;
-  --green:        #3D663A;
-  --brightGreen:  #569450;
-  --cyan:         #325346;
-  --brightCyan:   #457763;
+  --brightYellow: #a49c55;
+  --green:        #4E684C;
+  --brightGreen:  #5d8c58;
+  --cyan:         #3d6656;
+  --brightCyan:   #54826f;
   --blue:         #404864;
-  --brightBlue:   #4a5c79;
+  --brightBlue:   #587097;
   --purple:       #665074;
   --brightPurple: #7f5394;
   color-scheme: dark;
@@ -85,9 +85,10 @@ body {
   color: black;
 }
 
-.black         {color: var(--black)  !important;}
-.gray          {color: var(--gray)   !important;}
-.white         {color: var(--white)  !important;}
+.default       {color: var(--app-color)    !important}
+.black         {color: var(--black)        !important;}
+.gray          {color: var(--gray)         !important;}
+.white         {color: var(--white)        !important;}
 .red           {color: var(--red)          !important;}
 .brightRed     {color: var(--brightRed)    !important;}
 .yellow        {color: var(--yellow)       !important;}

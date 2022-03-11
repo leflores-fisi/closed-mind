@@ -58,6 +58,14 @@
         }
         .content {
           color: var(--gray);
+          .censored {
+            outline: 1px black solid;
+            background-color: var(--black);
+            span {
+              cursor: default;
+              opacity: 0;
+            }
+          }
         }
       }
     }

@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 // The schemas are to application level
 const chatRoomSchema = new mongoose.Schema({
   code: String,
-  host: String,
+  host: { user_id: String, user_color: String },
   created_date: String,
-  is_open: Boolean,
-  users: [{ user_id: String, color: String }],
+  only_invitations: Boolean,
+  users: [{ user_id: String, user_color: String }],
   messages: [new mongoose.Schema({
     from: String,
     text: String,

@@ -35,7 +35,7 @@ router.put('/rooms/:id', (req, res, next) => {
   const room = req.body;
 
   const newRoomInfo = {
-    is_open: room.is_open,
+    only_invitations: room.only_invitations,
     users: room.users,
     messages: room.messages
   };
@@ -69,7 +69,7 @@ router.post('/rooms', (req, res, next) => {
       code: room.code,
       host: room.host,
       created_date: new Date(),
-      is_open: true,
+      only_invitations: room.only_invitations ?? undefined,
       users: [{ username: room.host }],
       messages: []
     });

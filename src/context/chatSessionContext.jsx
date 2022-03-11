@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from 'react'
+import { createContext, useReducer } from 'react'
 import { reducer } from './reducer';
 
 export const chatSessionContext = createContext();
@@ -12,20 +12,15 @@ export function ChatSessionContextProvider ({ children }) {
     username: '',   // "myUsername"
     user_code: '',  // "#af12"
     user_id: '',    // "myUsername#af12"
-    user_color: '', // css var name
+    user_color: 'default', // css var name
     room_code: '',  // "room#10a2"
     host: '',
     created_date: undefined,
-    is_open: undefined,
+    only_invitations: undefined,
     users: [],
     messages: [],
     commands_history: []
   };
-
-
-  useEffect(() => {
-    //console.log("Changing state:", store)
-  })
 
   const [store, dispatch] = useReducer(reducer, initialAppState);
 

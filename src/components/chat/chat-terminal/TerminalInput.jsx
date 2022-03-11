@@ -32,7 +32,13 @@ function CommandInput(props, ref) {
       }
       else {
         let room_name = args[0];
-        userSocket.emit('creating-chat-room', {room_name: room_name, host: store.user_id});
+        userSocket.emit('creating-chat-room', {
+          room_name: room_name,
+          host: {
+            user_id: store.user_id,
+            user_color: store.user_color
+          }
+        });
       }
     },
     '/join': (args) => {
@@ -44,14 +50,20 @@ function CommandInput(props, ref) {
       }
       else  {
         let room_code = args[0];
-        userSocket.emit('joining-to-chat', {room_code, user_id: store.user_id});
+        userSocket.emit('joining-to-chat', {
+          room_code,
+          user: {
+            user_id: store.user_id,
+            user_color: store.user_color
+          }
+        });
       }
     },
     '/ban': (args) => {
       if (!store.room_code) {
         dispatch(appendErrorMessage({message: 'There are no dummies near, use join to a room first'}));
       }
-      else if (store.user_id !== store.host) {
+      else if (store.user_id !== store.host.user_id) {
         dispatch(appendErrorMessage({message: 'Only the host can use the ban hammer!'}));
       }
       else if (args.length === 0 || args.length > 2) {

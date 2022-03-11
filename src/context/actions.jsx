@@ -43,10 +43,10 @@ export const clearTerminal = () => {
   };
 };
 
-export const appendUser = ({ date, user_id }) => {
+export const appendUser = ({ user, server_log }) => {
   return {
     type: '@terminal/appendUser',
-    payload: { date, user_id }
+    payload: { user, server_log }
   };
 };
 export const popUser = ({ user_id, server_log }) => {

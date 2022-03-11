@@ -1,7 +1,7 @@
 
 function SidebarSection({title, content}) {
   return (
-    <section className='sidebar-section code'>
+    <section className='sidebar-section'>
       <div className='title'>{title}</div>
       <div className='content'>
         {content}

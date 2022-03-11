@@ -45,10 +45,10 @@ function main() {
       const newChatRoom = new ChatRoom({
         host: host,
         code: room_code,
-        is_open: true,
+        only_invitations: false,
         created_date: new Date().toUTCString(),
         users: [
-          {user_id: host}
+          {user_id: host.user_id, user_color: host.user_color}
         ],
         messages: []
       });
@@ -60,19 +60,23 @@ function main() {
         socket.emit('room-created', {createdChatRoom})
       })
     })
-    socket.on('joining-to-chat', ({room_code, user_id}) => {
+    socket.on('joining-to-chat', ({ room_code, user }) => {
 
       console.log('😖 Fetching room to database');
       console.time('fetching')
       let date = new Date().toUTCString();
+      let server_log = {
+        from: 'Server',
+        text: `${user.user_id} has joined to the chat`,
+        date: date
+      }
       ChatRoom.findOneAndUpdate({code: room_code}, {
         $push: {
-          users: {user_id: user_id},
-          messages: {
-            from: 'Server',
-            text: `${user_id} has joined to the chat`,
-            date: date
-          }
+          users: {
+            user_id: user.user_id,
+            user_color: user.user_color
+          },
+          messages: server_log
         }
       }, {new: true}).then(joinedChatRoom => {
         if (joinedChatRoom !== null) {
@@ -80,10 +84,10 @@ function main() {
           console.timeLog('fetching')
           socket.join(room_code);
           socket.emit('joined', joinedChatRoom);
-          socket.to(room_code).emit('user-connected', {date, user_id});
+          socket.to(room_code).emit('user-connected', {user, server_log});
           socket.currentRoomCode = room_code;
-          socket.currentUserId = user_id;
-          console.log(`🐌 <${joinedChatRoom.code}> ${user_id} joined`);
+          socket.currentUserId = user.user_id;
+          console.log(`🐌 <${joinedChatRoom.code}> ${user.user_id} joined`);
           console.log('🙂 Joined');
           console.timeEnd('fetching');
         }
@@ -219,23 +223,23 @@ function main() {
   });
   let wasCleanedUp = false;
 
-  const runBeforeExiting = (fun) => {
-    const exitSignals = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException'];
-    for (const signal of exitSignals) {
-      process.on(signal, async () => {
-        if (!wasCleanedUp) {
-          await fun();
-          wasCleanedUp = true;
-        }
-        process.exit();
-      });
-    }
-  };
+  // const runBeforeExiting = (fun) => {
+  //   const exitSignals = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException'];
+  //   for (const signal of exitSignals) {
+  //     process.on(signal, async () => {
+  //       if (!wasCleanedUp) {
+  //         await fun();
+  //         wasCleanedUp = true;
+  //       }
+  //       process.exit();
+  //     });
+  //   }
+  // };
 
-  // And then before starting your server...
-  runBeforeExiting(() => {
-    console.log('clean my application, close the DB connection, etc');
-  });
+  // // And then before starting your server...
+  // runBeforeExiting(() => {
+  //   console.log('clean my application, close the DB connection, etc');
+  // });
 
 }
 if (require.main === module) main();

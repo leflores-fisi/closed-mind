@@ -16,7 +16,7 @@ function MessageLine({ username, userColor, text, date }) {
     <div className='user-message command-line'>
       <div>
         <time className='date'>{date ? `${hour.replace(/ PM| AM/, '')}:${minute}` : '??:??'}</time>
-        <span className={`from ${userColor}`}>{`[${username || '???'}]:`}</span>
+        <span className={`from ${userColor || 'default'}`}>{`[${username || '???'}]:`}</span>
         <span className='text'>{text}</span>
       </div>
     </div>

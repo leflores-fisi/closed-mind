@@ -31,14 +31,14 @@ export const reducer = (state, action) => {
       };
 
     case '@commands/connect':
-      let {chatRoom} = action.payload;
+      let { chatRoom } = action.payload;
 
       return {
         ...state,
         room_code: chatRoom.code,
         host: chatRoom.host,
         created_date: chatRoom.created_date,
-        is_open: chatRoom.is_open,
+        only_invitations: chatRoom.only_invitations,
         users: chatRoom.users,
         messages: chatRoom.messages
       };
@@ -46,9 +46,9 @@ export const reducer = (state, action) => {
       return {
         ...state,
         room_code: '',
-        host: '',
+        host: {},
         created_date: undefined,
-        is_open: undefined,
+        only_invitations: undefined,
         users: [],
         messages: []
       };
@@ -67,12 +67,8 @@ export const reducer = (state, action) => {
     case '@terminal/appendUser': 
       return {
         ...state,
-        users: state.users.concat({user_id: action.payload.user_id}),
-        messages: state.messages.concat({
-          from: 'Server',
-          text: `${action.payload.user_id} has joined`,
-          date: action.payload.date
-        })
+        users: state.users.concat(action.payload.user),
+        messages: state.messages.concat(action.payload.server_log)
       };
     case '@terminal/appendMessage':
 
