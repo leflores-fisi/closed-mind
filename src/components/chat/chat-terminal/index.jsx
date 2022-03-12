@@ -32,7 +32,6 @@ function ChatTerminal() {
     });
     userSocket.on('joined', (chatRoom) => {
       dispatch(connectToRoom({chatRoom: chatRoom}));
-      console.log(chatRoom)
     });
     userSocket.on('message-received', ({ date, user_id, user_color, message }) => {
       dispatch(appendMessage({
@@ -48,6 +47,10 @@ function ChatTerminal() {
     userSocket.on('error', ({ message }) => {
       dispatch(appendErrorMessage({ message }));
     });
+    userSocket.on('pong', ({timestamp, server_log}) => {
+      const ping_log = {...server_log, text: server_log.text.concat(`${(Date.now() - timestamp)} ms`)}
+      dispatch(appendMessage(ping_log))
+    })
 
     // listeners to <socket.to(room).emit(...)>
     userSocket.on('user-connected', ({user, server_log}) => {

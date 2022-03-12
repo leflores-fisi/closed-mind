@@ -183,6 +183,14 @@ function main() {
 
       }).catch(error => console.log('Error on socket->leave', error));
     })
+    socket.on('ping', (timestamp) => {
+      let server_log = {
+        from: 'Server',
+        text: `Ping: `,
+        date: Date.now()
+      }
+      socket.emit('pong', {timestamp, server_log});
+    })
 
     socket.on('disconnect', () => {
       console.log('\n🐢 [Socket disconnection]');
@@ -231,7 +239,7 @@ function main() {
   httpServer.listen(PORT, () => {
     console.log('Server running on port', PORT);
   });
-  let wasCleanedUp = false;
+  // let wasCleanedUp = false;
 
   // const runBeforeExiting = (fun) => {
   //   const exitSignals = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException'];

@@ -60,6 +60,19 @@ function CommandInput(props, ref) {
         });
       }
     },
+    '/leave': (args) => {
+      if (!store.room_code) {
+        dispatch(appendErrorMessage({message: 'You should be on a room first'}));
+      }
+      else {
+        let farewell = args.join(' ');
+        userSocket.emit('leaving-from-chat', {
+          room_code: store.room_code,
+          user_id: store.user_id,
+          farewell
+        });
+      }
+    },
     '/ban': (args) => {
       if (!store.room_code) {
         dispatch(appendErrorMessage({message: 'There are no dummies near, use join to a room first'}));
@@ -82,18 +95,8 @@ function CommandInput(props, ref) {
     '/clear': () => {
       dispatch(clearTerminal());
     },
-    '/leave': (args) => {
-      if (!store.room_code) {
-        dispatch(appendErrorMessage({message: 'You should be on a room first'}));
-      }
-      else {
-        let farewell = args.join(' ');
-        userSocket.emit('leaving-from-chat', {
-          room_code: store.room_code,
-          user_id: store.user_id,
-          farewell
-        });
-      }
+    '/ping': () => {
+      userSocket.emit('ping', Date.now());
     },
     'send_message': (message) => {
       let date = new Date().toUTCString();
@@ -136,16 +139,20 @@ function CommandInput(props, ref) {
         arguments: ['<room-code>']
       },
       {
-        key: '/clear',
-        arguments: []
-      },
-      {
         key: '/leave',
         arguments: ['<farewell?>']
       },
       {
         key: '/ban',
         arguments: ['<dummy-user>', '<reason>']
+      },
+      {
+        key: '/clear',
+        arguments: []
+      },
+      {
+        key: '/ping',
+        arguments: []
       }
     ];
     let userInput = e.target.value;
