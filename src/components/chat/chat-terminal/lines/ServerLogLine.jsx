@@ -1,20 +1,21 @@
-import React from 'react'
+import useChatConfig from '../../../../hooks/useChatConfig';
+import useDateFormatter from '../../../../hooks/useDateFormatter';
 
 function ServerLogLine({date, log}) {
-
-  let d = new Date(date);
   
-  let hour = new Intl.DateTimeFormat('en', { hour: '2-digit', hour12: false }).format(d);
-  let minute = new Intl.DateTimeFormat('en', { minute: '2-digit' }).format(d);
+  const {serverLogVisible} = useChatConfig();
+  const formattedDate = useDateFormatter(date);
   
   return (
-    <div className='server-log command-line'>
-      <div>
-        <time className='date'>{`${hour.replace(/ PM| AM/, '')}:${minute}`}</time>
-        <span className='from'>{`[Server]:`}</span>
-        <span className='text'>{log}</span>
+    serverLogVisible ?
+      <div className='command-line server-log'>
+        <div>
+          <time className='date'>{formattedDate}</time>
+          <span className='from'>{`[Server]:`}</span>
+          <span className='text'>{log}</span>
+        </div>
       </div>
-    </div>
+    : (null)
   )
 }
 

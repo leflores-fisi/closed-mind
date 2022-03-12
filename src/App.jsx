@@ -25,9 +25,7 @@ function App() {
       <div className='app-content'>
       {
         store.socket_is_connected
-          ? < >
-              <Chat/>
-            </>
+          ? <Chat/>
 
           : < >
               <Route path='/invite/:code' component={InvitationWindow}/>

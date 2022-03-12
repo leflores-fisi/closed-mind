@@ -1,26 +1,30 @@
-import { memo, useEffect } from 'react';
+import useChatConfig from '../../../../hooks/useChatConfig';
+import useDateFormatter from '../../../../hooks/useDateFormatter';
 
 function MessageLine({ username, userColor, text, date }) {
 
-  let d = '', hour = '', minute = '';
-  if (date) {
-    d      = new Date(date);
-    hour   = new Intl.DateTimeFormat('en', { hour: '2-digit', hour12: false }).format(d);
-    minute = new Intl.DateTimeFormat('en', { minute: '2-digit' }).format(d);
-  }
-  useEffect(() => {
-    console.log('🦧 Rendered:', text)
-  }, [])
+  const {userCodeVisible} = useChatConfig();
+  const formattedDate = useDateFormatter(date);
 
   return (
-    <div className='user-message command-line'>
+    <div className='command-line user-message'>
       <div>
-        <time className='date'>{date ? `${hour.replace(/ PM| AM/, '')}:${minute}` : '??:??'}</time>
-        <span className={`from ${userColor || 'default'}`}>{`[${username || '???'}]:`}</span>
-        <span className='text'>{text}</span>
+        <time className='date'>{formattedDate}</time>
+        {/* <span className={`from ${userColor || 'default'}`}>{`${username || '???'}:`}</span> */}
+
+        <span className={userColor}>
+          {username.substring(0, username.indexOf('#'))}
+        </span>
+        {
+          userCodeVisible && 
+            <span className={userColor} style={{opacity: 0.5}}>
+              {username.substring(username.indexOf('#'))}
+            </span>
+        }
+        <span className='text'>{' ' + text}</span>
       </div>
     </div>
   )
 }
 
-export default memo(MessageLine);
+export default MessageLine;

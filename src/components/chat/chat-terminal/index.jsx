@@ -9,14 +9,22 @@ import WindowHeader  from '../../WindowHeader';
 import CommandInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
 import './ChatTerminal.scss';
+import ChatOptions from './ChatOptions';
 
 function ChatTerminal() {
 
   const {store, dispatch} = useAppReducer();
+
   const inputRef = useRef(null);
+
+  const handleAutofocus = () => {
+    if (window.getSelection().toString() === '')
+      inputRef.current.focus()
+  }
 
   useEffect(() => {
     console.log('🥶 Finished whole render');
+    inputRef.current.focus();
   }, [])
 
   useEffect(() => {
@@ -88,18 +96,10 @@ function ChatTerminal() {
 
   }, [store.room_code])
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, []);
-
   return (
-    <div className='chat-terminal'
-      onMouseUp={() => {
-        if (window.getSelection().toString() === '')
-          inputRef.current.focus()
-      }}
-    >
+    <div className='chat-terminal' onMouseUp={handleAutofocus}>
       <WindowHeader title='Chat'/>
+      <ChatOptions/>
       <TerminalLines lines={store.messages}/>
       <CommandInput ref={inputRef}/>
     </div>

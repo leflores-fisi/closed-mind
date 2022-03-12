@@ -37,7 +37,7 @@ function RoomInformation() {
               <span className={user.user_color}>
                 {user.user_id.substring(0, user.user_id.indexOf('#'))}
               </span>
-              <span className={user.user_color} style={{opacity: 0.6}}>
+              <span className={user.user_color} style={{opacity: 0.4}}>
                 {user.user_id.substring(user.user_id.indexOf('#'))}
               </span>
             </div>

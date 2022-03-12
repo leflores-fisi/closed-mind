@@ -87,7 +87,7 @@ export const reducer = (state, action) => {
         ...state,
         messages: state.messages.concat({
           date: undefined,
-          from: 'ErrorHandler',
+          from: '@senders/ERROR_HANDLER',
           text: action.payload.message
         })
       };

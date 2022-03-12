@@ -1,6 +1,25 @@
 
 .chat-terminal {
-  
+  position: relative;
+
+  .chat-options {
+    display: flex;
+    position: fixed;
+    top: 10px;
+    right: 20px;
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      background: none;
+      color: var(--background);
+      font-size: 0.9rem;
+      height: 15px;
+      border-radius: 0;
+    }
+  }
   .command-lines {
     padding: 0 5px;
 

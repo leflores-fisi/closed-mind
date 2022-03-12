@@ -1,10 +1,14 @@
+import { useEffect, memo } from 'react';
 
-function CommandLine({ text }) {
+function CommandLine({ children }) {
+
+  useEffect(() => {
+    console.log('🦧 Rendered last command line');
+  }, [])
+
   return (
-    <div className='command-line'>
-      <div className='text'>{text}</div>
-    </div>
+    <>{children}</>
   )
 }
 
-export default CommandLine
+export default memo(CommandLine);

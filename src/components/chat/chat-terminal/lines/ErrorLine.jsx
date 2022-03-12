@@ -2,7 +2,7 @@
 function ErrorLine({ text }) {
 
   return (
-    <div className='error-message command-line'>
+    <div className='command-line error-message'>
       <div>{text}</div>
     </div>
   )

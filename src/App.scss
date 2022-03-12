@@ -70,9 +70,10 @@
   background-color: var(--app-color);
   margin-bottom: 10px;
   width: 100%;
-  height: 17px;
+  height: 18px;
   
   .window-title {
+    display: flex;
     padding: 0 10px;
     align-items: center;
     font-size: 0.9rem;
