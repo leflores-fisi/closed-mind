@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { connectToRoom, disconnectFromRoom, appendMessage, appendUser, popUser, disconnectSocket, appendErrorMessage } from '../../../context/actions';
+import { connectToRoom, disconnectFromRoom, appendMessage,
+         appendUser, popUser, disconnectSocket, appendErrorMessage } from '../../../context/actions';
 
 import { userSocket } from '../../userSocket'
 import useAppReducer  from '../../../hooks/useAppReducer';
@@ -11,12 +12,12 @@ import './ChatTerminal.scss';
 
 function ChatTerminal() {
 
-  const inputRef    = useRef(null);
   const {store, dispatch} = useAppReducer();
+  const inputRef = useRef(null);
 
   useEffect(() => {
     console.log('🥶 Finished whole render');
-  })
+  }, [])
 
   useEffect(() => {
 

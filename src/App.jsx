@@ -6,15 +6,16 @@ import InvitationWindow from './components/invitations/InvitationWindow';
 import Chat             from './components/chat/Chat'
 import useAppReducer    from './hooks/useAppReducer';
 import './App.scss';
-import JoiningRoomWindow from './components/room-joining/JoiningRoomWindow';
 
 function App() {
   const {store} = useAppReducer();
   const [location, setLocation] = useLocation();
-  const routes = ['/room', '/invite'];
+  const routes = ['/invite'];
   
   useEffect(() => {
-    if (!routes.some(route => location.startsWith(route))) {
+    console.log(':0')
+    console.log(location, location.substring(0, location.substring(1).indexOf('/') + 1))
+    if (!routes.some(route => route === location.substring(0, location.substring(1).indexOf('/') + 1))) {
       setLocation('/')
     }
   }, [])
@@ -25,14 +26,11 @@ function App() {
       {
         store.socket_is_connected
           ? < >
-              <Route path='/invite/:code' component={Chat}/>
-              <Route path='/room/:room'      component={Chat}/>
-              <Route path='/'              component={Chat}/>
+              <Chat/>
             </>
 
           : < >
               <Route path='/invite/:code' component={InvitationWindow}/>
-              <Route path='/room/:room'    component={JoiningRoomWindow}/>
               <Route path='/'              component={WelcomeWindow}/>
             </>
       }
