@@ -55,7 +55,8 @@ function CommandInput(props, ref) {
           user: {
             user_id: store.user_id,
             user_color: store.user_color
-          }
+          },
+          from_invitation: false
         });
       }
     },

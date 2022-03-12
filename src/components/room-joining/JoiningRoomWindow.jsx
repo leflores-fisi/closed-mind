@@ -13,7 +13,7 @@ function JoiningRoomWindow({ params }) {
 
   /** Not implemented yet
    * TODO: avoid hashes on URL
-   * use: /room/a69wf4
+   * use: /room-a69wf4
   */
 
   useEffect(async () => {
@@ -65,7 +65,8 @@ function JoiningRoomWindow({ params }) {
                   user: {
                     user_id: store.user_id,
                     user_color: store.user_color
-                  }
+                  },
+                  from_invitation: false
                 });
               }}/>
             </motion.div>

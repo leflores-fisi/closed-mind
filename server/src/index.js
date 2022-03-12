@@ -9,7 +9,7 @@ const cors       = require('cors');
 const ChatRoom   = require('./models/ChatRoom');
 const apiRoutes  = require('./routes/api.routes');
 
-const generateHashCode = require('./helpers/randomHashCode');
+const generateRoomCode = require('./helpers/generateRoomCode');
 
 const PORT = Number(process.env.PORT);
 
@@ -28,7 +28,7 @@ function main() {
   app.use(express.static(__dirname+'/../public/'));
 
   app.use((req, res, next) => {
-    console.log(`Request '${req.method}' received at ${req.url} for ${req.path}`);
+    console.log(`Request '${req.method}' received at ${req.url}`);
     next();
   });
   app.use(apiRoutes);
@@ -40,12 +40,12 @@ function main() {
 
     socket.on('creating-chat-room', ({room_name, host}) => {
 
-      const room_code = room_name + generateHashCode();
-      
+      const room_code = room_name + generateRoomCode();
+
       const newChatRoom = new ChatRoom({
         host: host,
         code: room_code,
-        only_invitations: false,
+        invitations_only: false,
         created_date: new Date().toUTCString(),
         users: [
           {user_id: host.user_id, user_color: host.user_color}
@@ -60,44 +60,55 @@ function main() {
         socket.emit('room-created', {createdChatRoom})
       })
     })
-    socket.on('joining-to-chat', ({ room_code, user }) => {
+    socket.on('joining-to-chat', ({ room_code, user, from_invitation }) => {
 
       console.log('😖 Fetching room to database');
-      console.time('fetching')
-      let date = new Date().toUTCString();
-      let server_log = {
-        from: 'Server',
-        text: `${user.user_id} has joined to the chat`,
-        date: date
-      }
-      ChatRoom.findOneAndUpdate({code: room_code}, {
-        $push: {
-          users: {
-            user_id: user.user_id,
-            user_color: user.user_color
-          },
-          messages: server_log
+      console.time('fetching');
+
+      ChatRoom.findOne({code: room_code}).then((room) => {
+        if (!room) {
+          socket.emit('error', {
+            message: 'Room not founded'
+          });
+          console.log('😐 Not founded');
+          console.timeEnd('fetching');
         }
-      }, {new: true}).then(joinedChatRoom => {
-        if (joinedChatRoom !== null) {
-          console.log('😐 Fetched');
-          console.timeLog('fetching')
-          socket.join(room_code);
-          socket.emit('joined', joinedChatRoom);
-          socket.to(room_code).emit('user-connected', {user, server_log});
-          socket.currentRoomCode = room_code;
-          socket.currentUserId = user.user_id;
-          console.log(`🐌 <${joinedChatRoom.code}> ${user.user_id} joined`);
-          console.log('🙂 Joined');
+        else if (room.invitations_only && !from_invitation) {
+          socket.emit('error', {
+            message: 'Room is invitations only!'
+          });
+          console.log('😳 Rejected');
           console.timeEnd('fetching');
         }
         else {
-          socket.emit('error', {
-            message: 'Room not founded'
-          })
+          let date = new Date().toUTCString();
+          let server_log = {
+            from: 'Server',
+            text: `${user.user_id} has joined to the chat`,
+            date: date
+          }
+          ChatRoom.findOneAndUpdate({code: room_code}, {
+            $push: {
+              users: {
+                user_id: user.user_id,
+                user_color: user.user_color
+              },
+              messages: server_log
+            }
+          }, {new: true}).then(joinedChatRoom => {
+            console.log('😐 Fetched');
+            console.timeLog('fetching')
+            socket.join(room_code);
+            socket.emit('joined', joinedChatRoom);
+            socket.to(room_code).emit('user-connected', {user, server_log});
+            socket.currentRoomCode = room_code;
+            socket.currentUserId = user.user_id;
+            console.log(`🐌 <${joinedChatRoom.code}> ${user.user_id} joined`);
+            console.log('🙂 Joined');
+            console.timeEnd('fetching');
+          }).catch(error => console.error('Error on socket->join:', error));
         }
-      }).catch(error => console.error('Error on socket->join:', error));
-
+      })
       // else res.status(400).end(); Handle this
     })
     socket.on('sending-message', ({user_id, user_color, date, message}) => {
@@ -214,8 +225,7 @@ function main() {
   });
   app.use((error, req, res, next) => {
     console.log('Final middleware reached:', error.name);
-    if (error.name === 'SyntaxError') res.status(404).end();
-    else res.status(500).end();
+    res.status(400).send({error: error.name}).end();
   });
 
   httpServer.listen(PORT, () => {

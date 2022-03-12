@@ -15,6 +15,7 @@ function RoomInformation() {
           <button onClick={() => {setRoomCodeVisible(prev => !prev)}}>👁</button>
           <input
             className={`room-code ${roomCodeVisible ? '' : 'censored'}`}
+            readOnly
             value={store.room_code}/>
         </div>
       }/>

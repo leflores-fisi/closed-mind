@@ -1,7 +1,6 @@
 .sidebar-invitation {
 
   display: flex;
-  transition: all 2s;
 
   .no-invitation-section {
     display: flex;
@@ -42,7 +41,7 @@
     align-items: center;
     padding: 0 0;
 
-    .form-input {
+    .invitation-message-input {
       font-family: var(--fontLight);
       outline: 1px var(--background) solid;
       background-color: var(--black);
@@ -51,13 +50,56 @@
       width: 100%;
       height: 70px;
       padding: 5px;
-      margin-bottom: 10px;
       resize: none;
       border: none;
       transition: outline 0.1s;
-
+      
       &:focus {
         outline: 1px black solid;
+      }
+    }
+    .only-invitations-check {
+      display: grid;
+      grid-template-columns: 1em auto;
+      gap: 0.7em;
+      
+      width: 100%;
+      color: var(--gray);
+      font-size: 0.85rem;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      
+
+      input[type="checkbox"] {
+        color: var(--app-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 0.1em currentColor solid;
+        border-radius: 0.1em;
+        width: 1.15em;
+        height: 1.15em;
+        -webkit-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        
+        &::before {
+          content: "";
+          width: 0.65em;
+          height: 0.65em;
+          transform: scale(0);
+          transform-origin: bottom left;
+          transition: 120ms transform ease-in-out;
+          box-shadow: inset 1em 1em var(--red);
+          background-color: CanvasText;
+          clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+        &:checked {
+          color: var(--red);
+          &::before {
+            transform: scale(1);
+          }
+        }
       }
     }
     .form-buttons {
@@ -69,7 +111,8 @@
         width: 90px;
         padding: 1px 0;
         font-size: 0.85rem;
-        background-color: var(--app-color);
+        background-color: var(--app-color); 
+        color: black;
       }
     }
   }

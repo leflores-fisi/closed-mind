@@ -38,7 +38,7 @@ export const reducer = (state, action) => {
         room_code: chatRoom.code,
         host: chatRoom.host,
         created_date: chatRoom.created_date,
-        only_invitations: chatRoom.only_invitations,
+        invitations_only: chatRoom.invitations_only,
         users: chatRoom.users,
         messages: chatRoom.messages
       };
@@ -48,7 +48,7 @@ export const reducer = (state, action) => {
         room_code: '',
         host: {},
         created_date: undefined,
-        only_invitations: undefined,
+        invitations_only: undefined,
         users: [],
         messages: []
       };

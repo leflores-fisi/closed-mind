@@ -5,7 +5,7 @@ const chatRoomSchema = new mongoose.Schema({
   code: String,
   host: { user_id: String, user_color: String },
   created_date: String,
-  only_invitations: Boolean,
+  invitations_only: Boolean,
   users: [{ user_id: String, user_color: String }],
   messages: [new mongoose.Schema({
     from: String,

@@ -36,12 +36,11 @@ function InvitationWindow({ params }) {
     <div className='invitation-window page'>
       {
         isValid
-          ?
-            <motion.div
+          ? <motion.div
               className='invitation modal-window'
               initial={{y: '-20px', opacity: 0}}
               animate={{y: '0', opacity: 1}}
-              transition={{ease: [.24, .72, .74, 1.2]}}
+              transition={{ease: [0.24, 0.72, 0.74, 1.2]}}
             >
               <header className='title'>
                 {fetchedInvitation.host} WANT YOU to join {fetchedInvitation.room_code}
@@ -53,12 +52,12 @@ function InvitationWindow({ params }) {
                   user: {
                     user_id: store.user_id,
                     user_color: store.user_color
-                  }
+                  },
+                  from_invitation: true
                 });
               }}/>
             </motion.div>
-          :
-            null
+          : null
       }
     </div>
   );

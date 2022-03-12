@@ -16,7 +16,7 @@ export function ChatSessionContextProvider ({ children }) {
     room_code: '',  // "room#10a2"
     host: '',
     created_date: undefined,
-    only_invitations: undefined,
+    invitations_only: undefined,
     users: [],
     messages: [],
     commands_history: []

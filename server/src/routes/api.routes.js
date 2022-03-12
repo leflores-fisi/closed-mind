@@ -21,12 +21,12 @@ router.get('/rooms', (req, res) => {
   });
 });
 // Get a chat room by his room_code
-router.get('/rooms/:code', (req, res, next) => {
-  const {code} = req.params;
+router.get('/rooms/:id', (req, res, next) => {
+  const {id} = req.params;
 
-  ChatRoom.findOne({code: code}).then(room => {
+  ChatRoom.findById(id).then(room => {
     if (!room) res.status(404).end();
-    res.json(room);
+    else res.json(room);
   }).catch(error => next(error));
 });
 
@@ -35,7 +35,7 @@ router.put('/rooms/:id', (req, res, next) => {
   const room = req.body;
 
   const newRoomInfo = {
-    only_invitations: room.only_invitations,
+    invitations_only: room.invitations_only,
     users: room.users,
     messages: room.messages
   };
@@ -69,7 +69,7 @@ router.post('/rooms', (req, res, next) => {
       code: room.code,
       host: room.host,
       created_date: new Date(),
-      only_invitations: room.only_invitations ?? undefined,
+      invitations_only: room.invitations_only ?? undefined,
       users: [{ username: room.host }],
       messages: []
     });
@@ -79,6 +79,11 @@ router.post('/rooms', (req, res, next) => {
   }
 });
 
+router.delete('/rooms', (req, res, next) => {
+  ChatRoom.deleteMany({}).then(deleteInformation => {
+    res.json(deleteInformation);
+  }).catch(error => next(error))
+})
 router.delete('/rooms/:id', (req, res, next) => {
   const { id } = req.params;
 
@@ -89,6 +94,24 @@ router.delete('/rooms/:id', (req, res, next) => {
   }
   else res.status(400).end();
 });
+router.patch('/rooms/:code/edit-config', (req, res, next) => {
+
+  const config = req.body;
+  const room_code = req.params.code;
+
+  ChatRoom.findOneAndUpdate({code: room_code}, {
+    invitations_only: config.invitations_only
+  }, {new: true})
+  .then(updatedRoom => {
+    if (!updatedRoom) {
+      res.status(404).end();
+      return;
+    }
+    res.status(200).end();
+  }).catch(error => next(error))
+});
+
+// Room invitations 🐢
 
 router.get('/invitations', (req, res, next) => {
   RoomInvitation.find({}).then(roomInvitations => {
@@ -123,7 +146,7 @@ router.delete('/invitations', (req, res, next) => {
 
   RoomInvitation.deleteMany({}).then(deleteInformation => {
     res.json(deleteInformation);
-  }).catch(error => next(error))
+  }).catch(error => next(error));
 })
 router.delete('/invitations/:code', (req, res, next) => {
   const {code} = req.params;
