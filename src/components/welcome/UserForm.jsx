@@ -11,7 +11,7 @@ function UserForm({ onSubmit = () => {}}) {
 
   const [username, setUsername]   = useState(store.username);
   const [userCode, setUserCode]   = useState(store.user_code || `#${randomIdCode(4)}`);
-  const [userColor, setUserColor] = useState(store.user_color || 'gray');
+  const [userColor, setUserColor] = useState(store.user_color || 'default');
 
   const [validatingUsername, setValidatingUsername] = useState(false);
   const [invalidReason, setInvalidReason]           = useState('');
@@ -104,10 +104,11 @@ function UserForm({ onSubmit = () => {}}) {
         }}/>
         <div className='user-form__connect'>
           <button
-            className='connect-user-btn'
+            className={`connect-user-btn ${isValidUsername && username? 'active' : ''}`}
             type='submit'
             form='connect-socket-form'
-          >Connect</button>
+          >Connect
+          </button>
         </div>
         <div className='form-feedback'>
           {

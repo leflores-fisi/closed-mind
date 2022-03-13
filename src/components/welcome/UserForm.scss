@@ -13,6 +13,7 @@
       color: var(--brightBlue);
       display: flex;
       margin-bottom: 5px;
+      user-select: none;
     }
     .username-form {
       display: flex;
@@ -34,6 +35,7 @@
       .unique-id {
         color: var(--gray);
         margin-right: 7px;
+        user-select: none;
       }
       button {
         color: var(--gray);
@@ -57,10 +59,23 @@
 
     .connect-user-btn {
       width: 100px;
-      margin-bottom: 10px;
-      background-color: var(--brightGreen);
-      &:active {
-        transform: scale(0.97);
+      margin-bottom: 5px;
+      background-color: var(--green);
+      outline: 1px var(--green) solid;
+      color: black;
+      font-size: 0.95rem;
+      padding: 2px 8px;
+      transition: background-color 0.2s, color 0.15s;
+      font-family: var(--fontLight);
+
+      &.active {
+        background-color: var(--brightGreen);
+        color: black;
+      }
+      &:hover {
+        background-color: var(--green);
+        color: black;
+        outline: 1px var(--cyan) solid;
       }
     }
   }

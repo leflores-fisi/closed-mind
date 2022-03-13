@@ -26,7 +26,8 @@ function Sidebar() {
             onClick={() => {
               userSocket.disconnect();
             }}
-          >Disconnect</button>
+          >Disconnect
+          </button>
         </section>
         {
           store.room_code

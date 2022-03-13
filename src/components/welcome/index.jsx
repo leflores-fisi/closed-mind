@@ -5,39 +5,8 @@ import { useEffect } from 'react';
 
 function WelcomeWindow() {
 
-  
-  useEffect(() => {
-    // let logo    = document.querySelector('#closed-mind-logo');
-    // let content = document.querySelector('#cards');
-  
-    // let logo_h   = logo.getBoundingClientRect().height;
-    // let content_h   = content.getBoundingClientRect().height;
-    // let doc_h = document.body.clientHeight;
-    // let a = ((doc_h - content_h) / 2);
-  
-    // content.style.top = `${a}px`;
-    // logo.style.top = `${a - logo_h}px`;
-    
-    // function viewportHandler(event) {
-      
-    //   let logo    = document.querySelector('#closed-mind-logo');
-    //   let content = document.querySelector('#cards');
-    
-    //   let logo_h   = logo.getBoundingClientRect().height;
-    //   let content_h   = content.getBoundingClientRect().height;
-    //   let doc_h = document.body.clientHeight;
-    //   let a = ((doc_h - content_h) / 2);
-    
-    //   content.style.top = `${a}px`;
-    //   logo.style.top = `${a - logo_h}px`;
-    // }
-    // window.visualViewport.addEventListener("resize", viewportHandler);
-  }, [])
-
   return (
-    <motion.div className='welcome page' initial={{opacity: 0}} animate={{
-      opacity: 1
-    }}>
+    <motion.div className='welcome page' initial={{opacity: 0}} animate={{opacity: 1}}>
       <div className='wrapper'>
         <figure>
           <h1 className='logo'>〰closed mind〰</h1>

@@ -290,7 +290,7 @@ function CommandInput(props, ref) {
 
   return (
     <div className='terminal-input-container'>
-      <div>{'>'}</div>
+      <div className='input-pointer'>{'>'}</div>
       <div className='input-wrapper'>
         <TextareaAutosize
           className='textarea-input'

@@ -74,9 +74,10 @@
   
   .window-title {
     display: flex;
-    padding: 0 10px;
     align-items: center;
-    font-size: 0.9rem;
     height: 100%;
+    user-select: none;
+    padding: 0 10px;
+    font-size: 0.9rem;
   }
 }

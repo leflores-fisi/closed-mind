@@ -26,7 +26,6 @@ function App() {
       {
         store.socket_is_connected
           ? <Chat/>
-
           : < >
               <Route path='/invite/:code' component={InvitationWindow}/>
               <Route path='/'              component={WelcomeWindow}/>

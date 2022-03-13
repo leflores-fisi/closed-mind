@@ -20,6 +20,7 @@
         .title {
           color: var(--purple);
           margin-bottom: 5px;
+          user-select: none;
         }
         .username {
           display: flex;
@@ -57,6 +58,7 @@
         .title {
           color: var(--brightBlue);
           padding-bottom: 3px;
+          user-select: none;
         }
         .content {
           color: var(--gray);
