@@ -1,7 +1,6 @@
 import UserForm from './UserForm';
 import {motion} from 'framer-motion';
 import './Welcome.scss';
-import { useEffect } from 'react';
 
 function WelcomeWindow() {
 

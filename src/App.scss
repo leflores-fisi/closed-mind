@@ -63,7 +63,8 @@
 
 .window-header {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  align-items: center;
   position: sticky;
   top: 0;
   color: var(--background);

@@ -8,8 +8,8 @@ import useAppReducer  from '../../../hooks/useAppReducer';
 import WindowHeader  from '../../WindowHeader';
 import CommandInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
+import ChatOptions   from './ChatOptions';
 import './ChatTerminal.scss';
-import ChatOptions from './ChatOptions';
 
 function ChatTerminal() {
 
@@ -98,8 +98,7 @@ function ChatTerminal() {
 
   return (
     <div className='chat-terminal' onMouseUp={handleAutofocus}>
-      <WindowHeader title='Chat'/>
-      <ChatOptions/>
+      <WindowHeader title='Chat' side={<ChatOptions/>}/>
       <TerminalLines lines={store.messages}/>
       <CommandInput ref={inputRef}/>
     </div>

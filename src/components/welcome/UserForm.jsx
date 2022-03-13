@@ -4,6 +4,7 @@ import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/
 import { userSocket } from "../userSocket";
 import './UserForm.scss'
 import ColorPicker from "./ColorPicker";
+import Focusable from '../Focusable';
 
 function UserForm({ onSuccessfullySubmit = () => {}}) {
 
@@ -96,11 +97,12 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
           <div className='unique-id'>
             {userCode}
           </div>
-          <button
-            title='Regenerate id'
-            type='button'
-            onClick={() => generateUserId(inputRef.current.value)}
-          >♻</button>
+          <Focusable title='Regenerate id'>
+            <button
+              type='button'
+              onClick={() => generateUserId(inputRef.current.value)}
+            >♻</button>
+          </Focusable>
         </div>
         <ColorPicker onPick={(color) => {
           setUserColor(color);

@@ -6,6 +6,7 @@ import InvitationWindow from './components/invitations/InvitationWindow';
 import Chat             from './components/chat/Chat'
 import useAppReducer    from './hooks/useAppReducer';
 import './App.scss';
+import AppOverlay from './components/overlay/AppOverlay';
 
 function App() {
   const {store} = useAppReducer();
@@ -13,8 +14,6 @@ function App() {
   const routes = ['/invite'];
   
   useEffect(() => {
-    console.log(':0')
-    console.log(location, location.substring(0, location.substring(1).indexOf('/') + 1))
     if (!routes.some(route => route === location.substring(0, location.substring(1).indexOf('/') + 1))) {
       setLocation('/')
     }
@@ -28,10 +27,11 @@ function App() {
           ? <Chat/>
           : < >
               <Route path='/invite/:code' component={InvitationWindow}/>
-              <Route path='/'              component={WelcomeWindow}/>
+              <Route path='/'             component={WelcomeWindow}/>
             </>
       }
       </div>
+      <AppOverlay/>
     </div>
   );
 }
