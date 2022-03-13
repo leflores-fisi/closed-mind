@@ -51,10 +51,10 @@
       }
     }
     .user-message.self {
-      &.sended {
+      &.sent {
         opacity: 1;
       }
-      &:not(.sended) {
+      &:not(.sent) {
         opacity: 0.5;
       }
     }

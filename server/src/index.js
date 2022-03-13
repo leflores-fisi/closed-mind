@@ -126,7 +126,7 @@ function main() {
         console.log(`🐌 <${socket.currentRoomCode}> ${user_id} says:  ${message}`);
         // Emitting the event for all the sockets in its room, except itself
         socket.broadcast.to(socket.currentRoomCode).emit('message-received', {date, user_id, user_color, message});
-        io.to(socket.id).emit('message-sended');
+        io.to(socket.id).emit('message-sent');
       }).catch(error => console.log('Error on socket->message', error));
     })
     socket.on('banning-user', ({user_id, reason}) => {

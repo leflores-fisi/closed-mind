@@ -7,22 +7,22 @@ import useDateFormatter from '../../../../hooks/useDateFormatter';
 function SelMessageLine({ text, date }) {
 
   const {userCodeVisible} = useChatConfig();
-  const [sended, setSended] = useState(false);
+  const [sent, setSent] = useState(false);
   const {store} = useAppReducer();
   const formattedDate = useDateFormatter(date);
 
   useEffect(() => {
-    if (!sended && store.room_code) {
-      userSocket.on('message-sended', () => {
-        setSended(true);
-        userSocket.removeListener('message-sended')
+    if (!sent && store.room_code) {
+      userSocket.on('message-sent', () => {
+        setSent(true);
+        userSocket.removeListener('message-sent')
       })
     }
-    else setSended(true);
+    else setSent(true);
   }, [])
 
   return (
-    <div className={`command-line user-message self ${sended? 'sended' : ''}`}>
+    <div className={`command-line user-message self ${sent? 'sent' : ''}`}>
       <div>
         <time className='date'>{formattedDate}</time>
       </div>
