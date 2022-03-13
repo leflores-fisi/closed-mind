@@ -29,6 +29,7 @@
       border-bottom: 1px solid black;
       .date {
         margin-right: 7px;
+        flex-shrink: 0;
         color: var(--brightBlack);
       }
       .from {margin-right: 5px;}

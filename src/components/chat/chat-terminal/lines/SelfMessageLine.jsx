@@ -23,13 +23,8 @@ function SelMessageLine({ text, date }) {
 
   return (
     <div className={`command-line user-message self ${sent? 'sent' : ''}`}>
+      <time className='date'>{formattedDate}</time>
       <div>
-        <time className='date'>{formattedDate}</time>
-      </div>
-      <div>
-
-
-
         {/* <span className={`from ${store.user_color}`}>{`[${store.user_id || '???'}]:`}</span> */}
 
         <span className={store.user_color}>

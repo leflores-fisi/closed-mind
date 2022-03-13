@@ -8,8 +8,8 @@ function MessageLine({ username, userColor, text, date }) {
 
   return (
     <div className='command-line user-message'>
+      <time className='date'>{formattedDate}</time>
       <div>
-        <time className='date'>{formattedDate}</time>
         {/* <span className={`from ${userColor || 'default'}`}>{`${username || '???'}:`}</span> */}
 
         <span className={userColor}>
