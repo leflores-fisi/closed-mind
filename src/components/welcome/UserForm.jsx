@@ -5,7 +5,7 @@ import { userSocket } from "../userSocket";
 import './UserForm.scss'
 import ColorPicker from "./ColorPicker";
 
-function UserForm({ onSubmit = () => {}}) {
+function UserForm({ onSuccessfullySubmit = () => {}}) {
 
   const {store, dispatch} = useAppReducer();
 
@@ -33,7 +33,8 @@ function UserForm({ onSubmit = () => {}}) {
       userCode: generatedCode
     }));
   }
-  const connectIntoServer = async (e) => {
+  // Return true if is valid, otherwise return false
+  const validateAndConnectToServer = async (e) => {
     e.preventDefault();
     setValidatingUsername(true);
 
@@ -54,18 +55,21 @@ function UserForm({ onSubmit = () => {}}) {
         userSocket.removeAllListeners();
         console.log('Removing socket listeners from UserForm')
         dispatch(connectSocket());
+        return true;
       }
       else if (response.status === 422) {
         const {reason} = await response.json();
         setIsValidUsername(false);
         setInvalidReason(reason);
         setValidatingUsername(false);
+        return false;
       }
     }
     catch (error) {
       setIsValidUsername(false);
       setInvalidReason("Error: Couldn't connect to server");
       setValidatingUsername(false);
+      return false;
     }
   }
   useEffect(() => {
@@ -76,9 +80,9 @@ function UserForm({ onSubmit = () => {}}) {
   return (
     <div className='user-form'>
       <form className='user-form__username' id='connect-socket-form' 
-        onSubmit={(e) => {
-          connectIntoServer(e);
-          onSubmit();
+        onSubmit={async (e) => {
+          const valid = await validateAndConnectToServer(e);
+          if (valid) onSuccessfullySubmit();
         }
       }>
         <div className='title'>Username:</div>

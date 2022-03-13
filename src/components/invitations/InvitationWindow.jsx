@@ -67,7 +67,7 @@ function InvitationWindow({ params }) {
                       </header>
 
                       <p className='description'>{fetchedInvitation.description}</p>
-                      <UserForm onSubmit={handleSubmit}/>
+                      <UserForm onSuccessfullySubmit={handleSubmit}/>
                     </>
                   : < >
                       <div className='title'>This invitation doesn't exist!</div>
