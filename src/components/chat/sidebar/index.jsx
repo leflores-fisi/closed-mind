@@ -3,14 +3,16 @@ import useAppReducer from './../../../hooks/useAppReducer';
 import WindowHeader from '../../WindowHeader';
 import InvitationSection from './InvitationSection';
 import RoomInformation from './RoomInformation';
+import useOverlay from '../../../hooks/useOverlay';
 import './ChatSidebar.scss';
 
 function Sidebar() {
 
   const {store} = useAppReducer();
+  const {onMobileRes} = useOverlay();
 
   return (
-    <aside className='chat-sidebar'>
+    <aside className={`chat-sidebar ${onMobileRes ? 'mobile' : ''}`}>
       <section className='sidebar-information'>
         <WindowHeader title='Sidebar'/>
         <section className='user-information'>

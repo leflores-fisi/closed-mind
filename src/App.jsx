@@ -1,12 +1,12 @@
 import { Route, useLocation } from 'wouter';
 import { useEffect }    from 'react';
 
+import useAppReducer    from './hooks/useAppReducer';
 import WelcomeWindow    from './components/welcome'
 import InvitationWindow from './components/invitations/InvitationWindow';
 import Chat             from './components/chat/Chat'
-import useAppReducer    from './hooks/useAppReducer';
-import './App.scss';
 import AppOverlay from './components/overlay/AppOverlay';
+import './App.scss';
 
 function App() {
   const {store} = useAppReducer();

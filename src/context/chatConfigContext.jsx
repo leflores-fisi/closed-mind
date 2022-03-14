@@ -9,7 +9,8 @@ export function ChatConfigContextProvider({ children }) {
 
   return (
     <chatConfigContext.Provider value={{
-      userCodeVisible, setUserCodeVisible, serverLogVisible, setServerLogVisible
+      userCodeVisible, setUserCodeVisible,
+      serverLogVisible, setServerLogVisible
     }}>
       { children }
     </chatConfigContext.Provider>
