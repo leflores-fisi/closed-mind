@@ -28,6 +28,7 @@
           color: var(--gray);
           background-color: var(--black);
           margin-bottom: 10px;
+          width: 20p;
           padding-left: 5px;
           height: 25px;
         }
@@ -65,9 +66,6 @@
 
           .room-code-box {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: fit-content;
             border: 1px black solid;
             background-color: var(--black);
 
@@ -77,6 +75,7 @@
               color: var(--gray);
               background-color: var(--background);
               border: none;
+              width: 100%;
 
               &:focus {
                 outline: none;

@@ -2,8 +2,8 @@ import { userSocket } from '../../userSocket';
 import useAppReducer from './../../../hooks/useAppReducer';
 import WindowHeader from '../../WindowHeader';
 import InvitationSection from './InvitationSection';
-import './ChatSidebar.scss';
 import RoomInformation from './RoomInformation';
+import './ChatSidebar.scss';
 
 function Sidebar() {
 

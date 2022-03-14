@@ -8,10 +8,10 @@
 
   .app-content {
     display: flex;
-    justify-content: center;
     max-height: calc(100vh);
     width: 100%;
     height: 100%;
+    justify-content: space-evenly;
     flex: 1;
     
     .page {
@@ -44,19 +44,26 @@
       display: flex;
       flex-direction: column;
       position: relative;
-      min-width: var(--sidebar-width);
       border: 1px var(--app-color) solid;
-      margin: 10px 5px 10px 10px;
+      margin: 10px 0px 10px 10px;
       overflow: auto;
+      width: var(--sidebar-width);
+      flex: 0 0 var(--sidebar-width);
+    }
+    .resize-column {
+      width: 10px;
+      background-color: transparent;
+      height: 100%;
+      cursor: col-resize;
     }
     .chat-terminal {
       position: relative; 
       border: 1px var(--app-color) solid;
       color: var(--foreground);
-      margin: 10px 10px 10px 5px;
-      width: 100%;
+      margin: 10px 10px 10px 0px;
       overflow: auto;
       transition: width 1s;
+      flex-grow: 1;
     }
   }
 }
@@ -72,6 +79,7 @@
   margin-bottom: 10px;
   width: 100%;
   height: 18px;
+  overflow: hidden;
   
   .window-title {
     display: flex;
