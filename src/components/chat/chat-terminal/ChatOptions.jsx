@@ -1,5 +1,5 @@
 import useChatConfig  from '../../../hooks/useChatConfig';
-import Focusable from '../../Focusable';
+import Focusable from '../../overlay/Focusable';
 
 function ChatOptions() {
   const {setServerLogVisible, setUserCodeVisible} = useChatConfig();

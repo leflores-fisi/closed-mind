@@ -9,10 +9,10 @@ function ResizeColumn() {
     let sidebarInitialFlex = '0 0 300px';
     let chatInitialFlex    = '1 1 auto';
 
-    if (e.clientX < 50) {
+    if (e.clientX < 100) {
       ChatSidebar.style.flex = `0 0 0px`;
     }
-    else if (e.clientX > document.body.clientWidth - 50) {
+    else if (e.clientX > document.body.clientWidth - 100) {
       ChatSidebar.style.flex = `1 1 auto`;
       ChatContent.style.flex = `0 0 0px`;
     }

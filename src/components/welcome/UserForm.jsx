@@ -2,9 +2,9 @@ import { useRef, useState, useEffect } from 'react';
 import useAppReducer from "../../hooks/useAppReducer"
 import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/actions";
 import { userSocket } from "../userSocket";
-import './UserForm.scss'
 import ColorPicker from "./ColorPicker";
-import Focusable from '../Focusable';
+import Focusable from '../overlay/Focusable';
+import './UserForm.scss'
 
 function UserForm({ onSuccessfullySubmit = () => {}}) {
 
