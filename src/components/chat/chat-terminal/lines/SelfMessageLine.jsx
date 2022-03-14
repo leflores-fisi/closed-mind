@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react';
 import { userSocket } from '../../../userSocket';
 import useAppReducer from '../../../../hooks/useAppReducer';
-import useChatConfig from '../../../../hooks/useChatConfig';
-import useDateFormatter from '../../../../hooks/useDateFormatter';
+import UserMessage from './UserMessage';
 
 function SelMessageLine({ text, date }) {
 
-  const {userCodeVisible} = useChatConfig();
   const [sent, setSent] = useState(false);
   const {store} = useAppReducer();
-  const formattedDate = useDateFormatter(date);
 
   useEffect(() => {
     if (!sent && store.room_code) {
@@ -23,21 +20,7 @@ function SelMessageLine({ text, date }) {
 
   return (
     <div className={`command-line user-message self ${sent? 'sent' : ''}`}>
-      <time className='date'>{formattedDate}</time>
-      <div>
-        {/* <span className={`from ${store.user_color}`}>{`[${store.user_id || '???'}]:`}</span> */}
-
-        <span className={store.user_color}>
-          {store.user_id.substring(0, store.user_id.indexOf('#'))}
-        </span>
-        {
-          userCodeVisible && 
-            <span className={store.user_color} style={{opacity: 0.5}}>
-              {store.user_id.substring(store.user_id.indexOf('#'))}
-            </span>
-        }
-        <span className='text'>{' ' + text}</span>
-      </div>
+      <UserMessage date={date} userId={store.user_id} userColor={store.user_color} text={text}/>
     </div>
   )
 }

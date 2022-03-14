@@ -125,3 +125,11 @@ button {
   border-radius: 3px;
   cursor: pointer;
 }
+a[href] {
+  color: #5a6673;
+  font-family: var(--fontLight);
+
+  &:visited {
+    color: #5a6673;
+  }
+}

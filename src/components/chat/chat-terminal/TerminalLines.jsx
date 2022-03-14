@@ -38,7 +38,7 @@ function TerminalLines({ lines }) {
                 />
               :
                 <MessageLine
-                  username={line.from}
+                  userId={line.from}
                   userColor={line.color}
                   text={line.text}
                   date={line.date}
