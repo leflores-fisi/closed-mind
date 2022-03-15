@@ -15,39 +15,41 @@ function TerminalLines({ lines }) {
   })
 
   return (
-    <div className='command-lines' ref={linesRef}>
-      {
-        lines.map((line, i) => {
-          console.log('🐌 mapping message...');
-          return (
-            <CommandLine key={i}>
-            {
-              line.from === 'Server' ?
-                <ServerLogLine
-                  date={line.date}
-                  log={line.text}
-                />
-              : line.from === '@senders/ERROR_HANDLER' ?
-                <ErrorLine
-                  text={line.text}
-                />
-              : line.from === '@senders/SELF' ?
-                <SelfMessageLine
-                  date={line.date}
-                  text={line.text}
-                />
-              :
-                <MessageLine
-                  userId={line.from}
-                  userColor={line.color}
-                  text={line.text}
-                  date={line.date}
-                />
-            }
-            </CommandLine>
-          )
-        })
-      }
+    <div className='command-lines-wrapper'>
+      <div className='command-lines' ref={linesRef}>
+        {
+          lines.map((line, i) => {
+            console.log('🐌 mapping message...');
+            return (
+              <CommandLine key={i}>
+              {
+                line.from === 'Server' ?
+                  <ServerLogLine
+                    date={line.date}
+                    log={line.text}
+                  />
+                : line.from === '@senders/ERROR_HANDLER' ?
+                  <ErrorLine
+                    text={line.text}
+                  />
+                : line.from === '@senders/SELF' ?
+                  <SelfMessageLine
+                    date={line.date}
+                    text={line.text}
+                  />
+                :
+                  <MessageLine
+                    userId={line.from}
+                    userColor={line.color}
+                    text={line.text}
+                    date={line.date}
+                  />
+              }
+              </CommandLine>
+            )
+          })
+        }
+      </div>
     </div>
   );
 }
