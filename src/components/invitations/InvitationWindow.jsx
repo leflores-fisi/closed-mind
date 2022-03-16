@@ -5,6 +5,7 @@ import { userSocket }  from '../userSocket';
 import useAppReducer   from '../../hooks/useAppReducer';
 import UserForm        from '../welcome/UserForm';
 import './InvitationWindow.scss';
+import ClosedmindHeader from '../ClosedmindHeader';
 
 function InvitationWindow({ params }) {
   
@@ -51,15 +52,7 @@ function InvitationWindow({ params }) {
 
   return (
     <div className='invitation-window page'>
-      <div className='logo-container'>
-        <picture className='closedmind-logo'>
-          <img src='/src/assets/closedmind-logo.png'/>
-          <div>
-            <div>closed mind</div>
-            <div className='desc'>minimalist and fugacious communication</div>
-          </div>
-        </picture>
-      </div>
+      <ClosedmindHeader description={true}/>
       <div className='container'>
         {
           isLoading

@@ -1,11 +1,13 @@
 import UserForm from './UserForm';
 import {motion} from 'framer-motion';
 import './Welcome.scss';
+import ClosedmindHeader from '../ClosedmindHeader';
 
 function WelcomeWindow() {
 
   return (
     <motion.div className='welcome page' initial={{opacity: 0}} animate={{opacity: 1}}>
+      <ClosedmindHeader/>
       <div className='wrapper'>
         <figure>
           <h1 className='logo'>〰closed mind〰</h1>
@@ -48,10 +50,6 @@ function WelcomeWindow() {
         <figure>
         </figure>
       </div>
-      
-      <footer className='closed-mind-github'>
-        Check the project on <a target='_blank' href='https://github.com/leflores-fisi/closed-mind'>github 💖</a>
-      </footer>
     </motion.div>
   )
 }

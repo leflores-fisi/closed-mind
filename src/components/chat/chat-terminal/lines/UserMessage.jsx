@@ -46,7 +46,7 @@ function UserMessage({ date, userId, userColor, text }) {
         </span>
         {
           userCodeVisible && 
-            <span className={userColor} style={{opacity: 0.5}}>
+            <span className={userColor} style={{opacity: 0.55}}>
               {userId.substring(userId.indexOf('#')).concat(':')}
             </span>
         }
