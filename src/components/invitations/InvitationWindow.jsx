@@ -34,9 +34,10 @@ function InvitationWindow({ params }) {
   
       if (response.status === 200) {
         const invitation = await response.json();
+        console.log(invitation)
         console.log('ROOM:', invitation.room_code);
-        setIsValid(true);
         setFetchedInvitation(invitation);
+        setIsValid(true);
       }
       else if (response.status === 404) {
         console.log('ROOM NOT FOUNDED');
@@ -50,38 +51,60 @@ function InvitationWindow({ params }) {
 
   return (
     <div className='invitation-window page'>
-      {
-        isLoading
-          ? null
-          : <motion.div
-              className='invitation modal-window'
-              initial={{y: '-20px', opacity: 0}}
-              animate={{y: '0', opacity: 1}}
-              transition={{ease: [0.24, 0.72, 0.74, 1.2]}}
-            >
-              {
-                isValid
-                  ? < >
-                      <header className='title'>
-                        {fetchedInvitation.host} WANT YOU to join {fetchedInvitation.room_code}
-                      </header>
+      <div className='logo-container'>
+        <picture className='closedmind-logo'>
+          <img src='/src/assets/closedmind-logo.png'/>
+          <div>
+            <div>closed mind</div>
+            <div className='desc'>minimalist and fugacious communication</div>
+          </div>
+        </picture>
+      </div>
+      <div className='container'>
+        {
+          isLoading
+            ? null
+            : <motion.div
+                className='invitation modal-window'
+                initial={{y: '-20px', opacity: 0}}
+                animate={{y: '0', opacity: 1}}
+                transition={{ease: [0.24, 0.72, 0.74, 1.2]}}
+              >
+                {
+                  isValid
+                    ? <div className='wrapper'>
+                        <header className='invitation-header'>
+                          <div className='subtitle'>You were invited to join</div>
+                          <div className='room-code'>{fetchedInvitation.room_code.slice(0, fetchedInvitation.room_code.length - 5)}</div>
+                        </header>
 
-                      <p className='description'>{fetchedInvitation.description}</p>
-                      <UserForm onSuccessfullySubmit={handleSubmit}/>
-                    </>
-                  : < >
-                      <div className='title'>This invitation doesn't exist!</div>
-                      <div className='description'>
-                        <div>Maybe it was deleted</div>
-                        <div>Maybe it never existed</div>
-                        <div><i>Or maybe is our fault</i></div><br/>
-                        <div>No one knows at this point</div>
+                        <div className='description'>
+                          <div className='text-content'>
+                            {fetchedInvitation.description}
+                          </div>
+                        </div>
+                        <UserForm onSuccessfullySubmit={handleSubmit}/>
                       </div>
-                      <div className='default'>〰closed mind〰</div> 
-                    </>
-              }
-            </motion.div>
-      }
+                    : <div className='wrapper'>
+                        <picture className='sad-logo'>
+                          <img src='/src/assets/closedmind-sad-logo.png'/>
+                        </picture>
+                        <div className='invitation-header'>
+                          This invitation doesn't exist!
+                        </div>
+                        <div className='description'>
+                          <div className='text-content'>
+                            <div>Maybe it was deleted</div>
+                            <div>Maybe it never existed</div>
+                            <div><i>Or maybe is our fault</i></div><br/>
+                            <div>No one knows at this point</div>
+                          </div>
+                        </div>
+                      </div>
+                }
+              </motion.div>
+        }
+      </div>
     </div>
   );
 }

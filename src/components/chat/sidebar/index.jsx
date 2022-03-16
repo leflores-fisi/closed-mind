@@ -13,11 +13,14 @@ function Sidebar() {
 
   return (
     <aside className={`chat-sidebar ${onMobileRes ? 'mobile' : ''}`}>
+      <WindowHeader title='Sidebar'/>
+      <picture className='closedmind-logo'>
+        <img src='/src/assets/closedmind-logo.png'/>
+        <div>closed mind</div>
+      </picture>
       <section className='sidebar-information'>
-        <WindowHeader title='Sidebar'/>
         <section className='user-information'>
           <div className='user-information__username'>
-            <div className='title'>Username:</div>
             <div className={`username`}>
               <span className={`${store.user_color}`}>{store.username}</span>
               <span>{store.user_code}</span>

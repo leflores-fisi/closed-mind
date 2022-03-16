@@ -10,7 +10,7 @@ function WelcomeWindow() {
         <figure>
           <h1 className='logo'>〰closed mind〰</h1>
           <h3 className='slogan'>
-            minimalist and fugacious communication
+            <i>minimalist</i> and <i>fugacious</i> communication
           </h3>
         </figure>
         <motion.div

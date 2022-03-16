@@ -9,7 +9,8 @@
     display: block;
     width: 100%;
 
-    .title {
+    .input-title {
+      font-size: 0.9rem;
       color: var(--brightBlue);
       display: flex;
       margin-bottom: 5px;
@@ -31,6 +32,9 @@
         width: 100%;
         border: none;
         outline: none;
+        &::placeholder {
+          color: var(--gray);
+        }
       }
       .unique-id {
         color: var(--gray);
@@ -60,22 +64,23 @@
     .connect-user-btn {
       width: 100px;
       margin-bottom: 5px;
-      background-color: var(--green);
-      outline: 1px var(--green) solid;
-      color: black;
+      background-color: var(--background);
+      outline: 1px var(--app-color) solid;
+      color: var(--app-color);
       font-size: 0.95rem;
       padding: 2px 8px;
       transition: background-color 0.2s, color 0.15s;
-      font-family: var(--fontLight);
-
+      
       &.active {
-        background-color: var(--brightGreen);
+        background-color: var(--app-color);
         color: black;
       }
       &:hover {
-        background-color: var(--green);
-        color: black;
-        outline: 1px var(--cyan) solid;
+        &.active {
+          background-color: var(--purple);
+          color: black;
+        }
+        color: var(--brightPurple);
       }
     }
   }
@@ -87,7 +92,6 @@
     .feedback {
       font-size: 0.8rem;
       text-align: center;
-      font-family: var(--fontLight);
     }
   }
 }

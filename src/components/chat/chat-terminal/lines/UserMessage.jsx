@@ -38,23 +38,23 @@ function UserMessage({ date, userId, userColor, text }) {
   }, [])
   
   return (
-    < >
+    <div>
       <time className='date'>{formattedDate}</time>
-      <div>
+      <span className='from'>
         <span className={userColor}>
-          {userId.substring(0, userId.indexOf('#'))}
+          {userId.substring(0, userId.indexOf('#')).concat(!userCodeVisible ? ':' : '')}
         </span>
         {
           userCodeVisible && 
             <span className={userColor} style={{opacity: 0.5}}>
-              {userId.substring(userId.indexOf('#'))}
+              {userId.substring(userId.indexOf('#')).concat(':')}
             </span>
         }
-        <span className='text'>
-          {formattedText}
-        </span>
-      </div>
-    </>
+      </span>
+      <span className='text'>
+        {formattedText}
+      </span>
+    </div>
   );
 }
 export default UserMessage;

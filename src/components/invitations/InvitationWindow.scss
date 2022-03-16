@@ -1,26 +1,88 @@
 .invitation-window {
   justify-content: center;
 
-  .invitation {
+  .logo-container {
     display: flex;
-    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 10px 0 0 15px;
+  }
+  .container {
+    display: flex;
     align-items: center;
-    border: 1px var(--app-color) solid;
-    color: var(--foreground);
-    margin-bottom: 50px;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 
-    padding: 20px 50px;
-    
-    .title {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 1em;
+    .invitation {
+      box-shadow: rgb(81, 42, 104) 0px 4px 6px -2px, rgb(27, 14, 58) 0px 0px 0px 1px;
+      margin-bottom: 100px;
+      padding: 20px 20px;
+      justify-content: center;
+  
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-basis: 100%;
+  
+        img {
+          width: 60px;
+          aspect-ratio: 1/1;
+          margin-bottom: 5px;
+        }
+      }
+      
+      .invitation-header {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1em;
+  
+        .subtitle {
+          font-size: 0.75em;
+          margin-bottom: 5px;
+        }
+        .room-code {
+          font-size: 1.5em;
+          line-height: 0.9;
+          font-weight: 600;
+          color: var(--cyan);
+        }
+      }
+      .description {
+        text-align: center;
+        color: var(--gray);
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        background-color: rgb(12, 12, 12);
+        display: flex;
+        
+        .text-content {
+          padding: 5px 10px;
+        }
+        &::before {
+          display: inline-block;
+          position: relative;
+          left: 0;
+          content: "";
+          background-color: var(--purple);
+          width: 2px;
+        }
+      } 
     }
-    .description {
-      text-align: center;
-      color: var(--gray);
-      font-size: 0.9rem;
-      margin-bottom: 20px;
-    }
+  }
+}
+.closedmind-logo {
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 40px;
+    margin-right: 10px;
+  }
+  .desc {
+    font-size: 0.8rem;
   }
 }

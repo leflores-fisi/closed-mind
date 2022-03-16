@@ -22,21 +22,18 @@
       flex: 1;
       transition: width 1s;
       margin: 10px;
-      .wrapper {
-        padding: 0 10px;
+      .wrapper { 
         overflow: auto;
       }
     }
     .modal-window {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      max-width: 500px;
+      width: 100%;
 
       color: var(--foreground);
       border: 1px var(--app-color) solid;
-      width: 500px;
-      height: 280px;
     }
     
     .chat-sidebar {
@@ -116,5 +113,6 @@
     user-select: none;
     padding: 0 10px;
     font-size: 0.9rem;
+    font-weight: 600;
   }
 }

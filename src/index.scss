@@ -42,32 +42,26 @@
   --brightPurple: #7f5394;
   color-scheme: dark;
 
-  --fontRegular: 'Cascadia Mono normal', consolas, monospace;
-  --fontLight:   'Cascadia Mono light',  consolas, monospace;
+  --fontCascadia: 'Cascadia Code PL',  consolas, monospace;
 }
 
 @font-face {
-  font-family: 'Cascadia Mono normal';
+  font-family: 'Cascadia Code PL';
   font-style: normal;
-  src: local('Cascadia Mono normal'), url(./assets/CascadiaMono-Regular.otf) format('opentype');
-}
-@font-face {
-  font-family: 'Cascadia Mono light';
-  font-style: normal;
-  src: local('Cascadia Mono light'), url(./assets/CascadiaMono-Light.otf) format('opentype');
+  src: local('Cascadia Code PL'), url(./assets/CascadiaCodePL.ttf) format('truetype');
 }
 
 
 * {
-  font-family: var(--fontRegular);
-  text-rendering: optimizeLegibility;
-  -webkit-text-stroke: 0.1px;
+  font-family: var(--fontCascadia);
+  // -webkit-text-stroke: 0.1px;
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility  !important;
+  -moz-osx-font-smoothing: grayscale  !important;
   scrollbar-width: thin;
   scrollbar-color: var(--brightBlack) var(--black);
-  // -webkit-font-smoothing: antialiased !important;
-  // text-rendering: optimizeLegibility  !important;
-  // -moz-osx-font-smoothing: grayscale  !important;
   // text-shadow: rgba(0,0,0,.01) 0 0 1px;
+  font-weight: 400;
 }
 
 html {
@@ -87,7 +81,7 @@ body {
   color: black;
 }
 
-.default       {color: var(--app-color)    !important}
+.default       {color: var(--app-color)    !important;}
 .black         {color: var(--black)        !important;}
 .gray          {color: var(--gray)         !important;}
 .white         {color: var(--white)        !important;}
@@ -125,10 +119,11 @@ button {
   padding: 2px 5px;
   border-radius: 3px;
   cursor: pointer;
+  font-weight: 600;
 }
 a[href] {
   color: #5a6673;
-  font-family: var(--fontLight);
+  font-weight: 400;
 
   &:visited {
     color: #5a6673;

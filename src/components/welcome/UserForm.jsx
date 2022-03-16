@@ -86,9 +86,10 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
           if (valid) onSuccessfullySubmit();
         }
       }>
-        <div className='title'>Username:</div>
+        <div className='input-title'>Username:</div>
         <div className={'username-form' + (isValidUsername ? '' : ' invalid')}>
           <input
+            placeholder='Your name here'
             className={`username-input ${userColor}`}
             ref={inputRef}
             value={username}

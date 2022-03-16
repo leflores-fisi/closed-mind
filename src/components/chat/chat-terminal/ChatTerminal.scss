@@ -25,7 +25,7 @@
 
     .command-line {
       min-height: 30px;
-      padding: 5px 5px;
+      padding: 5px 8px;
       border-bottom: 1px solid black;
       .date {
         margin-right: 7px;
@@ -33,7 +33,10 @@
         color: var(--brightBlack);
         user-select: none;
       }
-      .from {margin-right: 5px;}
+      .from {
+        font-weight: 800;
+        margin-right: 7px;
+      }
     }
     .user-message {
       display: flex;
@@ -44,12 +47,11 @@
         justify-self: flex-end;
       }
       .from {
+        white-space: nowrap;
         color: var(--app-color);
       }
       .text {
-        margin-left: 7px;
-        color: var(--grey);
-        font-family: var(--fontLight);
+        color: var(--foreground);
         line-height: 1.3;
       }
     }

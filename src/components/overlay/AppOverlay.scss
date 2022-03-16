@@ -15,8 +15,9 @@
     padding: 0 5px;
     height: 20px;
     font-size: 0.8rem;
-    color: var(--background);
-    background-color: var(--brightBlack);
+    color: var(--brightGray);
+    background-color: var(--black);
+    box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 4px;
     border-radius: 2px;
     white-space: pre;
 
