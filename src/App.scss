@@ -3,12 +3,11 @@
   height: 100%;
 }
 .app {
-  flex: 1;
   background-color: var(--background);
 
   .app-content {
     display: flex;
-    max-height: calc(100vh);
+    align-items: center;
     width: 100%;
     height: 100%;
     flex: 1;
@@ -18,12 +17,25 @@
       flex-direction: column;
       position: relative;
       align-items: center;
-      border: 1px var(--app-color) solid;
+      //border: 1px var(--app-color) solid;
       flex: 1;
       transition: width 1s;
       margin: 10px;
+
       .wrapper { 
-        overflow: auto;
+        height: 100%;
+        width: 100%;
+
+        .container {
+          display: grid;
+          grid-template-columns: 1fr;
+          justify-content: center;
+          height: 100%;
+          width: 100%;
+          align-items: center;
+          overflow: auto;
+          padding-bottom: 100px;
+        }
       }
     }
     .modal-window {

@@ -2,12 +2,15 @@
   position: relative;
   
   .closedmind-logo {
+    display: flex;
+    align-items: center;
     padding-left: 10px;
     font-size: 0.8rem;
     margin-bottom: 15px;
     user-select: none;
 
     img {
+      margin-right: 7px;
       width: 20px;
     }
   }
