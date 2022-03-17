@@ -70,7 +70,7 @@ function InvitationLink() {
                 ref={inputRef}
                 onFocus={handleFocus}
                 onChange={() => {}}
-                value={`localhost:3000/invite/${fetchedInvitation.invitation_code}`}
+                value={`https://closedmind.vercel.app/invite/${fetchedInvitation.invitation_code}`}
               />
               <button className='copy-btn' onClick={handleCopy}>{isCopied ? 'Yes!' : 'Copy'}</button>
             </div>
