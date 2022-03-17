@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { userSocket }  from '../userSocket';
 import useAppReducer   from '../../hooks/useAppReducer';
 import UserForm        from '../welcome/UserForm';
-import './InvitationWindow.scss';
 import ClosedmindHeader from '../ClosedmindHeader';
+import closedmind_sad_logo from '../../assets/closedmind-sad-logo.png'
+import './InvitationWindow.scss';
 
 function InvitationWindow({ params }) {
   
@@ -80,7 +81,7 @@ function InvitationWindow({ params }) {
                       </div>
                     : <div className='wrapper'>
                         <picture className='sad-logo'>
-                          <img src='/src/assets/closedmind-sad-logo.png'/>
+                          <img src={closedmind_sad_logo}/>
                         </picture>
                         <div className='invitation-header'>
                           This invitation doesn't exist!

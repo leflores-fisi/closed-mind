@@ -4,6 +4,7 @@ import WindowHeader from '../../WindowHeader';
 import InvitationSection from './InvitationSection';
 import RoomInformation from './RoomInformation';
 import useOverlay from '../../../hooks/useOverlay';
+import closedmind_logo from './../../../assets/closedmind-logo.png';
 import './ChatSidebar.scss';
 
 function Sidebar() {
@@ -15,7 +16,7 @@ function Sidebar() {
     <aside className={`chat-sidebar ${onMobileRes ? 'mobile' : ''}`}>
       <WindowHeader title='Sidebar'/>
       <picture className='closedmind-logo'>
-        <img src='/src/assets/closedmind-logo.png'/>
+        <img src={closedmind_logo}/>
         <div>closed mind</div>
       </picture>
       <section className='sidebar-information'>

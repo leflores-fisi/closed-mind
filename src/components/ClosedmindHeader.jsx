@@ -1,3 +1,5 @@
+import closedmind_logo from './../assets/closedmind-logo.png';
+import github_logo from './../assets/github-logo.png';
 
 function ClosedmindHeader({ description = false }) {
   
@@ -6,20 +8,20 @@ function ClosedmindHeader({ description = false }) {
       {
         description
           ? <picture className='closedmind-logo'>
-              <img src='/src/assets/closedmind-logo.png'/>
+              <img src={closedmind_logo}/>
               <div>
                 <div style={{fontSize: 16}}>closed mind</div>
                 <div className='desc' style={{fontSize: 12}}>minimalist and fugacious communication</div>
               </div>
             </picture>
           : <picture className='closedmind-logo'>
-              <img src='/src/assets/closedmind-logo.png' draggable={false}/>
+              <img src={closedmind_logo} draggable={false}/>
               <div>closed mind</div>
             </picture>
       }
       <div className='closedmind-github'>
         <a target='_blank' href='https://github.com/leflores-fisi/closed-mind'>
-          <img src='/src/assets/github-logo.png' draggable={false}/>
+          <img src={github_logo} draggable={false}/>
         </a>
       </div>
     </header>
