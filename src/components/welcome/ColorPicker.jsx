@@ -2,6 +2,7 @@ import './ColorPicker.scss'
 
 function ColorPicker({onPick}) {
 
+  // css variables (see index.scss)
   const colors = ['red', 'brightRed', 'yellow', 'brightYellow', 'green', 'brightGreen', 'cyan', 'brightCyan', 'blue', 'brightBlue', 'purple', 'brightPurple'];
 
   return (
@@ -22,4 +23,4 @@ function ColorPicker({onPick}) {
   )
 }
 
-export default ColorPicker
+export default ColorPicker;

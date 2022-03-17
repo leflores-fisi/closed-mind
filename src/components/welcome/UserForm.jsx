@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import useAppReducer from "../../hooks/useAppReducer"
 import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/actions";
 import { userSocket } from "../userSocket";
@@ -26,18 +26,15 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
     generateUserId(usernameInput);
     setIsValidUsername(validateUsername(usernameInput));
   }
-  const generateUserId = (username) => {
+  const generateUserId = () => {
     let generatedCode = `#${randomIdCode(4)}`;
     setUserCode(generatedCode);
-    dispatch(setGlobalUsername({
-      username: username.trim().replaceAll(' ', '-'),
-      userCode: generatedCode
-    }));
   }
   // Return true if is valid, otherwise return false
   const validateAndConnectToServer = async (e) => {
     e.preventDefault();
     setValidatingUsername(true);
+    console.log(username)
 
     try {
       const response = await fetch('http://localhost:8001/username_validation', {
@@ -54,7 +51,10 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
         setInvalidReason('');
         setValidatingUsername(false);
         userSocket.removeAllListeners();
-        console.log('Removing socket listeners from UserForm')
+        dispatch(setGlobalUsername({
+          username: username.trim().replaceAll(' ', '-'),
+          userCode: userCode
+        }));
         dispatch(connectSocket());
         return true;
       }
@@ -73,6 +73,12 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
       return false;
     }
   }
+
+  const handleColorPick = useCallback((color) => {
+    setUserColor(color);
+    dispatch(setGlobalColor({color}))
+  }, [])
+
   useEffect(() => {
     inputRef.current.focus();
   }, [])
@@ -99,16 +105,10 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
             {userCode}
           </div>
           <Focusable title='Regenerate id'>
-            <button
-              type='button'
-              onClick={() => generateUserId(inputRef.current.value)}
-            >♻</button>
+            <button type='button' onClick={generateUserId}>♻</button>
           </Focusable>
         </div>
-        <ColorPicker onPick={(color) => {
-          setUserColor(color);
-          dispatch(setGlobalColor({color}))
-        }}/>
+        <ColorPicker onPick={handleColorPick}/>
         <div className='user-form__connect'>
           <button
             className={`connect-user-btn ${isValidUsername && username? 'active' : ''}`}

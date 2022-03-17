@@ -7,16 +7,15 @@ function ServerLogLine({date, log}) {
   const formattedDate = useDateFormatter(date);
   
   return (
-    serverLogVisible ?
+    serverLogVisible &&
       <div className='command-line server-log'>
-        <div>
-          <time className='date'>{formattedDate}</time>
-          <span className='from'>{'[Server]:'}</span>
-          <span className='text'>{log}</span>
-        </div>
+      <div>
+        <time className='date'>{formattedDate}</time>
+        <span className='from'>{'[Server]:'}</span>
+        <span className='text'>{log}</span>
       </div>
-    : (null)
-  )
+    </div>
+)
 }
 
 export default ServerLogLine

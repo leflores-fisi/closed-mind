@@ -239,25 +239,5 @@ function main() {
   httpServer.listen(PORT, () => {
     console.log('Server running on port', PORT);
   });
-  // let wasCleanedUp = false;
-
-  // const runBeforeExiting = (fun) => {
-  //   const exitSignals = ['exit', 'SIGINT', 'SIGUSR1', 'SIGUSR2', 'uncaughtException'];
-  //   for (const signal of exitSignals) {
-  //     process.on(signal, async () => {
-  //       if (!wasCleanedUp) {
-  //         await fun();
-  //         wasCleanedUp = true;
-  //       }
-  //       process.exit();
-  //     });
-  //   }
-  // };
-
-  // // And then before starting your server...
-  // runBeforeExiting(() => {
-  //   console.log('clean my application, close the DB connection, etc');
-  // });
-
 }
 if (require.main === module) main();

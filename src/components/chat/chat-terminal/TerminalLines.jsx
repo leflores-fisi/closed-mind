@@ -1,9 +1,5 @@
 import { useEffect, memo, useRef } from 'react';
 import CommandLine   from './lines/CommandLine';
-import MessageLine   from './lines/MessageLine';
-import ServerLogLine from './lines/ServerLogLine';
-import ErrorLine     from './lines/ErrorLine';
-import SelfMessageLine from './lines/SelfMessageLine';
 
 function TerminalLines({ lines }) {
   
@@ -19,33 +15,9 @@ function TerminalLines({ lines }) {
       <div className='command-lines' ref={linesRef}>
         {
           lines.map((line, i) => {
-            console.log('🐌 mapping message...');
+            console.log('🐌 mapping message...', line);
             return (
-              <CommandLine key={i}>
-              {
-                line.from === 'Server' ?
-                  <ServerLogLine
-                    date={line.date}
-                    log={line.text}
-                  />
-                : line.from === '@senders/ERROR_HANDLER' ?
-                  <ErrorLine
-                    text={line.text}
-                  />
-                : line.from === '@senders/SELF' ?
-                  <SelfMessageLine
-                    date={line.date}
-                    text={line.text}
-                  />
-                :
-                  <MessageLine
-                    userId={line.from}
-                    userColor={line.color}
-                    text={line.text}
-                    date={line.date}
-                  />
-              }
-              </CommandLine>
+              <CommandLine key={i} line={line}/>
             )
           })
         }
@@ -53,4 +25,6 @@ function TerminalLines({ lines }) {
     </div>
   );
 }
-export default memo(TerminalLines);
+export default memo(TerminalLines, (prev, next) => {
+  return prev.lines.length === next.lines.length
+});

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, memo } from 'react';
 import useDateFormatter from '../../../../hooks/useDateFormatter';
 import useChatConfig from '../../../../hooks/useChatConfig';
 
@@ -9,7 +9,7 @@ function UserMessage({ date, userId, userColor, text }) {
   const [formattedText, setFormattedText] = useState(null);
 
   // This check if the message contains links and if it does it formats them as anchors <a/>
-  const FormatText = useCallback(() => {
+  const FormatText = () => {
     let words = text.split(' ');
     let pending = [];
     let elements = [];
@@ -32,7 +32,8 @@ function UserMessage({ date, userId, userColor, text }) {
     }
     if (pending.length > 0) elements.push(<span>{(elements.length === 0 ? '' : ' ') + pending.join(' ')}</span>)
     return elements;
-  }, [])
+  }
+
   useEffect(() => {
     setFormattedText(FormatText());
   }, [])
@@ -57,4 +58,4 @@ function UserMessage({ date, userId, userColor, text }) {
     </div>
   );
 }
-export default UserMessage;
+export default memo(UserMessage);
