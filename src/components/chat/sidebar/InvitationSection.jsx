@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import useAppReducer from '../../../hooks/useAppReducer';
 import NewInvitationForm from './NewInvitationForm';
-import { apiURL } from '../../userSocket';
+import { API_URL, SELF_URL } from '../../userSocket';
 import './InvitationSection.scss';
 
 function InvitationLink() {
@@ -27,7 +27,7 @@ function InvitationLink() {
   }
   const generateInvitation = async (invitation_description) => {
     try {
-      let url = `${apiURL}/invitations`
+      let url = `${API_URL}/invitations`
       const response = await fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -46,7 +46,7 @@ function InvitationLink() {
     }
   }
   const deleteInvitation = async () => {
-    let url = `${apiURL}/invitations/${fetchedInvitation.invitation_code}`
+    let url = `${API_URL}/invitations/${fetchedInvitation.invitation_code}`
     const response = await fetch(url, {
       method: 'DELETE',
     });
@@ -71,7 +71,7 @@ function InvitationLink() {
                 ref={inputRef}
                 onFocus={handleFocus}
                 onChange={() => {}}
-                value={`https://closedmind.vercel.app/invite/${fetchedInvitation.invitation_code}`}
+                value={`${SELF_URL}/invite/${fetchedInvitation.invitation_code}`}
               />
               <button className='copy-btn' onClick={handleCopy}>{isCopied ? 'Yes!' : 'Copy'}</button>
             </div>

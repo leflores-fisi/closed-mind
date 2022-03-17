@@ -6,6 +6,9 @@ import App from './App';
 import './index.scss';
 import './normalize.scss';
 
+if (import.meta.env.MODE !== 'development')
+  console.log = function () {}
+
 ReactDOM.render(
   <React.StrictMode>
     <ChatSessionContextProvider>

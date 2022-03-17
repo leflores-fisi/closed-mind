@@ -115,7 +115,6 @@ function AppOverlay() {
     else
       document.body.removeEventListener('mousedown', handleStartDrag);
     return () => {
-      console.log('removing effects')
       window.removeEventListener('resize', handleResize);
       document.body.removeEventListener('mousedown', handleStartDrag);
     };

@@ -15,7 +15,7 @@ function TerminalLines({ lines }) {
       <div className='command-lines' ref={linesRef}>
         {
           lines.map((line, i) => {
-            console.log('🐌 mapping message...', line);
+            console.log('🐌 mapping message...');
             return (
               <CommandLine key={i} line={line}/>
             )

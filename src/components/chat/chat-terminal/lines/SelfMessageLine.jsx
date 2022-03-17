@@ -17,7 +17,6 @@ function SelMessageLine({ text, date }) {
     }
     else setSent(true);
   }, [])
-  console.log('self')
 
   return (
     <div className={`command-line user-message self ${sent? 'sent' : ''}`}>

@@ -167,7 +167,6 @@ router.post('/username_validation', (req, res) => {
   else {
     let invalidReason = validateUsername(username);
     res.status(422).send({reason: invalidReason});
-    console.log(invalidReason)
   }
 })
 module.exports = router;

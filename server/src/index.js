@@ -18,7 +18,7 @@ function main() {
   const httpServer = http.createServer(app);
   const io = new Server(httpServer, {
     cors: {
-      origin: 'https://closedmind.vercel.app',
+      origin: process.env.NODE_ENV === 'production' ? 'https://closedmind.vercel.app' : 'http://localhost:3000',
       credentials: true,
     }
   });

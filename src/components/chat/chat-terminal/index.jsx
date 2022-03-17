@@ -23,14 +23,10 @@ function ChatTerminal() {
   }
 
   useEffect(() => {
-    console.log('🥶 Finished whole render');
     inputRef.current.focus();
   }, [])
 
   useEffect(() => {
-
-    console.log('🐢 Setting all socket listeners');
-
     // if exist a room id on the path (/room/:id) it joins automatically
     // if (locationParams.room)
     //   CONSOLE_ACTIONS['/join']([locationParams.room])
@@ -83,7 +79,7 @@ function ChatTerminal() {
       }
     });
     userSocket.on('connect_error', (err) => {
-      console.log('CONNECTION ERROR:', err.message);
+      console.log('SOCKET CONNECTION ERROR:', err.message, ', If you see this, you should leave me a message');
       setTimeout(() => {
         userSocket.connect();
       }, 1000);
@@ -91,7 +87,6 @@ function ChatTerminal() {
     
     return () => {
       userSocket.removeAllListeners();
-      console.log('🐌 Removing all socket listeners');
     };
 
   }, [store.room_code])

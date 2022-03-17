@@ -168,7 +168,6 @@ function CommandInput(props, ref) {
       }
       let userCommand = userInput.split(' ')[0];
       let userArguments = userInput.split(' ').slice(1).filter(arg => arg.length > 0)
-      console.log(userCommand, userArguments);
 
       for (let command of availableCommands) {
 

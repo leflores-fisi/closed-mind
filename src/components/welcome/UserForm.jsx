@@ -4,7 +4,7 @@ import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/
 import { userSocket } from "../userSocket";
 import ColorPicker from "./ColorPicker";
 import Focusable from '../overlay/Focusable';
-import { apiURL } from '../userSocket';
+import { API_URL } from '../userSocket';
 import './UserForm.scss'
 
 function UserForm({ onSuccessfullySubmit = () => {}}) {
@@ -35,10 +35,9 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
   const validateAndConnectToServer = async (e) => {
     e.preventDefault();
     setValidatingUsername(true);
-    console.log(username)
 
     try {
-      const response = await fetch(`${apiURL}/username_validation`, {
+      const response = await fetch(`${API_URL}/username_validation`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({

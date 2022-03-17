@@ -6,7 +6,7 @@ import useAppReducer   from '../../hooks/useAppReducer';
 import UserForm        from '../welcome/UserForm';
 import ClosedmindHeader from '../ClosedmindHeader';
 import closedmind_sad_logo from '../../assets/closedmind-sad-logo.png';
-import { apiURL } from '../userSocket';
+import { API_URL } from '../userSocket';
 import './InvitationWindow.scss';
 
 function InvitationWindow({ params }) {
@@ -31,13 +31,12 @@ function InvitationWindow({ params }) {
 
   useEffect(async () => {
     try {
-      const url = `${apiURL}/invitations/${params.code}`
+      const url = `${API_URL}/invitations/${params.code}`
       const response = await fetch(url);
       setIsLoading(false);
   
       if (response.status === 200) {
         const invitation = await response.json();
-        console.log(invitation)
         console.log('ROOM:', invitation.room_code);
         setFetchedInvitation(invitation);
         setIsValid(true);
