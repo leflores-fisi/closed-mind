@@ -1,6 +1,7 @@
 import io from 'socket.io-client';
+export const apiURL = 'https://closedmind-api.herokuapp.com'
 
-export const userSocket = io('http://localhost:8001', {
+export const userSocket = io(apiURL, {
   withCredentials: true,
   autoConnect: false,
   requestTimeout: 5000

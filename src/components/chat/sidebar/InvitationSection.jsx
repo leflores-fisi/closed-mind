@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import useAppReducer from '../../../hooks/useAppReducer';
 import NewInvitationForm from './NewInvitationForm';
+import { apiURL } from '../../userSocket';
 import './InvitationSection.scss';
 
 function InvitationLink() {
@@ -26,7 +27,7 @@ function InvitationLink() {
   }
   const generateInvitation = async (invitation_description) => {
     try {
-      let url = 'http://localhost:8001/invitations'
+      let url = `${apiURL}/invitations`
       const response = await fetch(url, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
@@ -45,7 +46,7 @@ function InvitationLink() {
     }
   }
   const deleteInvitation = async () => {
-    let url = `http://localhost:8001/invitations/${fetchedInvitation.invitation_code}`
+    let url = `${apiURL}/invitations/${fetchedInvitation.invitation_code}`
     const response = await fetch(url, {
       method: 'DELETE',
     });

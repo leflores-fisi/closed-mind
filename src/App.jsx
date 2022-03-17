@@ -13,11 +13,11 @@ function App() {
   const [location, setLocation] = useLocation();
   const routes = ['/invite'];
 
-  // useEffect(() => {
-  //   if (!routes.some(route => route === location.substring(0, location.substring(1).indexOf('/') + 1))) {
-  //     setLocation('/')
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (!routes.some(route => route === location.substring(0, location.substring(1).indexOf('/') + 1))) {
+      setLocation('/')
+    }
+  }, [])
 
   return (
     <div className='app'>

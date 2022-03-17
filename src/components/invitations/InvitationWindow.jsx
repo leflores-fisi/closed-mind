@@ -5,7 +5,8 @@ import { userSocket }  from '../userSocket';
 import useAppReducer   from '../../hooks/useAppReducer';
 import UserForm        from '../welcome/UserForm';
 import ClosedmindHeader from '../ClosedmindHeader';
-import closedmind_sad_logo from '../../assets/closedmind-sad-logo.png'
+import closedmind_sad_logo from '../../assets/closedmind-sad-logo.png';
+import { apiURL } from '../userSocket';
 import './InvitationWindow.scss';
 
 function InvitationWindow({ params }) {
@@ -30,7 +31,7 @@ function InvitationWindow({ params }) {
 
   useEffect(async () => {
     try {
-      const url = `http://localhost:8001/invitations/${params.code}`
+      const url = `${apiURL}/invitations/${params.code}`
       const response = await fetch(url);
       setIsLoading(false);
   

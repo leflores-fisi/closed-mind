@@ -11,7 +11,7 @@ const apiRoutes  = require('./routes/api.routes');
 
 const generateRoomCode = require('./helpers/generateRoomCode');
 
-const PORT = Number(process.env.PORT);
+const PORT = Number(process.env.PORT) || 8001;
 
 function main() {
   const app = express();

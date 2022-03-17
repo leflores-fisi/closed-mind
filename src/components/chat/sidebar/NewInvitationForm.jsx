@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { apiURL } from '../../userSocket';
 import useAppReducer from './../../../hooks/useAppReducer';
 
 function NewInvitationForm({ onSubmit, onCancel }) {
@@ -11,7 +12,7 @@ function NewInvitationForm({ onSubmit, onCancel }) {
     <form className='invitation-form' id='create-invitation' onSubmit={(e) => {
       e.preventDefault();
       onSubmit(textRef.current.value);
-      fetch(`http://localhost:8001/rooms/${store.room_code}/edit-config`, {
+      fetch(`${apiURL}/rooms/${store.room_code}/edit-config`, {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
