@@ -3,6 +3,7 @@ import MessageLine   from './MessageLine';
 import ServerLogLine from './ServerLogLine';
 import ErrorLine     from './ErrorLine';
 import SelfMessageLine from './SelfMessageLine';
+import './TerminalLines.scss';
 
 function CommandLine({ line }) {
 

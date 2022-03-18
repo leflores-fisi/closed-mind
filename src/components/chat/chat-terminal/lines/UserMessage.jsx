@@ -1,4 +1,4 @@
-import { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import useDateFormatter from '../../../../hooks/useDateFormatter';
 import useChatConfig from '../../../../hooks/useChatConfig';
 
@@ -6,13 +6,21 @@ function UserMessage({ date, userId, userColor, text }) {
 
   const {userCodeVisible} = useChatConfig();
   const formattedDate = useDateFormatter(date);
-  const [formattedText, setFormattedText] = useState(null);
+  const [formattedTextOnBlocks, setFormattedText] = useState(null);
 
-  // This check if the message contains links and if it does it formats them as anchors <a/>
-  const FormatText = () => {
+  /* This check if the message contains links and if it does it formats them as anchors <a/>
+   *
+   * Sample: text = "Check https://artsandculture.google.com and search for Blob Opera, its just WOW"
+   * Outputs: [
+   *   (0): <span>Check </span>,
+   *   (1): <a ...>https://artsandculture.google.com</a>,
+   *   (2): <span> and search for Blob Opera, its just WOW</span>
+   * ]
+  */
+  const FormatTextOnBlocks = () => {
     let words = text.split(' ');
-    let pending = [];
-    let elements = [];
+    let TextBlocks = [];
+    let pendingBlock = [];
     let lastWasLink = false;
 
     for (let i = 0; i < words.length; i++) {
@@ -20,22 +28,22 @@ function UserMessage({ date, userId, userColor, text }) {
 
       if ((word.startsWith('http://') || word.startsWith('https://')) && word.includes('.') && word.at(-1) !== '.') {
         if (i !== 0)
-          elements.push(<span>{(lastWasLink || elements.length === 0 ? '' : ' ') + pending.join(' ').concat(' ')}</span>);
-        elements.push(<a target='_blank' href={word}>{word}</a>)
-        pending.length = 0;
+          TextBlocks.push(<span>{(lastWasLink || TextBlocks.length === 0 ? '' : ' ') + pendingBlock.join(' ').concat(' ')}</span>);
+        TextBlocks.push(<a target='_blank' href={word}>{word}</a>)
+        pendingBlock.length = 0;
         lastWasLink = true;
       }
       else {
-        pending.push(word);
+        pendingBlock.push(word);
         lastWasLink = false;
       };
     }
-    if (pending.length > 0) elements.push(<span>{(elements.length === 0 ? '' : ' ') + pending.join(' ')}</span>)
-    return elements;
+    if (pendingBlock.length > 0) TextBlocks.push(<span>{(TextBlocks.length === 0 ? '' : ' ') + pendingBlock.join(' ')}</span>)
+    return TextBlocks.map((block, i) => <React.Fragment key={i}>{block}</React.Fragment>);
   }
 
   useEffect(() => {
-    setFormattedText(FormatText());
+    setFormattedText(FormatTextOnBlocks());
   }, [])
   
   return (
@@ -53,7 +61,7 @@ function UserMessage({ date, userId, userColor, text }) {
         }
       </span>
       <span className='text'>
-        {formattedText}
+        {formattedTextOnBlocks}
       </span>
     </div>
   );
