@@ -21,7 +21,7 @@ function UserMessage({ date, userId, userColor, text }) {
       if ((word.startsWith('http://') || word.startsWith('https://')) && word.includes('.') && word.at(-1) !== '.') {
         if (i !== 0)
           elements.push(<span>{(lastWasLink || elements.length === 0 ? '' : ' ') + pending.join(' ').concat(' ')}</span>);
-        elements.push(<a href={word}>{word}</a>)
+        elements.push(<a target='_blank' href={word}>{word}</a>)
         pending.length = 0;
         lastWasLink = true;
       }

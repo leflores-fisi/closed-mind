@@ -63,7 +63,7 @@ function AppOverlay() {
   const handleEndDrag = (e) => {
     clearListeners();
     const ChatTerminal = document.querySelector('.chat-terminal');
-    ChatTerminal.style.transition = 'width 1s, left 0.5s';
+    ChatTerminal.style.transition = 'width 1s, left 0.3s';
     ChatTerminal.addEventListener('transitionend', handleChatTransitionEnd)
 
     let dragVelocity = ((e.clientX - clickPosRef.current.x) / (Date.now() - startTimestamp.current));

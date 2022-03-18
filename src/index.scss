@@ -6,12 +6,12 @@
   --loading-box-color: #3c3941;
 
   --background:          #111011;
-  --foreground:          #9e9ca1;
+  --foreground:          #b4b2bb;
   --cursorColor:         #4FA160;
   --selectionBackground: #4f5c5b;
-  --black:        #161616;
+  --black:        #0f0f0f;
   --brightBlack:  #444347;
-  --gray:         #767779;
+  --gray:         #84838a;
   --white:        #b5b7c0;
   --brightWhite:  #f5e9f5;
 
@@ -68,11 +68,13 @@ html {
   scroll-behavior: smooth;
   height: 100%;
   color: var(--foreground);
+  min-width: 320px;
 }
 body {
   background-color: var(--background);
   overflow: hidden;
   height: 100%;
+  min-width: 320px;
 }
 
 // Text selection colors
@@ -120,6 +122,7 @@ button {
   border-radius: 3px;
   cursor: pointer;
   font-weight: 600;
+  color: var(--foreground);
 }
 a[href] {
   color: #5a6673;

@@ -1,29 +1,33 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { connectToRoom, disconnectFromRoom, appendMessage,
          appendUser, popUser, disconnectSocket, appendErrorMessage } from '../../../context/actions';
 
 import { userSocket } from '../../userSocket'
+import { useForceUpdate } from '../../../hooks/useForceUpdate';
 import useAppReducer  from '../../../hooks/useAppReducer';
 
 import WindowHeader  from '../../WindowHeader';
 import CommandInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
-import ChatOptions   from './ChatOptions';
+import TerminalRoomHeader from './TerminalRoomHeader';
+import TerminalWelcomeHeader from './TerminalWelcomeHeader';
 import './ChatTerminal.scss';
 
 function ChatTerminal() {
 
   const {store, dispatch} = useAppReducer();
+  const [areHeaderSnippetsClosed, setAreHeaderSnippetsClosed] = useState(false);
+  const forceUpdate = useForceUpdate();
 
   const inputRef = useRef(null);
 
   const handleAutofocus = () => {
     if (window.getSelection().toString() === '')
-      inputRef.current.focus()
+      inputRef.current?.focus();
   }
 
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   }, [])
 
   useEffect(() => {
@@ -35,8 +39,8 @@ function ChatTerminal() {
     userSocket.on('room-created', ({createdChatRoom}) => {
       dispatch(connectToRoom({chatRoom: createdChatRoom}));
     });
-    userSocket.on('joined', (chatRoom) => {
-      dispatch(connectToRoom({chatRoom: chatRoom}));
+    userSocket.on('joined', ({joinedChatRoom}) => {
+      dispatch(connectToRoom({chatRoom: joinedChatRoom}));
     });
     userSocket.on('message-received', ({ date, user_id, user_color, message }) => {
       dispatch(appendMessage({
@@ -53,9 +57,9 @@ function ChatTerminal() {
       dispatch(appendErrorMessage({ message }));
     });
     userSocket.on('pong', ({timestamp, server_log}) => {
-      const ping_log = {...server_log, text: server_log.text.concat(`${(Date.now() - timestamp)} ms`)}
-      dispatch(appendMessage(ping_log))
-    })
+      const ping_log = {...server_log, text: server_log.text.concat(`${(Date.now() - timestamp)} ms`)};
+      dispatch(appendMessage(ping_log));
+    });
 
     // listeners to <socket.to(room).emit(...)>
     userSocket.on('user-connected', ({user, server_log}) => {
@@ -93,7 +97,16 @@ function ChatTerminal() {
 
   return (
     <div className='chat-terminal' onMouseUp={handleAutofocus}>
-      <WindowHeader title='Chat' side={<ChatOptions/>}/>
+      <WindowHeader title='Chat'/>
+      {
+        store.room_code &&
+          <TerminalRoomHeader roomCode={store.room_code} usersQuantity={store.users.length}/>
+      }
+      {
+        store.room_code || areHeaderSnippetsClosed
+        ?  null
+        : <TerminalWelcomeHeader input={inputRef} forceUpdate={forceUpdate} close={setAreHeaderSnippetsClosed}/>
+      }
       <TerminalLines lines={store.messages}/>
       <CommandInput ref={inputRef}/>
     </div>

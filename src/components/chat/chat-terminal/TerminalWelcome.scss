@@ -1,0 +1,74 @@
+
+.terminal-welcome {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 2px solid black;
+  
+  header {
+    color: var(--brightCyan);
+    margin-bottom: 10px;
+  }
+  .close-btn {
+    position: absolute;
+    padding: 2px;
+    font-size: 1.2rem;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    font-weight: 900;
+    border-radius: 50%;
+    background-color: var(--black);
+    color: var(--gray);
+    aspect-ratio: 1/1;
+
+    &:hover {
+      color: var(--brightRed);
+    }
+    &:active {
+      background-color: black;
+    }
+  }
+  .content-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    .snippet {
+      margin: 5px 12px;
+      
+      .snippet-button {
+        color: var(--foreground);
+        border-radius: 2px;
+        border: 1px solid var(--brightBlack);
+        background-color: var(--black);
+        font-weight: 300;
+        font-size: 0.8rem;
+        height: 25px;
+        min-width: 200px;
+        width: 100%;
+      }
+    }
+  }
+}
+
+.terminal-room-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 15px;
+  background-color: var(--black);
+  border-bottom: 1px solid black;
+
+  .room-name {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+  .users-online {
+    font-size: 0.75rem;
+    color: var(--gray);
+  }
+}

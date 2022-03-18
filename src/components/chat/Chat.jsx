@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { ChatConfigContextProvider } from './../../context/chatConfigContext';
-import useAppReducer from '../../hooks/useAppReducer';
 import ChatTerminal from './chat-terminal';
 import ResizeColumn from './ResizeColumn';
 import ChatSidebar from './sidebar';

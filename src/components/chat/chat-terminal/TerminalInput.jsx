@@ -17,10 +17,6 @@ function CommandInput(props, ref) {
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
 
-  useEffect(() => {
-    console.log('Autocompleted');
-  });
-
   const CONSOLE_ACTIONS = {
     
     '/create': (args) => {
@@ -124,7 +120,7 @@ function CommandInput(props, ref) {
     }
   };
 
-  const handleAutocomplete = (e) => {
+  const handleAutocomplete = () => {
     let availableCommands = [
       {
         key: '/commands',
@@ -155,7 +151,7 @@ function CommandInput(props, ref) {
         arguments: []
       }
     ];
-    let userInput = e.target.value;
+    let userInput = ref.current.value;
 
     
     if (userInput.trim().startsWith('/')) {
@@ -286,6 +282,10 @@ function CommandInput(props, ref) {
     }
     handleAutocomplete(e);
   };
+  useEffect(() => {
+    console.log('Autocompleted', ref.current.value);
+    handleAutocomplete();
+  }, [ref.current?.value])
 
   return (
     <div className='terminal-input-container'>
@@ -299,8 +299,7 @@ function CommandInput(props, ref) {
           onKeyDown={handleKeys}
           onHeightChange={handleNewLine}
         />
-        <div
-          className='autocomplete'
+        <div className='autocomplete'
         >{autocompletePlaceholder}</div>
       </div>
     </div>

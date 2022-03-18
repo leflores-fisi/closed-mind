@@ -99,7 +99,7 @@ function main() {
             console.log('😐 Fetched');
             console.timeLog('fetching')
             socket.join(room_code);
-            socket.emit('joined', joinedChatRoom);
+            socket.emit('joined', {joinedChatRoom});
             socket.to(room_code).emit('user-connected', {user, server_log});
             socket.currentRoomCode = room_code;
             socket.currentUserId = user.user_id;
