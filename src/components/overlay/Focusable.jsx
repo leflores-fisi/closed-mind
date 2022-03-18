@@ -5,8 +5,8 @@ function Focusable({ title, children, direction = 'up'}) {
   const wrapperRef = useRef(null);
 
   const showTitle = () => {
-    let titleElement = document.querySelector('.app-overlay .title');
-    titleElement.textContent = title;
+    let TitleFrame = document.querySelector('.app-overlay .title');
+    TitleFrame.textContent = title;
 
     const {
       x:      childX,
@@ -17,26 +17,27 @@ function Focusable({ title, children, direction = 'up'}) {
 
     const {
       width: titleWidth
-    } = titleElement.getBoundingClientRect();
+    } = TitleFrame.getBoundingClientRect();
 
     let isOverflowing = childX + (titleWidth/2) + 5 > document.body.clientWidth;
 
-    titleElement.style.left = (
+    TitleFrame.style.left = (
       isOverflowing ? `${document.body.clientWidth - titleWidth - 5}px`
                     : `${childX - (titleWidth/2) + (childWidth/2)}px`
     )
-    titleElement.style.top  = (
+    TitleFrame.style.top  = (
       direction === 'up'   ? `${childY - childHeight - 5}px` :
       direction === 'down' ? `${childY + childHeight + 15}px`
       : ''
     )
-    titleElement.classList.add('showing');
+    TitleFrame.classList.add('showing');
   }
   const hideTitle = () => {
-    document.querySelector('.app-overlay .title').classList.remove('showing');
-    document.querySelector('.app-overlay .title').textContent = '';
-    document.querySelector('.app-overlay .title').style.left  = `0px`;
-    document.querySelector('.app-overlay .title').style.top   = `0px`;
+    const TitleFrame = document.querySelector('.app-overlay .title');
+    TitleFrame.classList.remove('showing');
+    TitleFrame.textContent = '';
+    TitleFrame.style.left  = `0px`;
+    TitleFrame.style.top   = `0px`;
   }
 
   return (
@@ -45,6 +46,7 @@ function Focusable({ title, children, direction = 'up'}) {
       ref={wrapperRef}
       onMouseEnter={showTitle}
       onMouseOut={hideTitle}
+      onBlur={hideTitle}
     >
       {children}
     </div>
