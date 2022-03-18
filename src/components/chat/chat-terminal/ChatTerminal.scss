@@ -1,6 +1,5 @@
 
 .chat-terminal {
-  position: relative;
 
   .chat-options {
     display: flex;
@@ -20,8 +19,12 @@
       border-radius: 0;
     }
   }
+  .command-lines-wrapper {
+    max-height: 100%;
+    overflow-y: auto;
+  }
   .command-lines {
-    padding: 0 5px;
+    padding: 5px 5px 0 5px;
 
     .command-line {
       min-height: 30px;

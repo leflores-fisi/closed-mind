@@ -7,7 +7,7 @@ function TerminalLines({ lines }) {
 
   useEffect(() => {
     console.log('Rendered all lines!');
-    //linesRef.current.lastChild?.scrollIntoView();
+    linesRef.current.lastChild?.scrollIntoView();
   })
 
   return (

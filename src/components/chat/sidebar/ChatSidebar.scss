@@ -5,6 +5,7 @@
     display: flex;
     align-items: center;
     padding-left: 10px;
+    padding-top: 10px;
     font-size: 0.8rem;
     margin-bottom: 15px;
     user-select: none;
@@ -16,6 +17,7 @@
   }
   .sidebar-information {
     flex: auto;
+    overflow: auto;
 
     .user-information {
       display: flex;
