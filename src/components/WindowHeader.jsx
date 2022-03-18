@@ -1,9 +1,8 @@
 
-function Header({ title, side }) {
+function Header({ title }) {
   return (
     <header className='window-header'>
       <div className='window-title' title={title}>{title}</div>
-      {side}
     </header>
   )
 }

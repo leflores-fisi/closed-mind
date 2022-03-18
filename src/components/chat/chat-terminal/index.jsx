@@ -38,9 +38,11 @@ function ChatTerminal() {
     // listeners to <socket.emit(...)>
     userSocket.on('room-created', ({createdChatRoom}) => {
       dispatch(connectToRoom({chatRoom: createdChatRoom}));
+      localStorage.setItem('last_room_code', createdChatRoom.code);
     });
     userSocket.on('joined', ({joinedChatRoom}) => {
       dispatch(connectToRoom({chatRoom: joinedChatRoom}));
+      localStorage.setItem('last_room_code', joinedChatRoom.code);
     });
     userSocket.on('message-received', ({ date, user_id, user_color, message }) => {
       dispatch(appendMessage({
@@ -100,12 +102,20 @@ function ChatTerminal() {
       <WindowHeader title='Chat'/>
       {
         store.room_code &&
-          <TerminalRoomHeader roomCode={store.room_code} usersQuantity={store.users.length}/>
+          <TerminalRoomHeader
+            roomCode={store.room_code}
+            usersQuantity={store.users.length}
+          />
       }
       {
         store.room_code || areHeaderSnippetsClosed
         ?  null
-        : <TerminalWelcomeHeader input={inputRef} forceUpdate={forceUpdate} close={setAreHeaderSnippetsClosed}/>
+        : <TerminalWelcomeHeader
+            input={inputRef}
+            forceUpdate={forceUpdate}
+            selfClose={setAreHeaderSnippetsClosed}
+            lastRoom={store.last_room_code}
+          />
       }
       <TerminalLines lines={store.messages}/>
       <CommandInput ref={inputRef}/>

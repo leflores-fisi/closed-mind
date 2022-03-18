@@ -1,6 +1,6 @@
 import './TerminalWelcome.scss';
 
-function TerminalWelcomeHeader({ input, forceUpdate, close }) {
+function TerminalWelcomeHeader({ input, forceUpdate, selfClose, lastRoom }) {
 
   const writeOnTerminal = (command) => {
     input.current.value = command;
@@ -9,7 +9,7 @@ function TerminalWelcomeHeader({ input, forceUpdate, close }) {
   
   return (
     <div className='terminal-welcome'>
-      <button className='close-btn' onClick={() => {close(true)}}>X</button>
+      <button className='close-btn' onClick={() => {selfClose(true)}}>X</button>
       <header className='header'>〰Welcome to closedmind!</header>
       <div className='content-container'>
         <div className='snippet'>
@@ -17,9 +17,13 @@ function TerminalWelcomeHeader({ input, forceUpdate, close }) {
             Create a room
           </button>
         </div>
-        <div className='snippet' onClick={() => writeOnTerminal('/join ')}>
+        <div className='snippet' onClick={() => writeOnTerminal('/join ' + (lastRoom ? lastRoom : ''))}>
           <button className='snippet-button'>
-            Join to a room
+            {
+              lastRoom
+              ? 'Join to last room'
+              : 'Join to a room'
+            }
           </button>
         </div>
       </div>

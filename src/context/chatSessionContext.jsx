@@ -13,7 +13,8 @@ export function ChatSessionContextProvider ({ children }) {
     user_code: '',  // "#af12"
     user_id: '',    // "myUsername#af12"
     user_color: 'default', // css var name
-    room_code: '',  // "room#10a2"
+    room_code: '',  // "room#10a2",
+    last_room_code : localStorage.getItem('last_room_code') || '',
     host: '',
     created_date: undefined,
     invitations_only: undefined,
