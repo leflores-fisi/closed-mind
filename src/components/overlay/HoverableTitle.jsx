@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 
-function Focusable({ title, children, direction = 'up'}) {
+function HoverableTitle({ title, children, direction = 'up'}) {
 
   const wrapperRef = useRef(null);
 
@@ -42,9 +42,10 @@ function Focusable({ title, children, direction = 'up'}) {
 
   return (
     <div
+      role={'dialog'}
       className='focusable'
       ref={wrapperRef}
-      onMouseEnter={showTitle}
+      onMouseOver={showTitle}
       onMouseOut={hideTitle}
       onBlur={hideTitle}
     >
@@ -52,4 +53,4 @@ function Focusable({ title, children, direction = 'up'}) {
     </div>
   );
 }
-export default Focusable;
+export default HoverableTitle;

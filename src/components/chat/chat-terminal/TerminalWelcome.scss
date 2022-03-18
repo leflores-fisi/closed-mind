@@ -6,10 +6,12 @@
   align-items: center;
   padding: 15px 0;
   border-bottom: 2px solid black;
+  overflow: hidden;
   
   header {
     color: var(--brightCyan);
     margin-bottom: 10px;
+    text-align: center;
   }
   .close-btn {
     position: absolute;

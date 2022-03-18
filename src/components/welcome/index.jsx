@@ -12,7 +12,7 @@ function WelcomeWindow() {
         <div className='container'>
           <div className='box-wrapper'>
             <figure>
-              <h1 className='logo'>〰closed mind〰</h1>
+              <h1 className='logo'>〰closedmind〰</h1>
               <h3 className='slogan'>
                 <i>minimalist</i> and <i>fugacious</i> communication
               </h3>

@@ -3,7 +3,7 @@ import useAppReducer from "../../hooks/useAppReducer"
 import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/actions";
 import { userSocket } from "../userSocket";
 import ColorPicker from "./ColorPicker";
-import Focusable from '../overlay/Focusable';
+import HoverableTitle from '../overlay/HoverableTitle';
 import { API_URL } from '../userSocket';
 import './UserForm.scss'
 
@@ -104,9 +104,9 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
           <div className='unique-id'>
             {userCode}
           </div>
-          <Focusable title='Regenerate id'>
+          <HoverableTitle title='Regenerate id'>
             <button type='button' onClick={generateUserId}>♻</button>
-          </Focusable>
+          </HoverableTitle>
         </div>
         <ColorPicker onPick={handleColorPick}/>
         <div className='user-form__connect'>

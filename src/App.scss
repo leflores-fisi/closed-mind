@@ -58,12 +58,15 @@
       flex: 0 0 var(--sidebar-width);
       margin: 10px 0px 10px 10px;
       height: calc(100% - 20px);
+      min-width: 0;
+      overflow: hidden;
     }
     .resize-column {
       width: 10px;
       background-color: transparent;
       height: 100%;
       cursor: col-resize;
+      flex-shrink: 0;
     }
     .chat-terminal {
       display: flex;
@@ -76,6 +79,8 @@
       transition: width 1s;
       height: calc(100% - 20px);
       flex-grow: 1;
+      min-width: 0;
+      overflow: hidden;
     }
     @media only screen and( max-width: 800px) {
       .chat-sidebar {

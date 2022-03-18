@@ -8,6 +8,10 @@
       min-height: 30px;
       padding: 5px 8px;
       border-bottom: 1px solid black;
+      word-break: break-word;
+      white-space: pre-wrap;
+      min-width: 300px;
+
       .date {
         margin-right: 7px;
         flex-shrink: 0;
@@ -21,8 +25,6 @@
     }
     .user-message {
       display: flex;
-      word-break: break-word;
-      white-space: pre-wrap;
       
       .date {
         justify-self: flex-end;
