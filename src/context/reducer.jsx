@@ -40,7 +40,11 @@ export const reducer = (state, action) => {
         created_date: chatRoom.created_date,
         invitations_only: chatRoom.invitations_only,
         users: chatRoom.users,
-        messages: chatRoom.messages
+        messages: chatRoom.messages.concat({
+          from: 'Server',
+          text: `You joined to ${chatRoom.code}`,
+          date: new Date().toUTCString()
+        })
       };
     case '@commands/leave':
       return {
