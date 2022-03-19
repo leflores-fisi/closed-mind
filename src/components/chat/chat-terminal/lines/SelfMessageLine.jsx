@@ -9,6 +9,13 @@ function SelMessageLine({ text, date }) {
   const {store} = useAppReducer();
 
   useEffect(() => {
+    const Wrapper = document.querySelector('.command-lines-wrapper');
+    const Lines   = document.querySelector('.command-lines');
+
+    setTimeout(() => {
+      Wrapper.scrollTo(0, Lines.getBoundingClientRect().height);
+    }, 0)
+
     if (!sent && store.room_code) {
       userSocket.on('message-sent', () => {
         setSent(true);

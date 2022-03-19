@@ -31,9 +31,13 @@ function ChatTerminal() {
   }, [])
 
   useEffect(() => {
-    // if exist a room id on the path (/room/:id) it joins automatically
-    // if (locationParams.room)
-    //   CONSOLE_ACTIONS['/join']([locationParams.room])
+    const Wrapper = document.querySelector('.command-lines-wrapper');
+    const Lines   = document.querySelector('.command-lines');
+    Wrapper.scrollTo(0, Lines.getBoundingClientRect().height);
+    console.log('scrolling')
+  }, [store.room_code])
+
+  useEffect(() => {
 
     // listeners to <socket.emit(...)>
     userSocket.on('room-created', ({createdChatRoom}) => {
