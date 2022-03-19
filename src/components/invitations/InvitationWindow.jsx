@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 import { userSocket }  from '../userSocket';
@@ -11,24 +11,24 @@ import './InvitationWindow.scss';
 
 function InvitationWindow({ params }) {
   
-  const {store} = useAppReducer();
   const [location, setLocation] = useLocation();
   const [fetchedInvitation, setFetchedInvitation] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [isValid, setIsValid] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = ({userId, userColor}) => {
     userSocket.emit('joining-to-chat', {
       room_code: fetchedInvitation.room_code,
       user: {
-        user_id: store.user_id,
-        user_color: store.user_color
+        user_id: userId,
+        user_color: userColor
       },
       from_invitation: true
     });
     setLocation('/');
-  }
+  };
 
+  // Fetching invitation on the API
   useEffect(async () => {
     try {
       const url = `${API_URL}/invitations/${params.code}`

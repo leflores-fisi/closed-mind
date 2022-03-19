@@ -2,8 +2,6 @@
 
 export const reducer = (state, action) => {
 
-  console.log('On reducer:', action.type);
-
   switch (action.type) {
 
     case '@user/setUsername':

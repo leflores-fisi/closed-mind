@@ -24,7 +24,7 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
     let usernameInput = e.target.value;
     setInvalidReason('');
     setUsername(usernameInput);
-    generateUserId(usernameInput);
+    generateUserId();
     setIsValidUsername(validateUsername(usernameInput));
   }
   const generateUserId = () => {
@@ -51,6 +51,7 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
         setInvalidReason('');
         setValidatingUsername(false);
         userSocket.removeAllListeners();
+        console.log('username:', username.trim().replaceAll(' ', '-'), userCode)
         dispatch(setGlobalUsername({
           username: username.trim().replaceAll(' ', '-'),
           userCode: userCode
@@ -83,13 +84,12 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
     inputRef.current.focus();
   }, [])
   
-
   return (
     <div className='user-form'>
       <form className='user-form__username' id='connect-socket-form' 
         onSubmit={async (e) => {
           const valid = await validateAndConnectToServer(e);
-          if (valid) onSuccessfullySubmit();
+          if (valid) onSuccessfullySubmit({ userId: username + userCode, userColor: userColor });
         }
       }>
         <div className='input-title'>Username:</div>
