@@ -26,9 +26,9 @@ export const disconnectSocket = ({}) => {
   };
 };
 
-export const connectToRoom = ({ chatRoom }) => {
+export const joinToRoom = ({ chatRoom }) => {
   return {
-    type: '@commands/connect',
+    type: '@commands/join',
     payload: { chatRoom }
   };
 };

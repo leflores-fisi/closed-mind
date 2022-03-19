@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { connectToRoom, disconnectFromRoom, appendMessage,
+import { joinToRoom, disconnectFromRoom, appendMessage,
          appendUser, popUser, disconnectSocket, appendErrorMessage } from '../../../context/actions';
 
 import { userSocket } from '../../userSocket'
@@ -37,11 +37,11 @@ function ChatTerminal() {
 
     // listeners to <socket.emit(...)>
     userSocket.on('room-created', ({createdChatRoom}) => {
-      dispatch(connectToRoom({chatRoom: createdChatRoom}));
+      dispatch(joinToRoom({chatRoom: createdChatRoom}));
       localStorage.setItem('last_room_code', createdChatRoom.code);
     });
     userSocket.on('joined', ({joinedChatRoom}) => {
-      dispatch(connectToRoom({chatRoom: joinedChatRoom}));
+      dispatch(joinToRoom({chatRoom: joinedChatRoom}));
       localStorage.setItem('last_room_code', joinedChatRoom.code);
     });
     userSocket.on('message-received', ({ date, user_id, user_color, message }) => {

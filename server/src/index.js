@@ -50,7 +50,11 @@ function main() {
         users: [
           {user_id: host.user_id, user_color: host.user_color}
         ],
-        messages: []
+        messages: [{
+          from: 'Server',
+          text: `${host.user_id} created ${room_code}!!`,
+          date: new Date().toUTCString()
+        }]
       });
       newChatRoom.save().then(createdChatRoom => {
         socket.join(room_code);
@@ -100,7 +104,7 @@ function main() {
             console.timeLog('fetching')
             socket.join(room_code);
             socket.emit('joined', {joinedChatRoom});
-            socket.to(room_code).emit('user-connected', {user, server_log});
+            socket.broadcast.to(room_code).emit('user-connected', {user, server_log});
             socket.currentRoomCode = room_code;
             socket.currentUserId = user.user_id;
             console.log(`🐌 <${joinedChatRoom.code}> ${user.user_id} joined`);

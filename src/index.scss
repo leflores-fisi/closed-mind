@@ -123,6 +123,7 @@ button {
   cursor: pointer;
   font-weight: 600;
   color: var(--foreground);
+  user-select: none;
 }
 a[href] {
   color: #5a6673;

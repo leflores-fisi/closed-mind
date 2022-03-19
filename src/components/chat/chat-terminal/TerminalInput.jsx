@@ -283,7 +283,6 @@ function CommandInput(props, ref) {
     handleAutocomplete(e);
   };
   useEffect(() => {
-    console.log('Autocompleted', ref.current.value);
     handleAutocomplete();
   }, [ref.current?.value])
 

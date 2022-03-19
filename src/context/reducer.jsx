@@ -30,7 +30,7 @@ export const reducer = (state, action) => {
         socket_is_connected: false
       };
 
-    case '@commands/connect':
+    case '@commands/join':
       let { chatRoom } = action.payload;
 
       return {
@@ -41,11 +41,7 @@ export const reducer = (state, action) => {
         created_date: chatRoom.created_date,
         invitations_only: chatRoom.invitations_only,
         users: chatRoom.users,
-        messages: chatRoom.messages.concat({
-          from: 'Server',
-          text: `You joined to ${chatRoom.code}`,
-          date: new Date().toUTCString()
-        })
+        messages: chatRoom.messages
       };
     case '@commands/leave':
       return {
