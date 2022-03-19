@@ -259,8 +259,8 @@ function CommandInput(props, ref) {
       case 'ArrowUp':
         // "If exist the line on history AND (the input has multiple lines and you are on the top OR you have only one line)"
         if ((store.commands_history.at(historyIndex-1) !== undefined)
-          && ((total_rows > 0 && ref.current.selectionStart === 0) || (total_rows === 1))) {
-            
+          && ((total_rows > 0 && ref.current.selectionStart === 0) || (historyIndex === 0 && ref.current.selectionStart === 0) || (total_rows === 1 && historyIndex !== 0))) {
+
           ref.current.value = store.commands_history.at(historyIndex-1);
           setHistoryIndex(prev => prev-1);
           ref.current.setSelectionRange(ref.current.value.length, ref.current.value.length);
@@ -291,6 +291,7 @@ function CommandInput(props, ref) {
       <div className='input-pointer'>{'>'}</div>
       <div className='input-wrapper'>
         <TextareaAutosize
+          maxRows={8}
           className='textarea-input'
           ref={ref}
           placeholder={'Type something'}
