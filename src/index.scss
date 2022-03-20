@@ -72,6 +72,8 @@ html {
 }
 body {
   background-color: var(--background);
+  position: fixed;
+  width: 100%;
   overflow: hidden;
   height: 100%;
   min-width: 320px;
