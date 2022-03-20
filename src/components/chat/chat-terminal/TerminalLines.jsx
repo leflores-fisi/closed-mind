@@ -1,5 +1,6 @@
 import {  memo, useRef } from 'react';
 import CommandLine   from './lines/CommandLine';
+import './chat-interactive/ChatInteractive.scss'
 
 function TerminalLines({ lines }) {
 

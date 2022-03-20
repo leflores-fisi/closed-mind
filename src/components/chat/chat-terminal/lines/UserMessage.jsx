@@ -1,12 +1,15 @@
 import React, { useEffect, useState, memo } from 'react';
 import useDateFormatter from '../../../../hooks/useDateFormatter';
 import useChatConfig from '../../../../hooks/useChatConfig';
+import YoutubeEmbed from '../chat-interactive/YoutubeEmbed';
+import { getYoutubeID, isURL, isYoutubeURL } from '../../../../Helpers';
 
 function UserMessage({ date, userId, userColor, text }) {
 
   const {userCodeVisible} = useChatConfig();
   const formattedDate = useDateFormatter(date);
   const [formattedTextOnBlocks, setFormattedText] = useState(null);
+  const [youtubeEmbed, setYoutubeEmbed] = useState(null);
 
   /* This check if the message contains links and if it does it formats them as anchors <a/>
    *
@@ -26,20 +29,29 @@ function UserMessage({ date, userId, userColor, text }) {
     for (let i = 0; i < words.length; i++) {
       let word = words[i];
 
-      if ((word.startsWith('http://') || word.startsWith('https://')) && word.includes('.') && word.at(-1) !== '.') {
+      if (isURL(word)) {
         if (i !== 0)
           TextBlocks.push(<span>{(lastWasLink || TextBlocks.length === 0 ? '' : ' ') + pendingBlock.join(' ').concat(' ')}</span>);
         TextBlocks.push(<a target='_blank' href={word}>{word}</a>)
         pendingBlock.length = 0;
         lastWasLink = true;
+
+        if (isYoutubeURL(word)) {
+          let youtubeVideoId = getYoutubeID(word);
+          let isPlaylist = (youtubeVideoId.length === 34);
+          setYoutubeEmbed(<YoutubeEmbed key='yt-embed' id={youtubeVideoId} isPlaylist={isPlaylist}/>);
+        }
       }
       else {
         pendingBlock.push(word);
         lastWasLink = false;
       };
     }
-    if (pendingBlock.length > 0) TextBlocks.push(<span>{(TextBlocks.length === 0 ? '' : ' ') + pendingBlock.join(' ')}</span>)
-    return TextBlocks.map((block, i) => <React.Fragment key={i}>{block}</React.Fragment>);
+    if (pendingBlock.length > 0)
+      TextBlocks.push(<span>{(TextBlocks.length === 0 ? '' : ' ') + pendingBlock.join(' ')}</span>);
+    
+    const ReactElements = TextBlocks.map((block, i) => <React.Fragment key={i}>{block}</React.Fragment>);
+    return ReactElements;
   }
 
   useEffect(() => {
@@ -47,23 +59,26 @@ function UserMessage({ date, userId, userColor, text }) {
   }, [])
   
   return (
-    <div>
-      <time className='date'>{formattedDate}</time>
-      <span className='from'>
-        <span className={userColor}>
-          {userId.substring(0, userId.indexOf('#')).concat(!userCodeVisible ? ':' : '')}
+    < >
+      <div>
+        <time className='date'>{formattedDate}</time>
+        <span className='from'>
+          <span className={userColor}>
+            {userId.substring(0, userId.indexOf('#')).concat(!userCodeVisible ? ':' : '')}
+          </span>
+          {
+            userCodeVisible && 
+              <span className={userColor} style={{opacity: 0.55}}>
+                {userId.substring(userId.indexOf('#')).concat(':')}
+              </span>
+          }
         </span>
-        {
-          userCodeVisible && 
-            <span className={userColor} style={{opacity: 0.55}}>
-              {userId.substring(userId.indexOf('#')).concat(':')}
-            </span>
-        }
-      </span>
-      <span className='text'>
-        {formattedTextOnBlocks}
-      </span>
-    </div>
+        <span className='text'>
+          {formattedTextOnBlocks}
+        </span>
+      </div>
+      {youtubeEmbed}
+    </>
   );
 }
 export default memo(UserMessage);

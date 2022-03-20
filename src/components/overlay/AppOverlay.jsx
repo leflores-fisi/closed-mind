@@ -5,6 +5,32 @@ import { pxToNumber } from '../../Helpers';
 import useAppReducer from '../../hooks/useAppReducer';
 import './AppOverlay.scss'
 
+let MOBILE_TOUCH_MODE = (
+  window.matchMedia("(pointer: coarse)").matches === true
+  && 'ontouchstart' in window
+);
+
+let dragListeners = {
+  START: MOBILE_TOUCH_MODE ? 'touchstart' : 'mousedown',
+  MOVE:  MOBILE_TOUCH_MODE ? 'touchmove'  : 'mousemove',
+  END:   MOBILE_TOUCH_MODE ? 'touchend'   : 'mouseup'
+};
+
+function getMouseCoords(e) {
+
+  let x, y;
+  if (MOBILE_TOUCH_MODE) {
+    x = e.touches[0]?.clientX || e.changedTouches[0].clientX;
+    y = e.touches[0]?.clientY || e.changedTouches[0].clientY;
+  }
+  else {
+    x = e.clientX;
+    y = e.clientY;
+  }
+
+  return {x, y};
+}
+
 function AppOverlay() {
 
   const {onMobileRes, setOnMobileRes} = useOverlay();
@@ -37,7 +63,8 @@ function AppOverlay() {
   */
   let clearListeners;
   const handleDragging = (e) => {
-    let posX = initialChatPos.current + (e.clientX - clickPosRef.current.x);
+    e.preventDefault();
+    let posX = initialChatPos.current + (getMouseCoords(e).x - clickPosRef.current.x);
     let documentTop = document.body.clientWidth - 90;
     //if (e.clientY !== clickPosRef.current.y) return;
 
@@ -61,12 +88,13 @@ function AppOverlay() {
     clearListeners();
   }
   const handleEndDrag = (e) => {
+    e.preventDefault();
     clearListeners();
     const ChatTerminal = document.querySelector('.chat-terminal');
-    ChatTerminal.style.transition = 'width 1s, left 0.3s';
+    ChatTerminal.style.transition = 'width 1s, left 0.5s';
     ChatTerminal.addEventListener('transitionend', handleChatTransitionEnd)
 
-    let dragVelocity = ((e.clientX - clickPosRef.current.x) / (Date.now() - startTimestamp.current));
+    let dragVelocity = ((getMouseCoords(e).x - clickPosRef.current.x) / (Date.now() - startTimestamp.current));
     let finalDragPos = document.querySelector('.chat-terminal').getBoundingClientRect().left;
     let halfDocument = document.body.clientWidth/2;
 
@@ -93,17 +121,18 @@ function AppOverlay() {
     }
   }
   const handleStartDrag = (e) => {
-    clickPosRef.current = {x: e.clientX, y: e.clientY};
+    e.preventDefault();
+    clickPosRef.current = getMouseCoords(e);
     startTimestamp.current = Date.now();
     initialChatPos.current = document.querySelector('.chat-terminal').getBoundingClientRect().left;
     document.querySelector('.chat-terminal').style.opacity = 1;
     document.querySelector('.chat-terminal').style.transition = 'width 1s';
-    document.body.addEventListener('mousemove', handleDragging);
-    document.body.addEventListener('mouseup', handleEndDrag);
+    document.body.addEventListener(dragListeners.MOVE, handleDragging);
+    document.body.addEventListener(dragListeners.END, handleEndDrag);
   }
   clearListeners = () => {
-    document.body.removeEventListener('mousemove', handleDragging);
-    document.body.removeEventListener('mouseup', handleEndDrag);
+    document.body.removeEventListener(dragListeners.MOVE, handleDragging);
+    document.body.removeEventListener(dragListeners.END, handleEndDrag);
     document.querySelector('.chat-terminal').removeEventListener('transitionend', handleChatTransitionEnd);
   }
 
@@ -111,12 +140,12 @@ function AppOverlay() {
     console.log('shooting', onMobileRes)
     window.addEventListener('resize', handleResize);
     if (onMobileRes && store.socket_is_connected)
-      document.body.addEventListener('mousedown', handleStartDrag);
+      document.body.addEventListener(dragListeners.START, handleStartDrag);
     else
-      document.body.removeEventListener('mousedown', handleStartDrag);
+      document.body.removeEventListener(dragListeners.START, handleStartDrag);
     return () => {
       window.removeEventListener('resize', handleResize);
-      document.body.removeEventListener('mousedown', handleStartDrag);
+      document.body.removeEventListener(dragListeners.START, handleStartDrag);
     };
   }, [onMobileRes, store.socket_is_connected])
 

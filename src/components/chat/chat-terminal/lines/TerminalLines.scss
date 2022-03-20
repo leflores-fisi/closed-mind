@@ -5,6 +5,9 @@
     padding: 5px 5px 0 5px;
 
     .command-line {
+      display: flex;
+      flex-direction: column;
+
       min-height: 30px;
       padding: 5px 8px;
       border-bottom: 1px solid black;
