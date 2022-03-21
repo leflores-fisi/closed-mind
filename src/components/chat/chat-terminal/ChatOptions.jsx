@@ -5,7 +5,6 @@ import { emitSocketEvent } from '../../userSocket';
 
 function ChatOptions() {
   const {setServerLogVisible, setUserCodeVisible} = useChatConfig();
-  const {store} = useAppReducer();
 
   return (
     <div className='chat-options' data-title={'hola'}>

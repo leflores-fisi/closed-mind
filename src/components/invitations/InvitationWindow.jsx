@@ -1,8 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { userSocket }  from '../userSocket';
-import useAppReducer   from '../../hooks/useAppReducer';
+import { emitSocketEvent }  from '../userSocket';
 import UserForm        from '../welcome/UserForm';
 import ClosedmindHeader from '../ClosedmindHeader';
 import closedmind_sad_logo from '../../assets/closedmind-sad-logo.png';
@@ -17,7 +16,7 @@ function InvitationWindow({ params }) {
   const [isValid, setIsValid] = useState(false);
 
   const handleSubmit = ({userId, userColor}) => {
-    userSocket.emit('joining-to-chat', {
+    emitSocketEvent['joining-to-chat']({
       room_code: fetchedInvitation.room_code,
       user: {
         user_id: userId,

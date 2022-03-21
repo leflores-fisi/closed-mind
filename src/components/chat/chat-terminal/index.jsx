@@ -48,11 +48,11 @@ function ChatTerminal() {
       dispatch(joinToRoom({chatRoom: joinedChatRoom}));
       localStorage.setItem('last_room_code', joinedChatRoom.code);
     });
-    userSocket.on('message-received', ({ date, user_id, user_color, message }) => {
+    userSocket.on('message-received', ({ date, user, message }) => {
       dispatch(appendMessage({
         date,
-        from: user_id,
-        color: user_color,
+        from: user.user_id,
+        color: user.user_color,
         text: message
       }));
     });

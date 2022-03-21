@@ -1,6 +1,6 @@
 import { useState, forwardRef, useRef, useEffect } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import { userSocket } from '../../userSocket';
+import { emitSocketEvent } from '../../userSocket';
 import useAppReducer from '../../../hooks/useAppReducer';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '../../../context/actions';
 import './TerminalInput.scss';
@@ -28,7 +28,7 @@ function CommandInput(props, ref) {
       }
       else {
         let room_name = args[0];
-        userSocket.emit('creating-chat-room', {
+        emitSocketEvent['creating-chat-room']({
           room_name: room_name,
           host: {
             user_id: store.user_id,
@@ -46,14 +46,14 @@ function CommandInput(props, ref) {
       }
       else  {
         let room_code = args[0];
-        userSocket.emit('joining-to-chat', {
+        emitSocketEvent['joining-to-chat']({
           room_code,
           user: {
             user_id: store.user_id,
             user_color: store.user_color
           },
           from_invitation: false
-        });
+        })
       }
     },
     '/leave': (args) => {
@@ -62,7 +62,7 @@ function CommandInput(props, ref) {
       }
       else {
         let farewell = args.join(' ');
-        userSocket.emit('leaving-from-chat', {farewell});
+        emitSocketEvent['leaving-from-chat']({ farewell });
       }
     },
     '/ban': (args) => {
@@ -80,7 +80,7 @@ function CommandInput(props, ref) {
         let banReason = args[1];
 
         if (store.users.some(user => user.user_id === dummyId))
-          userSocket.emit('banning-user', {user_id: dummyId, reason: banReason});
+          emitSocketEvent['banning-user']({user_id: dummyId, reason: banReason});
         else dispatch(appendErrorMessage({message: `This is shameful, ${dummyId} does'nt exist`}));
       }
     },
@@ -88,7 +88,7 @@ function CommandInput(props, ref) {
       dispatch(clearTerminal());
     },
     '/ping': () => {
-      userSocket.emit('ping', Date.now());
+      emitSocketEvent['ping']();
     },
     'send_message': (message) => {
       let date = new Date().toUTCString();
@@ -106,12 +106,10 @@ function CommandInput(props, ref) {
           from: '@senders/SELF',
           text: message
         }));
-        userSocket.emit('sending-message', {
-          date: date,
-          user_id: store.user_id,
-          user_color: store.user_color,
-          message: message
-        });
+        emitSocketEvent['sending-message']({
+          date,
+          message
+        })
       }
     }
   };

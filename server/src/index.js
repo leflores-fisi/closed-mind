@@ -59,7 +59,7 @@ function main() {
       newChatRoom.save().then(createdChatRoom => {
         socket.join(room_code);
         socket.currentRoomCode = room_code;
-        socket.currentUserId = host.user_id;
+        socket.currentUser = host;
         console.log('\n🗣 New room created:', room_code)
         socket.emit('room-created', {createdChatRoom})
       })
@@ -106,7 +106,7 @@ function main() {
             socket.emit('joined', {joinedChatRoom});
             socket.broadcast.to(room_code).emit('user-connected', {user, server_log});
             socket.currentRoomCode = room_code;
-            socket.currentUserId = user.user_id;
+            socket.currentUser = user;
             console.log(`🐌 <${joinedChatRoom.code}> ${user.user_id} joined`);
             console.log('🙂 Joined');
             console.timeEnd('fetching');
@@ -115,21 +115,25 @@ function main() {
       })
       // else res.status(400).end(); Handle this
     })
-    socket.on('sending-message', ({user_id, user_color, date, message}) => {
+    socket.on('sending-message', ({ date, message }) => {
 
       ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
         $push: {
           messages: {
-            from: user_id,
-            color: user_color,
+            from: socket.currentUser.user_id,
+            color: socket.currentUser.user_color,
             text: message,
             date: date
           }
         }
       }, {new: true}).then(updatedChatRoom => {
-        console.log(`🐌 <${socket.currentRoomCode}> ${user_id} says:  ${message}`);
+        console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} says:  ${message}`);
         // Emitting the event for all the sockets in its room, except itself
-        socket.broadcast.to(socket.currentRoomCode).emit('message-received', {date, user_id, user_color, message});
+        socket.broadcast.to(socket.currentRoomCode).emit('message-received', {
+          date,
+          user: socket.currentUser,
+          message
+        });
         io.to(socket.id).emit('message-sent');
       }).catch(error => console.log('Error on socket->message', error));
     })
@@ -153,7 +157,7 @@ function main() {
         })
         .then(roomSockets => {
           for (let userSocket of roomSockets) {
-            if (userSocket.currentUserId === user_id) {
+            if (userSocket.currentUser.user_id === user_id) {
               io.to(socket.currentRoomCode).emit('user-disconnected', {user_id, server_log});
               userSocket.emit('disconnected-from-room', user_id);
               userSocket.leave(socket.currentRoomCode);
@@ -167,12 +171,12 @@ function main() {
       let date = new Date().toUTCString()
       let server_log = {
         from: 'Server',
-        text: `${socket.currentUserId} has disconnected` + (farewell ? ` saying: ${farewell}` : ''),
+        text: `${socket.currentUser.user_id} has disconnected` + (farewell ? ` saying: ${farewell}` : ''),
         date: date
       }
       ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
         $pull: {
-          users: {user_id: socket.currentUserId}
+          users: {user_id: socket.currentUser.user_id}
         },
         $push: {
           messages: server_log
@@ -180,9 +184,9 @@ function main() {
       }, {new: true}).then(updatedChatRoom => {
 
         socket.leave(socket.currentRoomCode);
-        io.to(socket.currentRoomCode).emit('user-disconnected', {user_id: socket.currentUserId, server_log});
-        socket.emit('disconnected-from-room', socket.currentUserId);
-        console.log(`🐌 <${updatedChatRoom.code}> ${socket.currentUserId} has disconnected (->leaving)`);
+        io.to(socket.currentRoomCode).emit('user-disconnected', {user_id: socket.currentUser.user_id, server_log});
+        socket.emit('disconnected-from-room', socket.currentUser.user_id);
+        console.log(`🐌 <${updatedChatRoom.code}> ${socket.currentUser.user_id} has disconnected (->leaving)`);
         socket.currentRoomCode = '';
 
       }).catch(error => console.log('Error on socket->leave', error));
@@ -202,25 +206,28 @@ function main() {
       let date = new Date().toUTCString();
       let server_log = {
         from: 'Server',
-        text: `${socket.currentUserId} has disconnected`,
+        text: `${socket.currentUser.user_id} has disconnected`,
         date: date
       }
 
       if (socket.currentRoomCode) {
         ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
           $pull: {
-            users: {user_id: socket.currentUserId}
+            users: {user_id: socket.currentUser.user_id}
           },
           $push: {
             messages: server_log
           }
         }, {new: true}).then(updatedRoom => {
           socket.leave(socket.currentRoomCode);
-          io.to(socket.currentRoomCode).emit('user-disconnected', {user_id: socket.currentUserId, server_log});
+          io.to(socket.currentRoomCode).emit('user-disconnected', {
+            user_id: socket.currentUser.user_id,
+            server_log
+          });
           // socket.emit('disconnected-from-room', user_id); ?
           // (NO, because the socket has disconnected, so the event will never come
           //  unless the socket connects again, which could lead to bugs)
-          console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUserId} has disconnected (->disconnect)`);
+          console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} has disconnected (->disconnect)`);
           socket.currentRoomCode = '';
         }).catch(error => console.log('Error on socket->disconnect', error));
       }
