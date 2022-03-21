@@ -10,3 +10,9 @@ export const userSocket = io(API_URL, {
 userSocket.onAny((event, ...args) => {
   console.log('Incoming:', event, args);
 });
+
+export const emitSocketEvent = {
+  "leaving-from-chat": ({farewell} = {}) => {
+    userSocket.emit('leaving-from-chat', {farewell})
+  }
+}

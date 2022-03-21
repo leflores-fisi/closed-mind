@@ -4,6 +4,7 @@
 }
 .app {
   background-color: var(--background);
+  max-width: 100vw;
   flex: 1;
 
   .app-content {

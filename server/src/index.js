@@ -163,16 +163,16 @@ function main() {
           }
         });
     })
-    socket.on('leaving-from-chat', ({room_code, user_id, farewell}) => {
+    socket.on('leaving-from-chat', ({farewell}) => {
       let date = new Date().toUTCString()
       let server_log = {
         from: 'Server',
-        text: `${user_id} has disconnected` + (farewell ? ` saying: ${farewell}` : ''),
+        text: `${socket.currentUserId} has disconnected` + (farewell ? ` saying: ${farewell}` : ''),
         date: date
       }
-      ChatRoom.findOneAndUpdate({code: room_code}, {
+      ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
         $pull: {
-          users: {user_id: user_id}
+          users: {user_id: socket.currentUserId}
         },
         $push: {
           messages: server_log
@@ -180,9 +180,9 @@ function main() {
       }, {new: true}).then(updatedChatRoom => {
 
         socket.leave(socket.currentRoomCode);
-        io.to(room_code).emit('user-disconnected', {user_id, server_log});
-        socket.emit('disconnected-from-room', user_id);
-        console.log(`🐌 <${updatedChatRoom.code}> ${user_id} has disconnected (->leaving)`);
+        io.to(socket.currentRoomCode).emit('user-disconnected', {user_id: socket.currentUserId, server_log});
+        socket.emit('disconnected-from-room', socket.currentUserId);
+        console.log(`🐌 <${updatedChatRoom.code}> ${socket.currentUserId} has disconnected (->leaving)`);
         socket.currentRoomCode = '';
 
       }).catch(error => console.log('Error on socket->leave', error));

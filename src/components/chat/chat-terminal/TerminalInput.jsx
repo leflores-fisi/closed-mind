@@ -62,11 +62,7 @@ function CommandInput(props, ref) {
       }
       else {
         let farewell = args.join(' ');
-        userSocket.emit('leaving-from-chat', {
-          room_code: store.room_code,
-          user_id: store.user_id,
-          farewell
-        });
+        userSocket.emit('leaving-from-chat', {farewell});
       }
     },
     '/ban': (args) => {
