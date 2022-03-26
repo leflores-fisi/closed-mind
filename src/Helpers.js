@@ -35,3 +35,9 @@ export function getYoutubeID(YOUTUBE_URL) {
   })
   return videoID;
 }
+
+export function isEmptyObject(obj) {
+  if (typeof obj !== 'object') return false;
+  for (let i in obj) return false;
+  return true;
+}

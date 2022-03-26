@@ -26,10 +26,11 @@ export const emitSocketEvent = {
    * @param {string} params.date current date on UTCString
    * @param {string} params.message user message
    */
-  "sending-message": ({ date, message }) => {
+  "sending-message": ({ date, message, message_id }) => {
     userSocket.emit('sending-message', {
       date,
-      message
+      message,
+      message_id
     })
   },
   /**
@@ -78,6 +79,18 @@ export const emitSocketEvent = {
     userSocket.emit('creating-chat-room', {
       room_name,
       host
+    })
+  },
+  "new-reaction-to-message": ({ message_id, emote }) => {
+    userSocket.emit('new-reaction-to-message', {
+      message_id,
+      emote
+    })
+  },
+  "reacting-to-message": ({ message_id, emote }) => {
+    userSocket.emit('reacting-to-message', {
+      message_id,
+      emote
     })
   }
 }

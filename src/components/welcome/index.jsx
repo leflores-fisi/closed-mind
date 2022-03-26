@@ -2,8 +2,7 @@ import UserForm from './UserForm';
 import {motion} from 'framer-motion';
 import ClosedmindHeader from '../ClosedmindHeader';
 import ClosedmindLogo from '../ClosedmindLogo';
-import {BsTerminal} from 'react-icons/bs';
-import {IoPeopleOutline} from 'react-icons/io5';
+import FeaturesCard from './features/FeaturesCard';
 import './Welcome.scss';
 
 function WelcomeWindow() {
@@ -31,35 +30,7 @@ function WelcomeWindow() {
                 </h3>
               </figure>
               <div className='card'>
-                <ul className='features'>
-                  <li className='feature-item'>
-                    <div className='wrapper'>
-                      <BsTerminal className='icon' size='1.5rem' color='var(--app-color)'/>
-                      <div className='content'>
-                        <div className='title'>Create chat rooms</div>
-                        <div className='description'>Just type /create</div>
-                      </div>
-                    </div>
-                  </li>
-                  <li className='feature-item'>
-                    <div className='wrapper'>
-                      <IoPeopleOutline className='icon' size='1.5rem' color='var(--app-color)'/>
-                      <div className='content'>
-                        <div className='title'>Create chat rooms</div>
-                        <div className='description'>Just type /create</div>
-                      </div>
-                    </div>
-                  </li>
-                  <li className='feature-item'>
-                    <div className='wrapper'>
-                      <IoPeopleOutline className='icon' size='1.5rem' color='var(--app-color)'/>
-                      <div className='content'>
-                        <div className='title'>Enroll with friends</div>
-                        <div className='description'>Talk, share videos, make polls</div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
+                <FeaturesCard/>
               </div>
             </div>
           </div>

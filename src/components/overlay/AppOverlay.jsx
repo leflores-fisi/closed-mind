@@ -4,6 +4,7 @@ import useOverlay from './../../hooks/useOverlay';
 import { pxToNumber } from '../../Helpers';
 import useAppReducer from '../../hooks/useAppReducer';
 import './AppOverlay.scss'
+import EmotePicker from './EmotePicker';
 
 const ON_MOBILE_TOUCH_MODE = (
   window.matchMedia("(pointer: coarse)").matches === true
@@ -212,6 +213,14 @@ function AppOverlay() {
         initial={{opacity: 0}}
         transition={{duration: 0.2, delay: 0.25}}
       />
+      <motion.div
+        className='emote-picker'
+        whileInView={{opacity: 1}}
+        initial={{opacity: 0}}
+        transition={{duration: 0.2, delay: 0.25}}
+      >
+        <EmotePicker/>
+      </motion.div>
     </div>
   );
 }

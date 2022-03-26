@@ -7,7 +7,6 @@
     .command-line {
       display: flex;
       flex-direction: column;
-
       min-height: 30px;
       padding: 5px 8px;
       border-bottom: 1px solid black;
@@ -25,10 +24,14 @@
         font-weight: 500;
         margin-right: 7px;
       }
+      &:hover {
+        background-color: #0e0e0f;
+      }
       &:last-child {border-bottom: none;}
     }
     .user-message {
       display: flex;
+      justify-content: space-between;
       
       .date {
         justify-self: flex-end;
@@ -51,10 +54,56 @@
       }
     }
     .error-message {
+      display: flex;
+      justify-content: space-between;
       color: var(--brightRed);
     }
     .server-log {
+      display: flex;
+      justify-content: space-between;
       color: var(--gray);
+    }
+
+    .reactions-container {
+      display: flex;
+      .reaction {
+        display: flex;
+        align-items: center;
+        background-color: var(--black);
+        padding: 4px 5px;
+        margin-top: 2px;
+        user-select: none;
+        border-radius: 2px;
+        margin-right: 10px;
+        outline: 1px solid var(--brightBlack);
+        
+        .emote{
+          font-size: 0.75rem;
+          margin-right: 6px;
+        }
+        .emote-count {
+          font-size: 0.7rem;
+          color: var(--brightGray);
+        }
+
+        .selected {
+          outline: 1px solid var(--app-color);
+          background-color: var(--background);
+        }
+      }
+    }
+    .react-to-message-container {
+      position: relative;
+
+      .emotes-wrapper {
+        position: absolute;
+        right: 50%;
+        bottom: 20px;
+        z-index: 10000;
+        .emotes {
+          display: flex;
+        }
+      }
     }
   }
 }

@@ -1,4 +1,5 @@
 import { useState, forwardRef, useRef, useEffect } from 'react';
+import { nanoid } from 'nanoid';
 import TextareaAutosize from 'react-textarea-autosize';
 import { emitSocketEvent } from '../../userSocket';
 import useAppReducer from '../../../hooks/useAppReducer';
@@ -13,6 +14,7 @@ function CommandInput(props, ref) {
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const [autocompletePlaceholder, setAutocompletePlaceholder] = useState('');
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
+  const [messageToRespond, setMessageToRespond] = useState(null);
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
@@ -92,23 +94,27 @@ function CommandInput(props, ref) {
     },
     'send_message': (message) => {
       let date = new Date().toUTCString();
+      let message_id = nanoid();
       // If is not connected, only appends the message
       if (!store.room_code) {
         dispatch(appendMessage({
           date,
           from: '@senders/SELF',
-          text: message
+          text: message,
+          message_id
         }));
       }
       else {
         dispatch(appendMessage({
           date,
           from: '@senders/SELF',
-          text: message
+          text: message,
+          message_id
         }));
         emitSocketEvent['sending-message']({
           date,
-          message
+          message,
+          message_id
         })
       }
     }

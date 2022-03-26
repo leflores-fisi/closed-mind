@@ -10,6 +10,7 @@ const ChatRoom   = require('./models/ChatRoom');
 const apiRoutes  = require('./routes/api.routes');
 
 const generateRoomCode = require('./helpers/generateRoomCode');
+const { nanoid } = require('nanoid');
 
 const PORT = Number(process.env.PORT) || 8001;
 
@@ -53,7 +54,9 @@ function main() {
         messages: [{
           from: 'Server',
           text: `${host.user_id} created ${room_code}!!`,
-          date: new Date().toUTCString()
+          date: new Date().toUTCString(),
+          message_id: nanoid(),
+          reactions: []
         }]
       });
       newChatRoom.save().then(createdChatRoom => {
@@ -89,7 +92,9 @@ function main() {
           let server_log = {
             from: 'Server',
             text: `${user.user_id} has joined to the chat`,
-            date: date
+            date: date,
+            message_id: nanoid(),
+            reactions: []
           }
           ChatRoom.findOneAndUpdate({code: room_code}, {
             $push: {
@@ -115,34 +120,92 @@ function main() {
       })
       // else res.status(400).end(); Handle this
     })
-    socket.on('sending-message', ({ date, message }) => {
-
+    socket.on('sending-message', ({ date, message, message_id }) => {
       ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
         $push: {
           messages: {
             from: socket.currentUser.user_id,
             color: socket.currentUser.user_color,
             text: message,
-            date: date
+            date: date,
+            message_id: message_id,
+            reactions: []
           }
         }
       }, {new: true}).then(updatedChatRoom => {
-        console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} says:  ${message}`);
+        console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} says: ${message} with id ${message_id}`);
         // Emitting the event for all the sockets in its room, except itself
         socket.broadcast.to(socket.currentRoomCode).emit('message-received', {
           date,
           user: socket.currentUser,
-          message
+          message,
+          message_id
         });
         io.to(socket.id).emit('message-sent');
       }).catch(error => console.log('Error on socket->message', error));
     })
+    socket.on('new-reaction-to-message', ({ message_id, emote }) => {
+      console.log('REACTION TO:', message_id);
+      ChatRoom.findOneAndUpdate(
+        {
+          code: socket.currentRoomCode,
+          messages: {
+            $elemMatch: {
+              message_id: message_id
+            }
+          }
+        },
+        {
+          $push: {
+            "messages.$.reactions": {
+              emote: emote,
+              count: 1,
+              who: [socket.currentUser.user_id]
+            }
+          }
+        }, {new: true}).then(updatedChatRoom => {
+          console.log(`🐌 <${socket.currentRoomCode}> NEW REACTION from ${socket.currentUser.user_id} with ${emote} to ${message_id}`);
+          io.to(socket.currentRoomCode).emit('message-reacted', { message_id, emote, from: socket.currentUser.user_id });
+        })
+    })
+    socket.on('reacting-to-message', ({ message_id, emote }) => {
+      ChatRoom.findOneAndUpdate(
+        {
+          code: socket.currentRoomCode,
+          messages: {
+            $elemMatch: {
+              message_id: message_id
+            }
+          }
+        },
+        {
+          $inc: {
+            "messages.$.reactions.$[reaction].count": 1
+          },
+          $push: {
+            "messages.$.reactions.$[reaction].who": socket.currentUser.user_id
+          }
+        },
+        {
+          arrayFilters: [
+            {"reaction.emote": emote}
+          ],
+          new: true
+      }).then(updatedChatRoom => {
+        console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} reacts with ${emote} to ${message_id}`);
+        io.to(socket.currentRoomCode).emit('message-reacted', { message_id, emote, from: socket.currentUser.user_id });
+
+      }).catch(error => console.log('Error on socket->react-to-message', error));
+    })
+
     socket.on('banning-user', ({user_id, reason}) => {
       let date = new Date().toUTCString();
       let server_log = {
         from: 'Server',
         text: `Goodbye! ${user_id} has been banned${reason ? ` Reason: ${reason}` : ''}`,
-        date: date
+        date: date,
+        message_id: nanoid(),
+        reactions: []
       };
       ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
         $pull: {
@@ -172,7 +235,9 @@ function main() {
       let server_log = {
         from: 'Server',
         text: `${socket.currentUser.user_id} has disconnected` + (farewell ? ` saying: ${farewell}` : ''),
-        date: date
+        date: date,
+        message_id: nanoid(),
+        reactions: []
       }
       ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
         $pull: {
@@ -195,6 +260,7 @@ function main() {
       let server_log = {
         from: 'Server',
         text: `Ping: `,
+        message_id: nanoid(),
         date: Date.now()
       }
       socket.emit('pong', {timestamp, server_log});
@@ -203,14 +269,16 @@ function main() {
     socket.on('disconnect', () => {
       console.log('\n🐢 [Socket disconnection]');
       console.log(' Sockets:', io.allSockets());
-      let date = new Date().toUTCString();
-      let server_log = {
-        from: 'Server',
-        text: `${socket.currentUser.user_id} has disconnected`,
-        date: date
-      }
-
+      
       if (socket.currentRoomCode) {
+        let date = new Date().toUTCString();
+        let server_log = {
+          from: 'Server',
+          text: `${socket.currentUser.user_id} has disconnected`,
+          date: date,
+          message_id: nanoid(),
+          reactions: []
+        }
         ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
           $pull: {
             users: {user_id: socket.currentUser.user_id}

@@ -1,6 +1,9 @@
+import produce from 'immer';
 //import { useLocation } from 'wouter';
 
 export const reducer = (state, action) => {
+
+  console.log('On reducer:', action.type);
 
   switch (action.type) {
 
@@ -78,9 +81,34 @@ export const reducer = (state, action) => {
           date: action.payload.date,
           from: action.payload.from || '??',
           text: action.payload.text,
-          color: action.payload.color
+          color: action.payload.color,
+          message_id: action.payload.message_id,
+          reactions: []
         })
       };
+    case '@terminal/reactToMessage':
+
+      let messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
+      if (messageIndex === -1) return {...state};
+
+      return produce(state, draftState => {
+        console.log('MESSAGES:', draftState.messages)
+        console.log('MESSAGE INDEX:', draftState.messages[messageIndex])
+        let reactionIndex = draftState.messages[messageIndex].reactions.findIndex(reaction => reaction.emote === action.payload.emote);
+        if (reactionIndex === -1) {
+          draftState.messages[messageIndex].reactions.push({
+            emote: action.payload.emote,
+            count: 1,
+            who: [action.payload.from]
+          });
+        }
+        else {
+          draftState.messages[messageIndex].reactions[reactionIndex].count += 1;
+          draftState.messages[messageIndex].reactions[reactionIndex].who.push(action.payload.from);
+        }
+        return draftState;
+      })
+
     case '@terminal/appendErrorMessage':
 
       return {

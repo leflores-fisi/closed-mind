@@ -1,5 +1,5 @@
-import {  memo, useRef } from 'react';
-import CommandLine   from './lines/CommandLine';
+import { memo, useRef } from 'react';
+import CommandLine from './lines/CommandLine';
 import './chat-interactive/ChatInteractive.scss'
 
 function TerminalLines({ lines }) {
@@ -22,6 +22,4 @@ function TerminalLines({ lines }) {
     </div>
   );
 }
-export default memo(TerminalLines, (prev, next) => {
-  return prev.lines.length === next.lines.length
-});
+export default memo(TerminalLines);

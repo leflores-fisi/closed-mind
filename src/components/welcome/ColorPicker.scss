@@ -13,8 +13,10 @@
     border-radius: 0;
   
     &:hover {
-      transform: scale(1.05);
-      outline: 1px solid var(--gray);
+      transform: scale(1.1);
+    }
+    &.selected {
+      border: 1px solid #c6b7d9;
     }
   
     &:first-child {

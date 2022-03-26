@@ -56,6 +56,8 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
           username: username.trim().replaceAll(' ', '-'),
           userCode: userCode
         }));
+        dispatch(setGlobalColor({color: userColor}));
+        console.log(userCode, userColor)
         dispatch(connectSocket());
         return true;
       }
@@ -77,7 +79,6 @@ function UserForm({ onSuccessfullySubmit = () => {}}) {
 
   const handleColorPick = useCallback((color) => {
     setUserColor(color);
-    dispatch(setGlobalColor({color}))
   }, [])
 
   useEffect(() => {

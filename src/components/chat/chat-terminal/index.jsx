@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { joinToRoom, disconnectFromRoom, appendMessage,
-         appendUser, popUser, disconnectSocket, appendErrorMessage } from '../../../context/actions';
+         appendUser, popUser, disconnectSocket, appendErrorMessage, reactToMessage } from '../../../context/actions';
 
 import { userSocket } from '../../userSocket'
 import { useForceUpdate } from '../../../hooks/useForceUpdate';
@@ -48,16 +48,21 @@ function ChatTerminal() {
       dispatch(joinToRoom({chatRoom: joinedChatRoom}));
       localStorage.setItem('last_room_code', joinedChatRoom.code);
     });
-    userSocket.on('message-received', ({ date, user, message }) => {
+    userSocket.on('message-received', ({ date, user, message, message_id }) => {
       dispatch(appendMessage({
         date,
         from: user.user_id,
         color: user.user_color,
-        text: message
+        text: message,
+        message_id
       }));
     });
     userSocket.on('disconnected-from-room', () => {
       dispatch(disconnectFromRoom());
+    });
+    userSocket.on('message-reacted', ({ message_id, emote, from }) => {
+      console.log('REACTION EMITTED FROM SERVER:', emote);
+      dispatch(reactToMessage({message_id, emote, from}));
     });
     userSocket.on('error', ({ message }) => {
       dispatch(appendErrorMessage({ message }));
