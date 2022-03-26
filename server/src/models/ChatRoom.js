@@ -13,7 +13,6 @@ const MessageSchema = new mongoose.Schema({
   date: String,
   reactions: [{
     emote: String,
-    count: Number,
     who: [String]
   }]
 }, {strict: false})

@@ -92,5 +92,17 @@ export const emitSocketEvent = {
       message_id,
       emote
     })
+  },
+  "decreasing-reaction": ({ message_id, emote }) => {
+    userSocket.emit('decreasing-reaction', {
+      message_id,
+      emote
+    })
+  },
+  "deleting-reaction-from-message": ({ message_id, emote }) => {
+    userSocket.emit('deleting-reaction-from-message', {
+      message_id,
+      emote
+    })
   }
 }

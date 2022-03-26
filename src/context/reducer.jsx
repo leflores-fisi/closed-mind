@@ -4,6 +4,7 @@ import produce from 'immer';
 export const reducer = (state, action) => {
 
   console.log('On reducer:', action.type);
+  let messageIndex; // TODO: export as a function
 
   switch (action.type) {
 
@@ -88,27 +89,50 @@ export const reducer = (state, action) => {
       };
     case '@terminal/reactToMessage':
 
-      let messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
+      messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
       if (messageIndex === -1) return {...state};
 
       return produce(state, draftState => {
-        console.log('MESSAGES:', draftState.messages)
-        console.log('MESSAGE INDEX:', draftState.messages[messageIndex])
-        let reactionIndex = draftState.messages[messageIndex].reactions.findIndex(reaction => reaction.emote === action.payload.emote);
+        let reactionIndex = state.messages[messageIndex].reactions.findIndex(reaction => reaction.emote === action.payload.emote);
         if (reactionIndex === -1) {
           draftState.messages[messageIndex].reactions.push({
             emote: action.payload.emote,
-            count: 1,
             who: [action.payload.from]
           });
         }
         else {
-          draftState.messages[messageIndex].reactions[reactionIndex].count += 1;
           draftState.messages[messageIndex].reactions[reactionIndex].who.push(action.payload.from);
         }
         return draftState;
       })
+    case '@terminal/deleteReaction':
+      messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
+      if (messageIndex === -1) return {...state};
 
+      return produce(state, draftState => {
+        let reactionIndex = state.messages[messageIndex].reactions.findIndex(reaction => reaction.emote === action.payload.emote);
+        // If exist the reaction
+        if (reactionIndex !== -1) {
+          draftState.messages[messageIndex].reactions.splice(reactionIndex, 1);
+        }
+        return draftState;
+      })
+    case '@terminal/decreaseReaction':
+      messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
+      if (messageIndex === -1) return {...state};
+
+      return produce(state, draftState => {
+        let reactionIndex = state.messages[messageIndex].reactions.findIndex(reaction => reaction.emote === action.payload.emote);
+        // If exist the reaction
+        if (reactionIndex !== -1) {
+          let userIndex = state.messages[messageIndex].reactions[reactionIndex].who.findIndex(user_id => user_id === action.payload.from);
+          // If the users that we are trying to remove it is in the list
+          if (userIndex !== -1) {
+            draftState.messages[messageIndex].reactions[reactionIndex].who.splice(userIndex, 1);
+          }
+        }
+        return draftState;
+      })
     case '@terminal/appendErrorMessage':
 
       return {

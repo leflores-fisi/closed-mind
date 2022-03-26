@@ -5,8 +5,6 @@
     padding: 5px 5px 0 5px;
 
     .command-line {
-      display: flex;
-      flex-direction: column;
       min-height: 30px;
       padding: 5px 8px;
       border-bottom: 1px solid black;
@@ -14,15 +12,20 @@
       white-space: pre-wrap;
       min-width: 300px;
 
-      .date {
-        margin-right: 7px;
-        flex-shrink: 0;
-        color: var(--brightBlack);
-        user-select: none;
-      }
-      .from {
-        font-weight: 500;
-        margin-right: 7px;
+      .message-container {
+        display: flex;
+        justify-content: space-between;
+
+        .date {
+          margin-right: 7px;
+          flex-shrink: 0;
+          color: var(--brightBlack);
+          user-select: none;
+        }
+        .from {
+          font-weight: 500;
+          margin-right: 7px;
+        }
       }
       &:hover {
         background-color: #0e0e0f;
@@ -30,7 +33,6 @@
       &:last-child {border-bottom: none;}
     }
     .user-message {
-      display: flex;
       justify-content: space-between;
       
       .date {
@@ -59,7 +61,6 @@
       color: var(--brightRed);
     }
     .server-log {
-      display: flex;
       justify-content: space-between;
       color: var(--gray);
     }
@@ -67,6 +68,7 @@
     .reactions-container {
       display: flex;
       .reaction {
+        opacity: 0.9;
         display: flex;
         align-items: center;
         background-color: var(--black);
@@ -86,9 +88,10 @@
           color: var(--brightGray);
         }
 
-        .selected {
-          outline: 1px solid var(--app-color);
-          background-color: var(--background);
+        &.reacted {
+          outline: 1px solid var(--purple);
+          background-color: #171b22;
+          opacity: 1;
         }
       }
     }

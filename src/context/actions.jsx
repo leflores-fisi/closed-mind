@@ -67,6 +67,18 @@ export const reactToMessage = ({ message_id, emote ,from }) => {
     payload: { message_id, emote, from }
   }
 };
+export const deleteReactionFromMessage = ({ message_id, emote ,from }) => {
+  return {
+    type: '@terminal/deleteReaction',
+    payload: { message_id, emote, from }
+  }
+};
+export const decreaseReactionFromMessage = ({ message_id, emote ,from }) => {
+  return {
+    type: '@terminal/decreaseReaction',
+    payload: { message_id, emote, from }
+  }
+};
 export const appendErrorMessage = ({ message }) => {
   return {
     type: '@terminal/appendErrorMessage',

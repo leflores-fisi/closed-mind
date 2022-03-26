@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import EmoteReactionButton from './EmoteReactionButton';
+import MessageReactionsList from './MessageReactionsList';
 import UserMessage from './UserMessage';
 
-function MessageLine({ date, userId, userColor, text, id }) {
+function MessageLine({ date, userId, userColor, text, id, reactions }) {
 
   useEffect(() => {
     const Wrapper = document.querySelector('.command-lines-wrapper');
@@ -17,8 +18,11 @@ function MessageLine({ date, userId, userColor, text, id }) {
 
   return (
     <div className='user-message'>
-      <UserMessage date={date} userId={userId} userColor={userColor} text={text}/>
-      <EmoteReactionButton message_id={id}/>
+      <div className='message-container'>
+        <UserMessage date={date} userId={userId} userColor={userColor} text={text}/>
+        <EmoteReactionButton message_id={id} messageReactions={reactions}/>
+      </div>
+      <MessageReactionsList message_id={id} reactions={reactions}/>
     </div>
   )
 }

@@ -3,8 +3,9 @@ import { userSocket } from '../../../userSocket';
 import useAppReducer from '../../../../hooks/useAppReducer';
 import UserMessage from './UserMessage';
 import EmoteReactionButton from './EmoteReactionButton';
+import MessageReactionsList from './MessageReactionsList';
 
-function SelMessageLine({ text, date, id }) {
+function SelMessageLine({ text, date, id, reactions }) {
 
   const [sent, setSent] = useState(false);
   const {store} = useAppReducer();
@@ -28,8 +29,11 @@ function SelMessageLine({ text, date, id }) {
 
   return (
     <div className={`user-message self ${sent? 'sent' : ''}`}>
-      <UserMessage date={date} userId={store.user_id} userColor={store.user_color} text={text}/>
-      <EmoteReactionButton message_id={id}/>
+      <div className='message-container'>
+        <UserMessage date={date} userId={store.user_id} userColor={store.user_color} text={text}/>
+        <EmoteReactionButton message_id={id} messageReactions={reactions}/>
+      </div>
+      <MessageReactionsList message_id={id} reactions={reactions}/>
     </div>
   )
 }

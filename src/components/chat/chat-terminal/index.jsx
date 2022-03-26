@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { joinToRoom, disconnectFromRoom, appendMessage,
-         appendUser, popUser, disconnectSocket, appendErrorMessage, reactToMessage } from '../../../context/actions';
+         appendUser, popUser, disconnectSocket, appendErrorMessage, reactToMessage, deleteReactionFromMessage, decreaseReactionFromMessage } from '../../../context/actions';
 
 import { userSocket } from '../../userSocket'
 import { useForceUpdate } from '../../../hooks/useForceUpdate';
@@ -63,6 +63,14 @@ function ChatTerminal() {
     userSocket.on('message-reacted', ({ message_id, emote, from }) => {
       console.log('REACTION EMITTED FROM SERVER:', emote);
       dispatch(reactToMessage({message_id, emote, from}));
+    });
+    userSocket.on('decreased-message-reaction', ({ message_id, emote, from }) => {
+      console.log('REACTION DECREASED FROM SERVER:', emote);
+      dispatch(decreaseReactionFromMessage({message_id, emote, from}));
+    });
+    userSocket.on('deleted-message-reaction', ({ message_id, emote, from }) => {
+      console.log('REACTION REMOVED FROM SERVER:', emote);
+      dispatch(deleteReactionFromMessage({message_id, emote, from}));
     });
     userSocket.on('error', ({ message }) => {
       dispatch(appendErrorMessage({ message }));

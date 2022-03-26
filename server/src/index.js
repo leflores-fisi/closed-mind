@@ -159,7 +159,6 @@ function main() {
           $push: {
             "messages.$.reactions": {
               emote: emote,
-              count: 1,
               who: [socket.currentUser.user_id]
             }
           }
@@ -179,9 +178,6 @@ function main() {
           }
         },
         {
-          $inc: {
-            "messages.$.reactions.$[reaction].count": 1
-          },
           $push: {
             "messages.$.reactions.$[reaction].who": socket.currentUser.user_id
           }
@@ -197,7 +193,54 @@ function main() {
 
       }).catch(error => console.log('Error on socket->react-to-message', error));
     })
+    socket.on('decreasing-reaction', ({ message_id, emote }) => {
+      ChatRoom.findOneAndUpdate(
+        {
+          code: socket.currentRoomCode,
+          messages: {
+            $elemMatch: {
+              message_id: message_id
+            }
+          }
+        },
+        {
+          $pull: {
+            "messages.$.reactions.$[reaction].who": socket.currentUser.user_id
+          }
+        },
+        {
+          arrayFilters: [
+            {"reaction.emote": emote}
+          ],
+          new: true
+      }).then(updatedChatRoom => {
+        console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} DECREASING their ${emote} from ${message_id}`);
+        io.to(socket.currentRoomCode).emit('decreased-message-reaction', { message_id, emote, from: socket.currentUser.user_id });
 
+      }).catch(error => console.log('Error on socket->decreasing-reaction-from-message', error));
+    })
+    socket.on('deleting-reaction-from-message', ({ message_id, emote }) => {
+      ChatRoom.findOneAndUpdate(
+        {
+          code: socket.currentRoomCode,
+          messages: {
+            $elemMatch: {
+              message_id: message_id
+            }
+          }
+        },
+        {
+          $pull: {
+            "messages.$.reactions": {
+              emote: emote
+            }
+          }
+        }).then(updatedChatRoom => {
+        console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} REMOVING their ${emote} from ${message_id}`);
+        io.to(socket.currentRoomCode).emit('deleted-message-reaction', { message_id, emote, from: socket.currentUser.user_id });
+
+      }).catch(error => console.log('Error on socket->remove-reaction-from-message', error));
+    })
     socket.on('banning-user', ({user_id, reason}) => {
       let date = new Date().toUTCString();
       let server_log = {

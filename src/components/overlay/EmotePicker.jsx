@@ -7,7 +7,7 @@ function EmotePicker({ direction = 'up', onPick, closer }) {
 
   const wrapperRef = useRef(null);
   
-  const emotes = ['👍', '💗', '🤣', '😔', '😡'];
+  const emotes = ['👍', '💗', '🤣', '😔', '😡', '🌾'];
   const [selectedEmote, setSelectedEmote] = useState(null);
 
   const showPicker = () => {
