@@ -1,19 +1,15 @@
 import { useState, useRef } from 'react';
 
 
-function EmotePicker({ onPick, closer }) {
+function EmotePicker({ onPick, setVisibility }) {
 
   const wrapperRef = useRef(null);
   
   const emotes = ['👍', '💗', '🤣', '😔', '😡', '🌾'];
   const [selectedEmote, setSelectedEmote] = useState(null);
 
-  const showPicker = () => {
-    window.addEventListener('click', hidePicker);
-  }
-
   const hidePicker = (e) => {
-    closer(false);
+    setVisibility(false);
   }
 
   return (

@@ -8,12 +8,25 @@ function EmoteReactionButton({ message_id, messageReactions }) {
   const [menuOpened, setMenuOpened] = useState(false);
   const {store} = useAppReducer();
 
+  const hideMenu = () => {
+    let Overlay = document.querySelector('.app-overlay');
+    setMenuOpened(false);
+    Overlay.style.pointerEvents = 'none';
+    Overlay.removeEventListener('click', hideMenu);
+  }
+
   const handleOpenReactions = () => {
+    let Overlay = document.querySelector('.app-overlay');
     setMenuOpened(true);
+    Overlay.style.pointerEvents = 'auto';
+    Overlay.addEventListener('click', hideMenu);
   }
   const handlePick = (emote) => {
+    document.querySelector('.app-overlay').style.pointerEvents = 'none';
     console.log(`(@From button) REACTION TO ${message_id} WITH`, emote);
+
     const reactionInList = messageReactions.find(reaction => reaction.emote === emote);
+
     if (!reactionInList) {
       emitSocketEvent['new-reaction-to-message']({message_id, emote});
     }
@@ -28,7 +41,7 @@ function EmoteReactionButton({ message_id, messageReactions }) {
       <button className='react-to-message-button' onClick={handleOpenReactions}>{':)'}</button>
       {
         menuOpened &&
-          <EmotePicker onPick={handlePick} closer={setMenuOpened}/>
+          <EmotePicker onPick={handlePick} setVisibility={setMenuOpened}/>
       }
     </div>
   );
