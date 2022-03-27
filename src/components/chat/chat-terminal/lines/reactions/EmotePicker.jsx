@@ -4,7 +4,7 @@ import './EmotePicker.scss';
 function EmotePicker({ onPick, setVisibility }) {
 
   const wrapperRef = useRef(null);
-  
+
   const emotes = ['👍', '💗', '🤣', '😔', '😡', '🌾'];
   const [selectedEmote, setSelectedEmote] = useState(null);
 
@@ -18,23 +18,24 @@ function EmotePicker({ onPick, setVisibility }) {
       className='emotes-to-react-list'
       ref={wrapperRef}
     >
-      <div className='emotes-container'>
+      <ul className='emotes-container'>
         {
-          emotes.map(emote => (
-            <button
-              type='button'
-              key={emote}
-              className={`bg-${emote} ${selectedEmote === emote ? 'selected' : ''}`}
-              onClick={() => {
-                setSelectedEmote(emote);
-                onPick(emote);
-                hidePicker();
-              }}>
-              {emote}
-            </button>
+          emotes.map((emote, i) => (
+            <li key={emote}>
+              <button
+                type='button'
+                className={`bg-${emote} ${selectedEmote === emote ? 'selected' : ''}`}
+                onClick={() => {
+                  setSelectedEmote(emote);
+                  onPick(emote);
+                  hidePicker();
+                }}>
+                {emote}
+              </button>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </div>
   );
 }

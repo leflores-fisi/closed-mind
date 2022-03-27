@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
-import { joinToRoom, disconnectFromRoom, appendMessage,
-         appendUser, popUser, disconnectSocket, appendErrorMessage, reactToMessage, deleteReactionFromMessage, decreaseReactionFromMessage } from '../../../context/actions';
+import { joinToRoom, disconnectFromRoom, appendMessage, appendUser,
+         popUser, disconnectSocket, appendErrorMessage, reactToMessage,
+         deleteReactionFromMessage, decreaseReactionFromMessage } from '../../../context/actions';
 
 import { userSocket } from '../../userSocket'
 import { useForceUpdate } from '../../../hooks/useForceUpdate';

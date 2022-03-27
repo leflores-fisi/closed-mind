@@ -35,8 +35,9 @@ function EmoteReactionButton({ message_id, messageReactions }) {
         emitSocketEvent['reacting-to-message']({message_id, emote});
     }
   }
-  
+
   return (
+    store.room_code &&
     <div className='react-to-message-btn-container'>
       <button className='react-to-message-btn' onClick={handleOpenReactions}>{':)'}</button>
       {
