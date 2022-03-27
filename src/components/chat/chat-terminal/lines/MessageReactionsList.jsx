@@ -1,21 +1,24 @@
+import { useRef } from 'react';
 import { emitSocketEvent } from '../../../userSocket';
 import useAppReducer from '../../../../hooks/useAppReducer';
 
 function MessageReactionsList({ reactions, message_id }) {
 
   const {store} = useAppReducer();
+  const buttonRef = useRef(null);
 
   return (
     reactions.length > 0 &&
       <div className='reactions-container'>
         {
           reactions.map(reaction => {
-            let reactedBySelf = reaction.who.includes(store.user_id);
+            let reactedBySelf = reaction.users_list.includes(store.user_id);
             return (
-              <button key={reaction.emote} className={`reaction ${reactedBySelf ? 'reacted' : ''}`} onClick={() => {
+              <button ref={buttonRef} key={reaction.emote} className={`reaction ${reactedBySelf ? 'reacted' : ''}`} onClick={() => {
                 let storedReaction = reactions.find(storedReaction => storedReaction.emote === reaction.emote);
-                if (storedReaction.who.includes(store.user_id)) {
-                  if (storedReaction.who.length > 1) {
+
+                if (storedReaction.users_list.includes(store.user_id)) {
+                  if (storedReaction.users_list.length > 1) {
                     console.log(`(@From down reactions) DECREASING REACTION FROM ${message_id} WAS`, reaction.emote); 
                     emitSocketEvent['decreasing-reaction']({message_id: message_id, emote: reaction.emote});
                   }
@@ -27,10 +30,14 @@ function MessageReactionsList({ reactions, message_id }) {
                 else {
                   console.log(`(@From down reactions) REACTION TO ${message_id} WITH`, reaction.emote); 
                   emitSocketEvent['reacting-to-message']({message_id: message_id, emote: reaction.emote});
+                  buttonRef.current.disabled = true;
+                  setTimeout(() => {
+                    buttonRef.current.disabled = false;
+                  }, 500)
                 }
               }}>
                 <span className='emote'>{reaction.emote}</span>
-                <span className='emote-count'>{reaction.who.length}</span>
+                <span className='emote-count'>{reaction.users_list.length}</span>
               </button>
             )
           })

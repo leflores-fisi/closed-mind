@@ -97,11 +97,11 @@ export const reducer = (state, action) => {
         if (reactionIndex === -1) {
           draftState.messages[messageIndex].reactions.push({
             emote: action.payload.emote,
-            who: [action.payload.from]
+            users_list: [action.payload.from]
           });
         }
         else {
-          draftState.messages[messageIndex].reactions[reactionIndex].who.push(action.payload.from);
+          draftState.messages[messageIndex].reactions[reactionIndex].users_list.push(action.payload.from);
         }
         return draftState;
       })
@@ -125,10 +125,10 @@ export const reducer = (state, action) => {
         let reactionIndex = state.messages[messageIndex].reactions.findIndex(reaction => reaction.emote === action.payload.emote);
         // If exist the reaction
         if (reactionIndex !== -1) {
-          let userIndex = state.messages[messageIndex].reactions[reactionIndex].who.findIndex(user_id => user_id === action.payload.from);
+          let userIndex = state.messages[messageIndex].reactions[reactionIndex].users_list.findIndex(user_id => user_id === action.payload.from);
           // If the users that we are trying to remove it is in the list
           if (userIndex !== -1) {
-            draftState.messages[messageIndex].reactions[reactionIndex].who.splice(userIndex, 1);
+            draftState.messages[messageIndex].reactions[reactionIndex].users_list.splice(userIndex, 1);
           }
         }
         return draftState;

@@ -159,7 +159,7 @@ function main() {
           $push: {
             "messages.$.reactions": {
               emote: emote,
-              who: [socket.currentUser.user_id]
+              users_list: [socket.currentUser.user_id]
             }
           }
         }, {new: true}).then(updatedChatRoom => {
@@ -179,7 +179,7 @@ function main() {
         },
         {
           $push: {
-            "messages.$.reactions.$[reaction].who": socket.currentUser.user_id
+            "messages.$.reactions.$[reaction].users_list": socket.currentUser.user_id
           }
         },
         {
@@ -205,7 +205,7 @@ function main() {
         },
         {
           $pull: {
-            "messages.$.reactions.$[reaction].who": socket.currentUser.user_id
+            "messages.$.reactions.$[reaction].users_list": socket.currentUser.user_id
           }
         },
         {

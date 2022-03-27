@@ -24,7 +24,7 @@ function EmoteReactionButton({ message_id, messageReactions }) {
       emitSocketEvent['new-reaction-to-message']({message_id, emote});
     }
     else {
-      if (!reactionInList.who.includes(store.user_id))
+      if (!reactionInList.users_list.includes(store.user_id))
         emitSocketEvent['reacting-to-message']({message_id, emote});
     }
   }

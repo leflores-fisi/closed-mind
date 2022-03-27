@@ -13,7 +13,7 @@ const MessageSchema = new mongoose.Schema({
   date: String,
   reactions: [{
     emote: String,
-    who: [String]
+    users_list: [String]
   }]
 }, {strict: false})
 const chatRoomSchema = new mongoose.Schema({
