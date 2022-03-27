@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useAppReducer from '../../../../hooks/useAppReducer';
-import EmotePicker from '../../../overlay/EmotePicker';
+import EmotePicker from './EmotePicker';
 import { emitSocketEvent } from '../../../userSocket';
 
 function EmoteReactionButton({ message_id, messageReactions }) {
@@ -9,12 +9,6 @@ function EmoteReactionButton({ message_id, messageReactions }) {
   const {store} = useAppReducer();
 
   const handleOpenReactions = () => {
-    // setEmotePickerCoords({x: e.clientX, y: e.clientY});
-    // setOnEmotePickCallback({
-    //   exec: (emote) => {
-    //   console.log('EMITTING TO SERVER', emote, message_id)
-    //   }
-    // })
     setMenuOpened(true);
   }
   const handlePick = (emote) => {
