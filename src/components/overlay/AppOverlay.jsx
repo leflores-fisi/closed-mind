@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import useOverlay from './../../hooks/useOverlay';
-import { pxToNumber } from '../../Helpers';
 import useAppReducer from '../../hooks/useAppReducer';
 import './AppOverlay.scss'
 
