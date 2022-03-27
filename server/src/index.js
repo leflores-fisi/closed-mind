@@ -52,7 +52,7 @@ function main() {
           {user_id: host.user_id, user_color: host.user_color}
         ],
         messages: [{
-          from: 'Server',
+          from: '@senders/SERVER',
           text: `${host.user_id} created ${room_code}!!`,
           date: new Date().toUTCString(),
           message_id: nanoid(),
@@ -90,7 +90,7 @@ function main() {
         else {
           let date = new Date().toUTCString();
           let server_log = {
-            from: 'Server',
+            from: '@senders/SERVER',
             text: `${user.user_id} has joined to the chat`,
             date: date,
             message_id: nanoid(),
@@ -244,7 +244,7 @@ function main() {
     socket.on('banning-user', ({user_id, reason}) => {
       let date = new Date().toUTCString();
       let server_log = {
-        from: 'Server',
+        from: '@senders/SERVER',
         text: `Goodbye! ${user_id} has been banned${reason ? ` Reason: ${reason}` : ''}`,
         date: date,
         message_id: nanoid(),
@@ -276,7 +276,7 @@ function main() {
     socket.on('leaving-from-chat', ({farewell}) => {
       let date = new Date().toUTCString()
       let server_log = {
-        from: 'Server',
+        from: '@senders/SERVER',
         text: `${socket.currentUser.user_id} has disconnected` + (farewell ? ` saying: ${farewell}` : ''),
         date: date,
         message_id: nanoid(),
@@ -301,9 +301,8 @@ function main() {
     })
     socket.on('ping', (timestamp) => {
       let server_log = {
-        from: 'Server',
+        from: '@senders/APP_INFO',
         text: `Ping: `,
-        message_id: nanoid(),
         date: Date.now()
       }
       socket.emit('pong', {timestamp, server_log});
@@ -316,7 +315,7 @@ function main() {
       if (socket.currentRoomCode) {
         let date = new Date().toUTCString();
         let server_log = {
-          from: 'Server',
+          from: '@senders/SERVER',
           text: `${socket.currentUser.user_id} has disconnected`,
           date: date,
           message_id: nanoid(),

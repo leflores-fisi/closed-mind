@@ -49,7 +49,7 @@ export const emitSocketEvent = {
    * Expects for "pong" server response
    */
   "ping": () => {
-    userSocket.emit('ping', {date: Date.now()})
+    userSocket.emit('ping', Date.now())
   },
   /**
    * Expects for "joined" server response

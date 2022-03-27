@@ -4,6 +4,7 @@ import ServerLogLine   from './ServerLogLine';
 import ErrorLine       from './ErrorLine';
 import SelfMessageLine from './SelfMessageLine';
 import './TerminalLines.scss';
+import InformationLine from './InformationLine';
 
 function CommandLine({ line }) {
 
@@ -14,12 +15,17 @@ function CommandLine({ line }) {
   return (
     <div className='command-line'>
       {
-        line.from === 'Server' ?
+        line.from === '@senders/SERVER' ?
           <ServerLogLine
             date={line.date}
             log={line.text}
             id={line.message_id}
             reactions={line.reactions}
+          />
+        : line.from === '@senders/APP_INFO' ?
+          <InformationLine
+            text={line.text}
+            date={line.date}
           />
         : line.from === '@senders/ERROR_HANDLER' ?
           <ErrorLine
