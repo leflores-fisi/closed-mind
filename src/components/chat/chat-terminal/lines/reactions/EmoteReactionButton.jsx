@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import useAppReducer from '../../../../hooks/useAppReducer';
+import useAppReducer from '../../../../../hooks/useAppReducer';
 import EmotePicker from './EmotePicker';
-import { emitSocketEvent } from '../../../userSocket';
+import { emitSocketEvent } from '../../../../userSocket';
 
 function EmoteReactionButton({ message_id, messageReactions }) {
 
@@ -37,8 +37,8 @@ function EmoteReactionButton({ message_id, messageReactions }) {
   }
   
   return (
-    <div className='react-to-message-container'>
-      <button className='react-to-message-button' onClick={handleOpenReactions}>{':)'}</button>
+    <div className='react-to-message-btn-container'>
+      <button className='react-to-message-btn' onClick={handleOpenReactions}>{':)'}</button>
       {
         menuOpened &&
           <EmotePicker onPick={handlePick} setVisibility={setMenuOpened}/>

@@ -1,0 +1,63 @@
+
+.reactions-list-container {
+
+  display: flex;
+  .reaction-item {
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    background-color: var(--black);
+    padding: 4px 5px;
+    margin-top: 2px;
+    user-select: none;
+    border-radius: 2px;
+    margin-right: 10px;
+    outline: 1px solid var(--brightBlack);
+    
+    .emote{
+      font-size: 0.75rem;
+      margin-right: 6px;
+    }
+    .emote-count {
+      font-size: 0.7rem;
+      color: var(--brightGray);
+    }
+
+    &.reacted {
+      outline: 1px solid var(--purple);
+      background-color: #171b22;
+      opacity: 1;
+    }
+    &:hover {
+      opacity: 1;
+      outline: 1px solid var(--app-color);
+    }
+  }
+}
+.react-to-message-btn-container {
+  position: relative;
+
+  .emotes-to-react-list {
+    background-color: #19191c;
+    outline: 1px solid black;
+    position: absolute;
+    right: calc(100% + 5px);
+    top: -5px;
+    z-index: 2000;
+
+    .emotes-container {
+      display: flex;
+      height: 30px;
+      padding: 1px 4px;
+      
+      button {
+        background-color: transparent;
+        transition: transform 0.1s;
+        padding: 0 4px;
+        &:hover {
+          transform: scale(1.3) translateY(-2px);
+        }
+      }
+    }
+  }
+}

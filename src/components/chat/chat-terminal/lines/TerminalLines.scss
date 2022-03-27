@@ -64,49 +64,5 @@
       justify-content: space-between;
       color: var(--gray);
     }
-
-    .reactions-container {
-      display: flex;
-      .reaction {
-        opacity: 0.9;
-        display: flex;
-        align-items: center;
-        background-color: var(--black);
-        padding: 4px 5px;
-        margin-top: 2px;
-        user-select: none;
-        border-radius: 2px;
-        margin-right: 10px;
-        outline: 1px solid var(--brightBlack);
-        
-        .emote{
-          font-size: 0.75rem;
-          margin-right: 6px;
-        }
-        .emote-count {
-          font-size: 0.7rem;
-          color: var(--brightGray);
-        }
-
-        &.reacted {
-          outline: 1px solid var(--purple);
-          background-color: #171b22;
-          opacity: 1;
-        }
-      }
-    }
-    .react-to-message-container {
-      position: relative;
-
-      .emotes-wrapper {
-        position: absolute;
-        right: 50%;
-        bottom: 20px;
-        z-index: 10000;
-        .emotes {
-          display: flex;
-        }
-      }
-    }
   }
 }

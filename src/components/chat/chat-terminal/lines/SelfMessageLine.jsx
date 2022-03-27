@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { userSocket } from '../../../userSocket';
 import useAppReducer from '../../../../hooks/useAppReducer';
 import UserMessage from './UserMessage';
-import EmoteReactionButton from './EmoteReactionButton';
-import MessageReactionsList from './MessageReactionsList';
+import EmoteReactionButton from './reactions/EmoteReactionButton';
+import MessageReactionsList from './reactions/MessageReactionsList';
 import { scrollChatToBottom } from '../../../../Helpers';
 
 function SelMessageLine({ text, date, id, reactions }) {

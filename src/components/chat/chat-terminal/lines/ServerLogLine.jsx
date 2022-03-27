@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { scrollChatIfIsNear } from '../../../../Helpers';
 import useChatConfig from '../../../../hooks/useChatConfig';
 import useDateFormatter from '../../../../hooks/useDateFormatter';
-import EmoteReactionButton from './EmoteReactionButton';
-import MessageReactionsList from './MessageReactionsList';
+import EmoteReactionButton from './reactions/EmoteReactionButton';
+import MessageReactionsList from './reactions/MessageReactionsList';
 
 function ServerLogLine({date, log, id, reactions}) {
   

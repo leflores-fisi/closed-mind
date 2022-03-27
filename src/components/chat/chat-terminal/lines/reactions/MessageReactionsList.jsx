@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { emitSocketEvent } from '../../../userSocket';
-import useAppReducer from '../../../../hooks/useAppReducer';
+import { emitSocketEvent } from '../../../../userSocket';
+import useAppReducer from '../../../../../hooks/useAppReducer';
 
 function MessageReactionsList({ reactions, message_id }) {
 
@@ -9,12 +9,12 @@ function MessageReactionsList({ reactions, message_id }) {
 
   return (
     reactions.length > 0 &&
-      <div className='reactions-container'>
+      <div className='reactions-list-container'>
         {
           reactions.map(reaction => {
             let reactedBySelf = reaction.users_list.includes(store.user_id);
             return (
-              <button ref={buttonRef} key={reaction.emote} className={`reaction ${reactedBySelf ? 'reacted' : ''}`} onClick={() => {
+              <button ref={buttonRef} key={reaction.emote} className={`reaction-item ${reactedBySelf ? 'reacted' : ''}`} onClick={() => {
                 let storedReaction = reactions.find(storedReaction => storedReaction.emote === reaction.emote);
 
                 if (storedReaction.users_list.includes(store.user_id)) {

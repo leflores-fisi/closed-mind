@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-
+import './EmotePicker.scss';
 
 function EmotePicker({ onPick, setVisibility }) {
 
@@ -15,16 +15,16 @@ function EmotePicker({ onPick, setVisibility }) {
   return (
     <div
       // TODO: add role
-      className='emotes-wrapper'
+      className='emotes-to-react-list'
       ref={wrapperRef}
     >
-      <div className='emotes'>
+      <div className='emotes-container'>
         {
           emotes.map(emote => (
             <button
               type='button'
               key={emote}
-              className={`color bg-${emote} ${selectedEmote === emote ? 'selected' : ''}`}
+              className={`bg-${emote} ${selectedEmote === emote ? 'selected' : ''}`}
               onClick={() => {
                 setSelectedEmote(emote);
                 onPick(emote);
