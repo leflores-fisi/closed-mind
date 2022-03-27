@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
+import { scrollChatToBottom } from '../../../../Helpers';
 
 function ErrorLine({ text }) {
 
   useEffect(() => {
-    const Wrapper = document.querySelector('.command-lines-wrapper');
-    const Lines   = document.querySelector('.command-lines');
-
-    Wrapper.scrollTo(0, Lines.getBoundingClientRect().height);
+    scrollChatToBottom();
   }, [])
 
   return (

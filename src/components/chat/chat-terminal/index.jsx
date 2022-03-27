@@ -12,6 +12,7 @@ import TerminalLines from './TerminalLines';
 import TerminalRoomHeader from './TerminalRoomHeader';
 import TerminalWelcomeHeader from './TerminalWelcomeHeader';
 import './ChatTerminal.scss';
+import { scrollChatIfIsNear, scrollChatToBottom } from '../../../Helpers';
 
 function ChatTerminal() {
 
@@ -31,10 +32,7 @@ function ChatTerminal() {
   }, [])
 
   useEffect(() => {
-    const Wrapper = document.querySelector('.command-lines-wrapper');
-    const Lines   = document.querySelector('.command-lines');
-    Wrapper.scrollTo(0, Lines.getBoundingClientRect().height);
-    console.log('scrolling')
+    scrollChatToBottom();
   }, [store.room_code])
 
   useEffect(() => {
@@ -63,6 +61,8 @@ function ChatTerminal() {
     userSocket.on('message-reacted', ({ message_id, emote, from }) => {
       console.log('REACTION EMITTED FROM SERVER:', emote);
       dispatch(reactToMessage({message_id, emote, from}));
+
+      scrollChatIfIsNear(100);
     });
     userSocket.on('decreased-message-reaction', ({ message_id, emote, from }) => {
       console.log('REACTION DECREASED FROM SERVER:', emote);

@@ -41,3 +41,20 @@ export function isEmptyObject(obj) {
   for (let i in obj) return false;
   return true;
 }
+
+export function scrollChatIfIsNear(distance = 200) {
+  const Wrapper = document.querySelector('.command-lines-wrapper');
+  const LinesHeight = document.querySelector('.command-lines').getBoundingClientRect().height;
+
+  if (LinesHeight - (Wrapper.scrollTop + Wrapper.getBoundingClientRect().height) < distance) {
+    Wrapper.scrollTo(0, LinesHeight);
+  }
+}
+
+export function scrollChatToBottom() {
+  const Wrapper = document.querySelector('.command-lines-wrapper');
+  const LinesHeight = document.querySelector('.command-lines').getBoundingClientRect().height;
+  Wrapper.scrollTo(0, LinesHeight);
+
+  console.log('Scrolling chat to bottom')
+}

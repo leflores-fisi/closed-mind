@@ -4,6 +4,7 @@ import useAppReducer from '../../../../hooks/useAppReducer';
 import UserMessage from './UserMessage';
 import EmoteReactionButton from './EmoteReactionButton';
 import MessageReactionsList from './MessageReactionsList';
+import { scrollChatToBottom } from '../../../../Helpers';
 
 function SelMessageLine({ text, date, id, reactions }) {
 
@@ -11,12 +12,7 @@ function SelMessageLine({ text, date, id, reactions }) {
   const {store} = useAppReducer();
 
   useEffect(() => {
-    const Wrapper = document.querySelector('.command-lines-wrapper');
-    const Lines   = document.querySelector('.command-lines');
-
-    setTimeout(() => {
-      Wrapper.scrollTo(0, Lines.getBoundingClientRect().height);
-    }, 0)
+    scrollChatToBottom();
 
     if (!sent && store.room_code) {
       userSocket.on('message-sent', () => {

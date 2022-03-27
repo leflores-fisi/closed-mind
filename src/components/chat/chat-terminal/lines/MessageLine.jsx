@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { scrollChatIfIsNear } from '../../../../Helpers';
 import EmoteReactionButton from './EmoteReactionButton';
 import MessageReactionsList from './MessageReactionsList';
 import UserMessage from './UserMessage';
@@ -6,14 +7,7 @@ import UserMessage from './UserMessage';
 function MessageLine({ date, userId, userColor, text, id, reactions }) {
 
   useEffect(() => {
-    const Wrapper = document.querySelector('.command-lines-wrapper');
-    const Lines   = document.querySelector('.command-lines');
-
-    if (Lines.getBoundingClientRect().height - (Wrapper.scrollTop + Wrapper.getBoundingClientRect().height) < 200) {
-      setTimeout(() => {
-        Wrapper.scrollTo(0, Lines.getBoundingClientRect().height);
-      }, 0)
-    }
+    scrollChatIfIsNear();
   }, [])
 
   return (

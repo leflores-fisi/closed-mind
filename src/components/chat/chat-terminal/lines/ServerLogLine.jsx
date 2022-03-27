@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { scrollChatIfIsNear } from '../../../../Helpers';
 import useChatConfig from '../../../../hooks/useChatConfig';
 import useDateFormatter from '../../../../hooks/useDateFormatter';
 import EmoteReactionButton from './EmoteReactionButton';
@@ -10,12 +11,7 @@ function ServerLogLine({date, log, id, reactions}) {
   const formattedDate = useDateFormatter(date);
 
   useEffect(() => {
-    const Wrapper = document.querySelector('.command-lines-wrapper');
-    const Lines   = document.querySelector('.command-lines');
-
-    if (Lines.getBoundingClientRect().height - (Wrapper.scrollTop + Wrapper.getBoundingClientRect().height) < 200) {
-      Wrapper.scrollTo(0, Lines.getBoundingClientRect().height);
-    }
+    scrollChatIfIsNear();
   }, [])
   
   return (
