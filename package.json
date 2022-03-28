@@ -1,7 +1,7 @@
 {
-  "name": "mongodb-chat",
-  "private": true,
-  "version": "0.0.0",
+  "name": "closedmind-app",
+  "description": "Closedmind, minimalist and fugacious communication, I mean, it's a chat!",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -9,13 +9,13 @@
   },
   "dependencies": {
     "framer-motion": "6.2.8",
-    "immer": "^9.0.12",
+    "immer": "9.0.12",
     "nanoid": "3.3.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-helmet": "^6.1.0",
-    "react-icons": "^4.3.1",
-    "react-textarea-autosize": "^8.3.3",
+    "react-helmet": "6.1.0",
+    "react-icons": "4.3.1",
+    "react-textarea-autosize": "8.3.3",
     "socket.io-client": "4.4.1",
     "wouter": "2.8.0-alpha.2"
   },
@@ -25,9 +25,9 @@
     ]
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^1.0.7",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "sass": "^1.49.8",
-    "vite": "^2.8.0"
+    "@vitejs/plugin-react": "1.0.7",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "sass": "1.49.8",
+    "vite": "2.8.0"
   }
 }
