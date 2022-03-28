@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
-//import sad from '@/assets/emotes/sad.png'
-//import angry from '@/assets/emotes/angry.gif'
+import { emotes_list } from './emotes';
 
 import './EmotePicker.scss';
 
@@ -8,12 +7,10 @@ function EmotePicker({ onPick, setVisibility }) {
 
   const wrapperRef = useRef(null);
 
-  const emotes = ['check', 'heart', 'laugh', 'sad', 'angry', 'hello', 'doge'];
   const [selectedEmote, setSelectedEmote] = useState(null);
 
   const hidePicker = (e) => {
     setVisibility(false);
-    //console.log(sad)
   }
 
   return (
@@ -24,17 +21,17 @@ function EmotePicker({ onPick, setVisibility }) {
     >
       <ul className='emotes-container'>
         {
-          emotes.map((emote, i) => (
-            <li key={emote}>
+          emotes_list.map((emote) => (
+            <li key={emote.text}>
               <button
                 type='button'
-                className={`emote-${emote} ${selectedEmote === emote ? 'selected' : ''}`}
+                className={`emote-${emote} ${selectedEmote?.text === emote.text ? 'selected' : ''}`}
                 onClick={() => {
                   setSelectedEmote(emote);
-                  onPick(emote);
+                  onPick(emote.text);
                   hidePicker();
                 }}>
-                {emote}
+                  <img src={emote.src}/>
               </button>
             </li>
           ))

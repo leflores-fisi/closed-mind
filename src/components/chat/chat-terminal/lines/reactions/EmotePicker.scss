@@ -1,36 +1,38 @@
 
 .reactions-list-container {
-
   display: flex;
+
   .reaction-item {
-    opacity: 0.9;
     display: flex;
     align-items: center;
+    outline: 1px solid var(--brightBlack);
     background-color: var(--black);
-    padding: 4px 5px;
-    margin-top: 2px;
+    padding: 2px 2px;
+    margin: 2px 10px 0 0;
     user-select: none;
     border-radius: 2px;
-    margin-right: 10px;
-    outline: 1px solid var(--brightBlack);
-    
-    .emote{
+    opacity: 0.9;
+
+    .emote {
+      aspect-ratio: 1/1;
+      width: 1.2rem;
       font-size: 0.75rem;
-      margin-right: 6px;
+      margin-right: 8px;
     }
     .emote-count {
-      font-size: 0.7rem;
+      font-size: 0.8rem;
       color: var(--brightGray);
+      margin-right: 5px;
     }
 
     &.reacted {
-      outline: 1px solid var(--purple);
+      outline-color: var(--purple);
       background-color: #171b22;
       opacity: 1;
     }
     &:hover {
       opacity: 1;
-      outline: 1px solid var(--app-color);
+      outline-color: var(--purple);
     }
   }
 }
@@ -54,13 +56,23 @@
       li {
         list-style: none;
         transition: transform 0.1s;
+        margin: 1px 0px;
         button {
-          width: fit-content;
+          display: flex;
+          justify-content: center;
           background-color: transparent;
-          padding: 1px 4px;
-        }
-        &:hover {
-          transform: scale(1.4) translateY(-2px);
+          padding: 2px 4px;
+
+          img {
+            width: 1.5rem;
+            aspect-ratio: 1/1;
+          }
+          &:hover {
+            img {
+              transform: translateY(-2px);
+              width: 2.2rem;
+            }
+          }
         }
       }
     }
