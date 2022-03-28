@@ -1,7 +1,6 @@
-import useAppReducer from '../../../hooks/useAppReducer';
-import useChatConfig  from '../../../hooks/useChatConfig';
-import HoverableTitle from '../../overlay/HoverableTitle';
-import { emitSocketEvent } from '../../userSocket';
+import useChatConfig       from '@/hooks/useChatConfig';
+import HoverableTitle      from '@/components/overlay/HoverableTitle';
+import { emitSocketEvent } from '@/services/userSocket';
 
 function ChatOptions() {
   const {setServerLogVisible, setUserCodeVisible} = useChatConfig();

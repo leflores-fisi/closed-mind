@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
-import useAppReducer from '../../../hooks/useAppReducer';
-import NewInvitationForm from './NewInvitationForm';
-import { API_URL, SELF_URL } from '../../userSocket';
+import useAppReducer from '@/hooks/useAppReducer';
+import { API_URL, SELF_URL } from '@/services/userSocket';
+import NewInvitationForm  from './NewInvitationForm';
 import './InvitationSection.scss';
 
 function InvitationLink() {

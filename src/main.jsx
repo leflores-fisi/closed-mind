@@ -1,7 +1,7 @@
-import React from 'react';
+import React    from 'react';
 import ReactDOM from 'react-dom';
-import { ChatSessionContextProvider } from './context/chatSessionContext';
-import { OverlayContextProvider } from './context/overlayContext';
+import { ChatSessionContextProvider } from '@/context/chatSessionContext';
+import { OverlayContextProvider }     from '@/context/overlayContext';
 import App from './App';
 import './index.scss';
 import './normalize.scss';

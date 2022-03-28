@@ -1,6 +1,6 @@
 import { useRef } from 'react';
-import { emitSocketEvent } from '../../../../userSocket';
-import useAppReducer from '../../../../../hooks/useAppReducer';
+import { emitSocketEvent } from '@/services/userSocket';
+import useAppReducer from '@/hooks/useAppReducer';
 
 function MessageReactionsList({ reactions, message_id }) {
 

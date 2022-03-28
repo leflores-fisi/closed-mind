@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'wouter';
-import { motion } from 'framer-motion';
-import { emitSocketEvent }  from '../userSocket';
-import UserForm        from '../welcome/UserForm';
+import { useLocation }         from 'wouter';
+import { motion }              from 'framer-motion';
+
+import { emitSocketEvent, API_URL } from '@/services/userSocket';
+import UserForm            from '@/components/welcome/UserForm';
+
 import ClosedmindHeader from '../ClosedmindHeader';
-import closedmind_sad_logo from '../../assets/closedmind-sad-logo.png';
-import { API_URL } from '../userSocket';
+import closedmind_sad_logo from '@/assets/logos/closedmind-sad.png';
 import './InvitationWindow.scss';
 
 function InvitationWindow({ params }) {

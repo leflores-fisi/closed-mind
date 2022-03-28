@@ -1,4 +1,4 @@
-import closedmind_logo from './../assets/closedmind-logo.png';
+import closedmind_logo from '@/assets/logos/closedmind.png';
 
 function ClosedmindLogo({ width, height, opacity }) {
 

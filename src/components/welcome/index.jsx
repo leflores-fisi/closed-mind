@@ -1,8 +1,8 @@
-import UserForm from './UserForm';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
+import UserForm         from './UserForm';
 import ClosedmindHeader from '../ClosedmindHeader';
-import ClosedmindLogo from '../ClosedmindLogo';
-import FeaturesCard from './features/FeaturesCard';
+import ClosedmindLogo   from '../ClosedmindLogo';
+import FeaturesCard     from './features/FeaturesCard';
 import './Welcome.scss';
 
 function WelcomeWindow() {

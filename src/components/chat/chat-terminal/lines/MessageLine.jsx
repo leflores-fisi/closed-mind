@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { scrollChatIfIsNear } from '../../../../Helpers';
+import { scrollChatIfIsNear } from '@/Helpers';
 import EmoteReactionButton from './reactions/EmoteReactionButton';
 import MessageReactionsList from './reactions/MessageReactionsList';
 import UserMessage from './UserMessage';

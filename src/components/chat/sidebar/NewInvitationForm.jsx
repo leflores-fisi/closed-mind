@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
-import { API_URL } from '../../userSocket';
-import useAppReducer from './../../../hooks/useAppReducer';
+import { API_URL } from '@/services/userSocket';
+import useAppReducer from '@/hooks/useAppReducer';
 
 function NewInvitationForm({ onSubmit, onCancel }) {
 

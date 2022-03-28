@@ -1,4 +1,4 @@
-import github_logo from './../assets/github-logo.png';
+import github_logo from '@/assets/logos/github.png';
 import ClosedmindLogo from './ClosedmindLogo';
 import HoverableTitle from './overlay/HoverableTitle';
 

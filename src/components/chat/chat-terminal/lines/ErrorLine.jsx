@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { scrollChatToBottom } from '../../../../Helpers';
+import { scrollChatToBottom } from '@/Helpers';
 
 function ErrorLine({ text }) {
 

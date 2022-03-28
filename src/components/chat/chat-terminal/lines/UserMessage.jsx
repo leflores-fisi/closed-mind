@@ -1,8 +1,8 @@
 import React, { useEffect, useState, memo } from 'react';
-import useDateFormatter from '../../../../hooks/useDateFormatter';
-import useChatConfig from '../../../../hooks/useChatConfig';
+import useDateFormatter from '@/hooks/useDateFormatter';
+import useChatConfig from '@/hooks/useChatConfig';
 import YoutubeEmbed from '../chat-interactive/YoutubeEmbed';
-import { getYoutubeID, isURL, isYoutubeURL } from '../../../../Helpers';
+import { getYoutubeID, isURL, isYoutubeURL } from '@/Helpers';
 
 function UserMessage({ date, userId, userColor, text }) {
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { scrollChatToBottom } from '../../../../Helpers';
-import useDateFormatter from '../../../../hooks/useDateFormatter';
-import HoverableTitle from '../../../overlay/HoverableTitle';
+import { scrollChatToBottom } from '@/Helpers';
+import HoverableTitle from '@/components/overlay/HoverableTitle';
+import useDateFormatter from '@/hooks/useDateFormatter';
 
 function InformationLine({ text, date }) {
 

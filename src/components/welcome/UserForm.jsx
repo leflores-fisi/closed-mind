@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
-import useAppReducer from "../../hooks/useAppReducer"
-import { connectSocket, setGlobalColor, setGlobalUsername } from "../../context/actions";
-import { userSocket } from "../userSocket";
-import ColorPicker from "./ColorPicker";
-import HoverableTitle from '../overlay/HoverableTitle';
-import { API_URL } from '../userSocket';
+import { connectSocket, setGlobalColor, setGlobalUsername } from '@/context/actions';
+import useAppReducer  from '@/hooks/useAppReducer';
+import HoverableTitle from '@/components/overlay/HoverableTitle';
+import { userSocket } from '@/services/userSocket';
+import ColorPicker    from './ColorPicker';
+import { API_URL }    from '@/services/userSocket';
 import './UserForm.scss'
 
 function UserForm({ onSuccessfullySubmit = () => {}}) {

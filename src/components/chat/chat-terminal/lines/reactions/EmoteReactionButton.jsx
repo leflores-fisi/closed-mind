@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import useAppReducer from '../../../../../hooks/useAppReducer';
+import useAppReducer from '@/hooks/useAppReducer';
 import EmotePicker from './EmotePicker';
-import { emitSocketEvent } from '../../../../userSocket';
+import { emitSocketEvent } from '@/services/userSocket';
 
 function EmoteReactionButton({ message_id, messageReactions }) {
 

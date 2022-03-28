@@ -1,19 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
 import { joinToRoom, disconnectFromRoom, appendMessage, appendUser,
          popUser, disconnectSocket, appendErrorMessage, reactToMessage,
-         deleteReactionFromMessage, decreaseReactionFromMessage } from '../../../context/actions';
+         deleteReactionFromMessage, decreaseReactionFromMessage } from '@/context/actions';
+import useAppReducer      from '@/hooks/useAppReducer';
+import { useForceUpdate } from '@/hooks/useForceUpdate';
 
-import { userSocket } from '../../userSocket'
-import { useForceUpdate } from '../../../hooks/useForceUpdate';
-import useAppReducer  from '../../../hooks/useAppReducer';
+import { userSocket } from '@/services/userSocket';
+import WindowHeader from '@/components/WindowHeader'
 
-import WindowHeader  from '../../WindowHeader';
 import CommandInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
 import TerminalRoomHeader from './TerminalRoomHeader';
 import TerminalWelcomeHeader from './TerminalWelcomeHeader';
+import { scrollChatIfIsNear, scrollChatToBottom } from '@/Helpers';
 import './ChatTerminal.scss';
-import { scrollChatIfIsNear, scrollChatToBottom } from '../../../Helpers';
 
 function ChatTerminal() {
 

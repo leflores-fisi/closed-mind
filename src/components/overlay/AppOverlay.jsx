@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import useOverlay from './../../hooks/useOverlay';
-import useAppReducer from '../../hooks/useAppReducer';
+
+import useOverlay    from './../../hooks/useOverlay';
+import useAppReducer from './../../hooks/useAppReducer';
 import './AppOverlay.scss'
 
 const ON_MOBILE_TOUCH_MODE = (

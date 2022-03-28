@@ -4,9 +4,6 @@ export const overlayContext = createContext();
 
 export function OverlayContextProvider({ children }) {
 
-  const initialCallback = (emote) => {
-    console.log(emote)
-  }
   const [onMobileRes, setOnMobileRes] = useState(document.body.clientWidth <= 800);
 
   return (

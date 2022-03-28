@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import useAppReducer from './../../../hooks/useAppReducer';
+import useAppReducer from '@/hooks/useAppReducer';
 import SidebarSection from './SidebarSection';
 
 function RoomInformation() {

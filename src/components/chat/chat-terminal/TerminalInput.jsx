@@ -1,9 +1,9 @@
 import { useState, forwardRef, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import TextareaAutosize from 'react-textarea-autosize';
-import { emitSocketEvent } from '../../userSocket';
-import useAppReducer from '../../../hooks/useAppReducer';
-import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '../../../context/actions';
+import { emitSocketEvent } from '@/services/userSocket';
+import useAppReducer from '@/hooks/useAppReducer';
+import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '@/context/actions';
 import './TerminalInput.scss';
 
 // forward ref
@@ -14,7 +14,6 @@ function CommandInput(props, ref) {
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const [autocompletePlaceholder, setAutocompletePlaceholder] = useState('');
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
-  const [messageToRespond, setMessageToRespond] = useState(null);
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);

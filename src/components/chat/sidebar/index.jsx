@@ -1,10 +1,13 @@
-import { userSocket } from '../../userSocket';
-import useAppReducer from './../../../hooks/useAppReducer';
-import WindowHeader from '../../WindowHeader';
+import { userSocket } from '@/services/userSocket';
+import WindowHeader   from '@/components/WindowHeader'
+
+import useAppReducer from '@/hooks/useAppReducer';
+import useOverlay    from '@/hooks/useOverlay';
+
+import RoomInformation   from './RoomInformation';
 import InvitationSection from './InvitationSection';
-import RoomInformation from './RoomInformation';
-import useOverlay from '../../../hooks/useOverlay';
-import closedmind_logo from './../../../assets/closedmind-logo.png';
+
+import closedmind_logo from '@/assets/logos/closedmind.png';
 import './ChatSidebar.scss';
 
 function Sidebar() {
