@@ -10,8 +10,8 @@ import WindowHeader from '@/components/WindowHeader'
 
 import CommandInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
-import TerminalRoomHeader from './TerminalRoomHeader';
-import TerminalWelcomeHeader from './TerminalWelcomeHeader';
+import TerminalRoomHeader from './statics/TerminalRoomHeader';
+import TerminalWelcomeHeader from './statics/TerminalWelcomeHeader';
 import { scrollChatIfIsNear, scrollChatToBottom } from '@/Helpers';
 import './ChatTerminal.scss';
 

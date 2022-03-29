@@ -1,11 +1,10 @@
-import { userSocket } from '@/services/userSocket';
-import WindowHeader   from '@/components/WindowHeader'
-
 import useAppReducer from '@/hooks/useAppReducer';
 import useOverlay    from '@/hooks/useOverlay';
 
-import RoomInformation   from './RoomInformation';
-import InvitationSection from './InvitationSection';
+import WindowHeader   from '@/components/WindowHeader'
+import RoomInformation      from './RoomInformation';
+import InvitationSection    from './InvitationSection';
+import DisconnectUserButton from './interactive/DisconnectUserButton';
 
 import closedmind_logo from '@/assets/logos/closedmind.png';
 import './ChatSidebar.scss';
@@ -30,13 +29,7 @@ function Sidebar() {
               <span>{store.user_code}</span>
             </div>
           </div>
-          <button
-            className='disconnect-user-btn'
-            onClick={() => {
-              userSocket.disconnect();
-            }}
-          >Disconnect
-          </button>
+          <DisconnectUserButton/>
         </section>
         {
           store.room_code

@@ -55,3 +55,9 @@ export function scrollChatToBottom() {
 
   console.log('Scrolling chat to bottom')
 }
+
+export function writeOnChatInput(text) {
+  let ChatInput = document.querySelector('.textarea-input');
+  ChatInput.value = text;
+  ChatInput.focus();
+}

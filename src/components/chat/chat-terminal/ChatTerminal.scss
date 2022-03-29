@@ -1,12 +1,13 @@
 
 .chat-terminal {
 
+  .focusable {
+    margin-right: 5px;
+    height: min-content;
+  }
   .chat-options {
     display: flex;
 
-    .focusable {
-      margin-right: 5px;
-    }
     button {
       display: flex;
       align-items: center;
@@ -22,5 +23,23 @@
   .command-lines-wrapper {
     max-height: 100%;
     overflow-y: auto;
+  }
+  .commands-snippets {
+    border: 1px solid var(--black);
+    border-collapse: collapse;
+    margin-top: 5px;
+
+    tr {
+      border: 1px solid #222026
+    }
+    th {
+      background-color: var(--black);
+      text-align: left;
+      color: var(--app-color);
+      padding: 5px 10px 4px 6px;
+    }
+    td {
+      padding: 4px 10px 4px 6px;
+    }
   }
 }

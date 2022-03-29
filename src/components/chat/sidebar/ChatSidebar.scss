@@ -97,6 +97,12 @@
               }
             }
           }
+          .users-online-list {
+            .user {
+              display: flex;
+              justify-content: space-between;
+            }
+          }
         }
       }
     }

@@ -5,6 +5,7 @@ import { emitSocketEvent } from '@/services/userSocket';
 import useAppReducer from '@/hooks/useAppReducer';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '@/context/actions';
 import './TerminalInput.scss';
+import AvailableCommandsTable from './statics/AvailableCommandsTable';
 
 // forward ref
 function CommandInput(props, ref) {
@@ -19,7 +20,14 @@ function CommandInput(props, ref) {
   const focusedRow = useRef(0);
 
   const CONSOLE_ACTIONS = {
-    
+
+    '/commands': () => {
+      dispatch(appendMessage({
+        date: Date.now(),
+        from: '@senders/APP_INFO',
+        text: <AvailableCommandsTable/>
+      }));
+    },
     '/create': (args) => {
       if (store.room_code) {
         dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
@@ -295,6 +303,8 @@ function CommandInput(props, ref) {
           ref={ref}
           placeholder={'Type something'}
           onChange={handleAutocomplete}
+          onFocus={handleAutocomplete}
+          onBlur={handleAutocomplete}
           onKeyDown={handleKeys}
           onHeightChange={handleNewLine}
         />

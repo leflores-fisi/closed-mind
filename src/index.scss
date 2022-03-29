@@ -10,7 +10,7 @@
   --cursorColor:         #4FA160;
   --selectionBackground: #4f5c5b;
   --black:        #0c0c0c;
-  --brightBlack:  #444347;
+  --brightBlack:  #535355;
   --gray:         #84838a;
   --white:        #b5b7c0;
   --brightWhite:  #f5e9f5;
@@ -96,6 +96,7 @@ body {
 }
 
 .default       {color: var(--app-color)    !important;}
+.brightBlack   {color: var(--brightBlack)  !important;}
 .black         {color: var(--black)        !important;}
 .gray          {color: var(--gray)         !important;}
 .white         {color: var(--white)        !important;}
