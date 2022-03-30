@@ -39,14 +39,14 @@ function ChatTerminal() {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         messagesCountOnTabHidden.current = 0;
-        document.title = roomNameFromCode(store.room_code) || APP_TITLE;
+        document.title = `${roomNameFromCode(store.room_code)} | Closedmind` || APP_TITLE;
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
-  }, []);
+  }, [store.room_code]);
 
   useEffect(() => {
     scrollChatToBottom();
