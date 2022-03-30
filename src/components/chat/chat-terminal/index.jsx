@@ -25,13 +25,16 @@ function ChatTerminal() {
 
   const inputRef = useRef(null);
 
-  const handleAutofocus = () => {
-    if (window.getSelection().toString() === '')
-      inputRef.current?.focus();
-  }
-
+  // For autofocusing the chat input on key down
   useEffect(() => {
     inputRef.current?.focus();
+    const focusInput = () => {
+      inputRef.current.focus();
+    }
+    window.addEventListener('keydown', focusInput);
+    return () => {
+      window.removeEventListener('keydown', focusInput);
+    };
   }, [])
 
   // For reset message count on document title
@@ -140,7 +143,7 @@ function ChatTerminal() {
   }, [store.room_code])
 
   return (
-    <div className='chat-terminal' onMouseUp={handleAutofocus}>
+    <div className='chat-terminal'>
       <WindowHeader title='Chat'/>
       {
         store.room_code &&
