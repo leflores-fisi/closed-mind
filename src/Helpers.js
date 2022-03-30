@@ -61,3 +61,7 @@ export function writeOnChatInput(text) {
   ChatInput.value = text;
   ChatInput.focus();
 }
+
+export function roomNameFromCode(code) {
+  return code.substring(0, code.length - 5);
+}

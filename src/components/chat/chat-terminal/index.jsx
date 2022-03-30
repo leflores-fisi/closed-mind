@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
-import { joinToRoom, disconnectFromRoom, appendMessage, appendUser,
-         popUser, disconnectSocket, appendErrorMessage, reactToMessage,
-         deleteReactionFromMessage, decreaseReactionFromMessage } from '@/context/actions';
+import * as actions from '@/context/actions';
+import useChatConfig      from '@/hooks/useChatConfig';
 import useAppReducer      from '@/hooks/useAppReducer';
 import { useForceUpdate } from '@/hooks/useForceUpdate';
 
@@ -12,12 +11,15 @@ import CommandInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
 import TerminalRoomHeader from './statics/TerminalRoomHeader';
 import TerminalWelcomeHeader from './statics/TerminalWelcomeHeader';
-import { scrollChatIfIsNear, scrollChatToBottom } from '@/Helpers';
+import { roomNameFromCode, scrollChatIfIsNear, scrollChatToBottom } from '@/Helpers';
 import './ChatTerminal.scss';
+
+const APP_TITLE = 'Closedmind | minimalist communication';
 
 function ChatTerminal() {
 
   const {store, dispatch} = useAppReducer();
+  const { messagesCountOnTabHidden } = useChatConfig();
   const [areHeaderSnippetsClosed, setAreHeaderSnippetsClosed] = useState(false);
   const forceUpdate = useForceUpdate();
 
@@ -32,61 +34,82 @@ function ChatTerminal() {
     inputRef.current?.focus();
   }, [])
 
+  // For reset message count on document title
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        messagesCountOnTabHidden.current = 0;
+        document.title = roomNameFromCode(store.room_code) || APP_TITLE;
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    }
+  }, []);
+
   useEffect(() => {
     scrollChatToBottom();
   }, [store.room_code])
 
   useEffect(() => {
 
-    // listeners to <socket.emit(...)>
-    userSocket.on('room-created', ({createdChatRoom}) => {
-      dispatch(joinToRoom({chatRoom: createdChatRoom}));
+    // Listeners to <socket.emit(...)>
+    userSocket.on('room-created', ({ createdChatRoom }) => {
+      dispatch(actions.joinToRoom({chatRoom: createdChatRoom}));
       localStorage.setItem('last_room_code', createdChatRoom.code);
+      document.title = `${roomNameFromCode(createdChatRoom.code)} | Closedmind`;
     });
-    userSocket.on('joined', ({joinedChatRoom}) => {
-      dispatch(joinToRoom({chatRoom: joinedChatRoom}));
+    userSocket.on('joined', ({ joinedChatRoom }) => {
+      dispatch(actions.joinToRoom({chatRoom: joinedChatRoom}));
       localStorage.setItem('last_room_code', joinedChatRoom.code);
+      document.title = `${roomNameFromCode(joinedChatRoom.code)} | Closedmind`;
     });
     userSocket.on('message-received', ({ date, user, message, message_id }) => {
-      dispatch(appendMessage({
+      dispatch(actions.appendMessage({
         date,
         from: user.user_id,
         color: user.user_color,
         text: message,
         message_id
       }));
+      if (document.hidden) {
+        document.title = `(${++messagesCountOnTabHidden.current}) ${roomNameFromCode(store.room_code)} | Closedmind`;
+      }
     });
     userSocket.on('disconnected-from-room', () => {
-      dispatch(disconnectFromRoom());
+      dispatch(actions.disconnectFromRoom());
+      document.title = APP_TITLE;
     });
     userSocket.on('message-reacted', ({ message_id, emote, from }) => {
       console.log('REACTION EMITTED FROM SERVER:', emote);
-      dispatch(reactToMessage({message_id, emote, from}));
+      dispatch(actions.reactToMessage({message_id, emote, from}));
 
       scrollChatIfIsNear(100);
     });
     userSocket.on('decreased-message-reaction', ({ message_id, emote, from }) => {
       console.log('REACTION DECREASED FROM SERVER:', emote);
-      dispatch(decreaseReactionFromMessage({message_id, emote, from}));
+      dispatch(actions.decreaseReactionFromMessage({message_id, emote, from}));
     });
     userSocket.on('deleted-message-reaction', ({ message_id, emote, from }) => {
       console.log('REACTION REMOVED FROM SERVER:', emote);
-      dispatch(deleteReactionFromMessage({message_id, emote, from}));
+      dispatch(actions.deleteReactionFromMessage({message_id, emote, from}));
     });
     userSocket.on('error', ({ message }) => {
-      dispatch(appendErrorMessage({ message }));
+      dispatch(actions.appendErrorMessage({ message }));
     });
-    userSocket.on('pong', ({timestamp, server_log}) => {
+    userSocket.on('pong', ({ timestamp, server_log }) => {
       const ping_log = {...server_log, text: server_log.text.concat(`${(Date.now() - timestamp)} ms`)};
-      dispatch(appendMessage(ping_log));
+      dispatch(actions.appendMessage(ping_log));
     });
 
-    // listeners to <socket.to(room).emit(...)>
-    userSocket.on('user-connected', ({user, server_log}) => {
-      dispatch(appendUser({ user, server_log }));
+    // Listeners to <socket.to(room).emit(...)>
+    userSocket.on('user-connected', ({ user, server_log }) => {
+      dispatch(actions.appendUser({ user, server_log }));
     });
-    userSocket.on('user-disconnected', ({user_id, server_log}) => {
-      dispatch(popUser({ user_id, server_log }));
+    userSocket.on('user-disconnected', ({ user_id, server_log }) => {
+      dispatch(actions.popUser({ user_id, server_log }));
+      document.title = APP_TITLE;
     });
 
     // socket.io events
@@ -94,13 +117,14 @@ function ChatTerminal() {
 
       if (store.room_code)  {
         console.log('Disconnecting with room code: {room_code:', store.room_code, ', user:', store.user_id,'}');
-        dispatch(disconnectFromRoom());
-        dispatch(disconnectSocket({}));
+        dispatch(actions.disconnectFromRoom());
+        dispatch(actions.disconnectSocket({}));
       }
       else {
-        dispatch(disconnectSocket({}))
+        dispatch(actions.disconnectSocket({}))
         console.log('Disconnecting without room code...');
       }
+      document.title = 'Closedmind | minimalist communication';
     });
     userSocket.on('connect_error', (err) => {
       console.log('SOCKET CONNECTION ERROR:', err.message, ', If you see this, you should leave me a message');

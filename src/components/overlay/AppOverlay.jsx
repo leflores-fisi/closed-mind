@@ -5,8 +5,9 @@ import useOverlay    from './../../hooks/useOverlay';
 import useAppReducer from './../../hooks/useAppReducer';
 import './AppOverlay.scss'
 
+// Check if the browser has touch events
 const ON_MOBILE_TOUCH_MODE = (
-  window.matchMedia("(pointer: coarse)").matches === true
+  window.matchMedia('(pointer: coarse)').matches === true
   && 'ontouchstart' in window
 );
 
