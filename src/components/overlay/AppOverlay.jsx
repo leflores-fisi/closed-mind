@@ -96,7 +96,7 @@ function AppOverlay() {
       }
       scrollDirectionChecked.current = true;
     }
-    e.preventDefault();
+    //e.preventDefault();
     
     let posX = initialChatPos.current + (getMouseCoords(e).x - initialClickPosRef.current.x);
     let finalPos = (
@@ -119,7 +119,7 @@ function AppOverlay() {
     clearListeners();
   }
   const handleEndDrag = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     clearListeners();
     scrollDirectionChecked.current = false;
 
@@ -171,7 +171,7 @@ function AppOverlay() {
     }
   }
   const handleStartDrag = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     // If is a click event and the mouse button is not left
     if (e.button !== undefined && e.button !== 0) {
       return;

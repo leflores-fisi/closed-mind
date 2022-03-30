@@ -42,7 +42,7 @@ function ChatTerminal() {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         messagesCountOnTabHidden.current = 0;
-        document.title = `${roomNameFromCode(store.room_code)} | Closedmind` || APP_TITLE;
+        document.title = store.room_code ? `${roomNameFromCode(store.room_code)} | Closedmind` : APP_TITLE;
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
