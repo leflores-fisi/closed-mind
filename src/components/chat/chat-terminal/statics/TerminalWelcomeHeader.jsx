@@ -10,7 +10,7 @@ function TerminalWelcomeHeader({ input, forceUpdate, selfClose, lastRoom }) {
   return (
     <div className='terminal-welcome'>
       <button className='close-btn' onClick={() => {selfClose(true)}}>X</button>
-      <header className='header'>〰Welcome to closedmind!</header>
+      <header className='header'>〰Welcome to <span className='notranslate' translate='no'>closedmind!</span></header>
       <div className='content-container'>
         <div className='snippet'>
           <button className='snippet-button' onClick={() => writeOnTerminal('/create ')}>

@@ -19,7 +19,7 @@ function Sidebar() {
       <WindowHeader title='Sidebar'/>
       <picture className='closedmind-logo'>
         <img src={closedmind_logo}/>
-        <div>closedmind</div>
+        <div className='notranslate' translate='no'>closedmind</div>
       </picture>
       <section className='sidebar-information'>
         <section className='user-information'>

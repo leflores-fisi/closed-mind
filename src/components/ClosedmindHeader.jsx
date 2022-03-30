@@ -12,10 +12,10 @@ function ClosedmindHeader({ description = false }) {
             {
               description
               ? <div>
-                  <div style={{fontSize: 16}}>closedmind</div>
+                  <div style={{fontSize: 16}} className='notranslate' translate='no'>closedmind</div>
                   <div className='desc' style={{fontSize: 12}}>minimalist and fugacious communication</div>
                 </div>
-              : <div>closedmind</div>
+              : <div className='notranslate' translate='no'>closedmind</div>
             }
         </picture>
       }

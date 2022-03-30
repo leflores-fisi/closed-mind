@@ -24,7 +24,7 @@ function WelcomeWindow() {
                 animate={{y: 0}}
                 transition={{duration: 1, delay: 0}}>
                 <ClosedmindLogo width={60} opacity={0.8}/>
-                <h1 className='logo'>〰closedmind〰</h1>
+                <h1 className='logo notranslate' translate='no'>〰closedmind〰</h1>
                 <h3 className='slogan'>
                   <i>minimalist</i> and <i>fugacious</i> communication
                 </h3>
