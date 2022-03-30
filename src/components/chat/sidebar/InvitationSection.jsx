@@ -68,6 +68,7 @@ function InvitationLink() {
             <div className={`invitation ${isCopied ? 'copied' : ''}`}>
               <input
                 className='link'
+                readOnly
                 ref={inputRef}
                 onFocus={handleFocus}
                 onChange={() => {}}

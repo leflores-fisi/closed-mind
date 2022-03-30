@@ -96,7 +96,6 @@ function AppOverlay() {
       }
       scrollDirectionChecked.current = true;
     }
-    //e.preventDefault();
     
     let posX = initialChatPos.current + (getMouseCoords(e).x - initialClickPosRef.current.x);
     let finalPos = (
@@ -119,7 +118,6 @@ function AppOverlay() {
     clearListeners();
   }
   const handleEndDrag = (e) => {
-    //e.preventDefault();
     clearListeners();
     scrollDirectionChecked.current = false;
 
@@ -154,6 +152,7 @@ function AppOverlay() {
       else {
         ChatTerminal.style.left = 'calc(100% - 90px)'; // hiding position
         isChatHidden.current = true;
+        document.querySelector('.textarea-input').blur();
       }
     }
     // Chat is visible
@@ -162,6 +161,7 @@ function AppOverlay() {
       if ((finalDragPos > halfDocument) || (dragVelocity > 0.5)) {
         ChatTerminal.style.left = 'calc(100% - 90px)';
         isChatHidden.current = true;
+        document.querySelector('.textarea-input').blur();
       }
       // Nothing happens, chat still open
       else {
@@ -171,7 +171,6 @@ function AppOverlay() {
     }
   }
   const handleStartDrag = (e) => {
-    //e.preventDefault();
     // If is a click event and the mouse button is not left
     if (e.button !== undefined && e.button !== 0) {
       return;

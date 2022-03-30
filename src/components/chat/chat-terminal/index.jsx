@@ -29,7 +29,8 @@ function ChatTerminal() {
   useEffect(() => {
     inputRef.current?.focus();
     const focusInput = () => {
-      inputRef.current.focus();
+      if (document.activeElement.classList[0] !== 'invitation-message-input')
+        inputRef.current.focus();
     }
     window.addEventListener('keydown', focusInput);
     return () => {
