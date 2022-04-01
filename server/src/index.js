@@ -307,6 +307,9 @@ function main() {
       }
       socket.emit('pong', {timestamp, server_log});
     })
+    socket.on('typing-message', () => {
+      socket.broadcast.to(socket.currentRoomCode).emit('user-typing', socket.currentUser?.user_id);
+    })
 
     socket.on('disconnect', () => {
       console.log('\n🐢 [Socket disconnection]');

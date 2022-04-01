@@ -4,8 +4,21 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { emitSocketEvent } from '@/services/userSocket';
 import useAppReducer from '@/hooks/useAppReducer';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '@/context/actions';
-import './TerminalInput.scss';
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
+import './TerminalInput.scss';
+
+function* waitForSeconds(seconds) {
+  let initial = Date.now();
+
+  while (true) {
+    if ((Date.now() - initial) > seconds*1000) {
+      initial = Date.now();
+      yield 'Done';
+    }
+    else yield 'Not yet';
+  }
+}
+const waitFor = waitForSeconds(2);
 
 // forward ref
 function CommandInput(props, ref) {
@@ -237,7 +250,7 @@ function CommandInput(props, ref) {
 
     switch (e.key) {
       case 'Enter':
-        e.preventDefault();
+        e.preventDefault(); // prevent new line
         let user_input = ref.current.value.trim();
         if (!user_input) return;
 
@@ -271,7 +284,6 @@ function CommandInput(props, ref) {
           ref.current.value = store.commands_history.at(historyIndex-1);
           setHistoryIndex(prev => prev-1);
           ref.current.setSelectionRange(ref.current.value.length, ref.current.value.length);
-          e.preventDefault();
         }
         break;
       case 'ArrowDown':
@@ -283,9 +295,11 @@ function CommandInput(props, ref) {
           ref.current.value = store.commands_history.at(historyIndex+1);
           setHistoryIndex(prev => prev+1);
           ref.current.setSelectionRange(ref.current.value.length, ref.current.value.length);
-          e.preventDefault();
         }
         break;
+      default:
+        if (store.room_code && e.key.length === 1 && !e.ctrlKey && !e.shiftKey && !e.altKey && waitFor.next().value === 'Done')
+          emitSocketEvent['typing-message']();
     }
     handleAutocomplete(e);
   };

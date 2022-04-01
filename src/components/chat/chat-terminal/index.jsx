@@ -28,8 +28,11 @@ function ChatTerminal() {
   // For autofocusing the chat input on key down
   useEffect(() => {
     inputRef.current?.focus();
-    const focusInput = () => {
-      if (document.activeElement.classList[0] !== 'invitation-message-input')
+    const focusInput = (e) => {
+      let doing_command = e.ctrlKey || e.shiftKey || e.altKey;
+      let focused_other_input = document.activeElement.classList[0] === 'invitation-message-input';
+
+      if (!focused_other_input && !doing_command)
         inputRef.current.focus();
     }
     window.addEventListener('keydown', focusInput);

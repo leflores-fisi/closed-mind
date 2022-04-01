@@ -5,6 +5,7 @@ function TerminalWelcomeHeader({ input, forceUpdate, selfClose, lastRoom }) {
   const writeOnTerminal = (command) => {
     input.current.value = command;
     forceUpdate();
+    input.current.focus();
   }
   
   return (

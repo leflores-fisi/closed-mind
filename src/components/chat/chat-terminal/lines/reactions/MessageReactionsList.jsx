@@ -27,7 +27,7 @@ function MessageReactionsList({ reactions, message_id }) {
       buttonRef.current.disabled = true;
       setTimeout(() => {
         buttonRef.current.disabled = false;
-      }, 500)
+      }, 1000)
     }
   }
 

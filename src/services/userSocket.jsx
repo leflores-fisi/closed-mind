@@ -104,5 +104,8 @@ export const emitSocketEvent = {
       message_id,
       emote
     })
+  },
+  "typing-message": () => {
+    userSocket.emit('typing-message')
   }
 }
