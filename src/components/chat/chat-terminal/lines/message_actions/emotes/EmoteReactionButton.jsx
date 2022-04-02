@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { emitSocketEvent } from '@/services/userSocket';
+import { reactToMessage } from '@/context/actions';
 import useAppReducer from '@/hooks/useAppReducer';
 import EmotePicker from './EmotePicker';
 import { MdOutlineAddReaction } from 'react-icons/md'
+import { scrollChatIfIsNear } from '@/Helpers';
 
 function EmoteReactionButton({ message_id, messageReactions }) {
 
   const [menuOpened, setMenuOpened] = useState(false);
-  const {store} = useAppReducer();
+  const { store, dispatch } = useAppReducer();
 
   const hideMenu = () => {
     let Overlay = document.querySelector('.app-overlay');
@@ -29,11 +31,15 @@ function EmoteReactionButton({ message_id, messageReactions }) {
     const reactionInList = messageReactions.find(reaction => reaction.emote === emote);
 
     if (!reactionInList) {
-      emitSocketEvent['new-reaction-to-message']({message_id, emote});
+      emitSocketEvent['new-reaction-to-message']({ message_id, emote });
+      dispatch(reactToMessage({ message_id, emote, from: store.user_id }));
+      scrollChatIfIsNear(100);
     }
     else {
-      if (!reactionInList.users_list.includes(store.user_id))
-        emitSocketEvent['reacting-to-message']({message_id, emote});
+      if (!reactionInList.users_list.includes(store.user_id))  {
+        emitSocketEvent['reacting-to-message']({ message_id, emote });
+        dispatch(reactToMessage({ message_id, emote, from: store.user_id }));
+      }
     }
   }
 

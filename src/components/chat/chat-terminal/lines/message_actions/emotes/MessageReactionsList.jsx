@@ -1,11 +1,12 @@
 import { useRef } from 'react';
 import { emitSocketEvent } from '@/services/userSocket';
+import { reactToMessage, decreaseReactionFromMessage, deleteReactionFromMessage } from '@/context/actions';
 import { emotes_sources } from './emotes';
 import useAppReducer from '@/hooks/useAppReducer';
 
 function MessageReactionsList({ reactions, message_id }) {
 
-  const {store} = useAppReducer();
+  const {store, dispatch} = useAppReducer();
   const buttonRef = useRef(null);
 
   const handleReaction = (reaction) => {
@@ -14,20 +15,50 @@ function MessageReactionsList({ reactions, message_id }) {
     if (storedReaction.users_list.includes(store.user_id)) {
       if (storedReaction.users_list.length > 1) {
         console.log(`(@From down reactions) DECREASING REACTION FROM ${message_id} WAS`, reaction.emote); 
-        emitSocketEvent['decreasing-reaction']({message_id: message_id, emote: reaction.emote});
+        emitSocketEvent['decreasing-reaction']({
+          message_id: message_id,
+          emote: reaction.emote
+        });
+        dispatch(decreaseReactionFromMessage({
+          message_id: message_id,
+          emote: reaction.emote,
+          from: store.user_id
+        }));
+        // re-reaction delay
+        buttonRef.current.disabled = true;
+        setTimeout(() => {
+          buttonRef.current.disabled = false;
+        }, 500)
       }
       else {
         console.log(`(@From down reactions) DELETING REACTION FROM ${message_id} WAS`, reaction.emote); 
-        emitSocketEvent['deleting-reaction-from-message']({message_id: message_id, emote: reaction.emote});
+        emitSocketEvent['deleting-reaction-from-message']({
+          message_id: message_id,
+          emote: reaction.emote
+        });
+        dispatch(deleteReactionFromMessage({
+          message_id: message_id,
+          emote: reaction.emote,
+          from: store.user_id
+        }));
       }
     }
     else {
       console.log(`(@From down reactions) REACTION TO ${message_id} WITH`, reaction.emote); 
-      emitSocketEvent['reacting-to-message']({message_id: message_id, emote: reaction.emote});
+      emitSocketEvent['reacting-to-message']({
+        message_id: message_id,
+        emote: reaction.emote
+      });
+      dispatch(reactToMessage({
+        message_id: message_id,
+        emote: reaction.emote,
+        from: store.user_id
+      }));
+      // re-reaction delay
       buttonRef.current.disabled = true;
       setTimeout(() => {
         buttonRef.current.disabled = false;
-      }, 1000)
+      }, 500)
     }
   }
 

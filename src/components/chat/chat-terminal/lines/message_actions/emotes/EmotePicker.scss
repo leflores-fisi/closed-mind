@@ -5,12 +5,13 @@
   .reaction-item {
     display: flex;
     align-items: center;
-    outline: 1px solid var(--brightBlack);
     background-color: var(--black);
+    outline: 1px solid #2c2c2f;
     padding: 2px 4px;
     margin: 2px 10px 0 0;
     user-select: none;
     border-radius: 2px;
+    transition: opacity 0.2s;
     opacity: 0.9;
 
     .emote {
@@ -29,12 +30,23 @@
       outline-color: var(--purple);
       background-color: #171b22;
       opacity: 1;
+      animation: reacted 0.3s alternate;
     }
     &:hover {
       opacity: 1;
-      outline-color: var(--purple);
+      outline-color: var(--brightBlack);
+
+      &.reacted { outline-color: var(--purple) }
+    }
+    &:disabled {
+      opacity: 0.85;
     }
   }
+}
+@keyframes reacted {
+  0%   { scale: 1.0 }
+  20%  { scale: 1.1 }
+  100% { scale: 1.0 }
 }
 .react-to-message-btn-container {
   position: relative;

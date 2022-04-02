@@ -166,7 +166,7 @@ function main() {
           }
         }, {new: true}).then(updatedChatRoom => {
           console.log(`🐌 <${socket.currentRoomCode}> NEW REACTION from ${socket.currentUser.user_id} with ${emote} to ${message_id}`);
-          io.to(socket.currentRoomCode).emit('message-reacted', { message_id, emote, from: socket.currentUser.user_id });
+          socket.broadcast.to(socket.currentRoomCode).emit('message-reacted', { message_id, emote, from: socket.currentUser.user_id });
         })
     })
     socket.on('reacting-to-message', ({ message_id, emote }) => {
@@ -191,7 +191,7 @@ function main() {
           new: true
       }).then(updatedChatRoom => {
         console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} reacts with ${emote} to ${message_id}`);
-        io.to(socket.currentRoomCode).emit('message-reacted', { message_id, emote, from: socket.currentUser.user_id });
+        socket.broadcast.to(socket.currentRoomCode).emit('message-reacted', { message_id, emote, from: socket.currentUser.user_id });
 
       }).catch(error => console.log('Error on socket->react-to-message', error));
     })
@@ -217,7 +217,7 @@ function main() {
           new: true
       }).then(updatedChatRoom => {
         console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} DECREASING their ${emote} from ${message_id}`);
-        io.to(socket.currentRoomCode).emit('decreased-message-reaction', { message_id, emote, from: socket.currentUser.user_id });
+        socket.broadcast.to(socket.currentRoomCode).emit('decreased-message-reaction', { message_id, emote, from: socket.currentUser.user_id });
 
       }).catch(error => console.log('Error on socket->decreasing-reaction-from-message', error));
     })
