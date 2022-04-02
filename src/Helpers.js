@@ -44,7 +44,9 @@ export function scrollChatIfIsNear(distance = 200) {
   const LinesHeight = document.querySelector('.command-lines').getBoundingClientRect().height;
 
   if (LinesHeight - (Wrapper.scrollTop + Wrapper.getBoundingClientRect().height) < distance) {
-    Wrapper.scrollTo(0, LinesHeight);
+    setTimeout(() => {
+      Wrapper.scrollTo(0, LinesHeight);
+    }, 0)
   }
 }
 

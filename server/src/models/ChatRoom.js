@@ -11,6 +11,11 @@ const MessageSchema = new mongoose.Schema({
   text: String,
   color: String,
   date: String,
+  replyingTo: {
+    user: String,
+    text: String,
+    color: String
+  },
   reactions: [{
     emote: String,
     users_list: [String]

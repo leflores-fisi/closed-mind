@@ -83,6 +83,7 @@ export const reducer = (state, action) => {
           text: action.payload.text,
           color: action.payload.color,
           message_id: action.payload.message_id,
+          replyingTo: action.payload.replyingTo,
           reactions: []
         })
       };

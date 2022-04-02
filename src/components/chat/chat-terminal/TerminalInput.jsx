@@ -6,6 +6,7 @@ import useAppReducer from '@/hooks/useAppReducer';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '@/context/actions';
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
 import './TerminalInput.scss';
+import useChatInput from '@/hooks/useChatInput';
 
 function* waitForSeconds(seconds) {
   let initial = Date.now();
@@ -28,6 +29,7 @@ function CommandInput(props, ref) {
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const [autocompletePlaceholder, setAutocompletePlaceholder] = useState('');
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
+  const { messageReplying, setMessageReplying } = useChatInput();
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
@@ -121,7 +123,8 @@ function CommandInput(props, ref) {
           date,
           from: '@senders/SELF',
           text: message,
-          message_id
+          message_id,
+          replyingTo: messageReplying
         }));
       }
       else {
@@ -129,12 +132,14 @@ function CommandInput(props, ref) {
           date,
           from: '@senders/SELF',
           text: message,
-          message_id
+          message_id,
+          replyingTo: messageReplying
         }));
         emitSocketEvent['sending-message']({
           date,
           message,
-          message_id
+          message_id,
+          replyingTo: messageReplying
         })
       }
     }
@@ -241,6 +246,9 @@ function CommandInput(props, ref) {
   const handleNewLine = () => {
     focusedRow.current = ref.current.value.substring(0, ref.current.selectionEnd).split('\n').length;
   }
+  const clearReplying = () => {
+    setMessageReplying(null);
+  }
 
   const handleKeys = (e) => {
     if (e.shiftKey) return;
@@ -266,6 +274,7 @@ function CommandInput(props, ref) {
         else CONSOLE_ACTIONS['send_message'](user_input);
 
         ref.current.value = '';
+        clearReplying();
         dispatch(saveLineToHistory({line: user_input}));
         setHistoryIndex(0);
       break;
@@ -308,24 +317,34 @@ function CommandInput(props, ref) {
   }, [ref.current?.value])
 
   return (
-    <div className='terminal-input-container'>
-      <div className='input-pointer'>{'>'}</div>
-      <div className='input-wrapper'>
-        <TextareaAutosize
-          maxRows={8}
-          className='textarea-input'
-          ref={ref}
-          placeholder={'Type something'}
-          onChange={handleAutocomplete}
-          onFocus={handleAutocomplete}
-          onBlur={handleAutocomplete}
-          onKeyDown={handleKeys}
-          onHeightChange={handleNewLine}
-        />
-        <div className='autocomplete'
-        >{autocompletePlaceholder}</div>
+    < >
+      {messageReplying &&
+        <div className='message-replying-container'>
+          <div>
+            Replying to <span className={`${messageReplying.color}`}>{messageReplying.from}</span>
+          </div>
+          <button onClick={clearReplying}>x</button>
+        </div>
+      }
+      <div className='terminal-input-container'>
+        <div className='input-pointer'>{'>'}</div>
+        <div className='input-wrapper'>
+          <TextareaAutosize
+            maxRows={8}
+            className='textarea-input'
+            ref={ref}
+            placeholder={'Type something'}
+            onChange={handleAutocomplete}
+            onFocus={handleAutocomplete}
+            onBlur={handleAutocomplete}
+            onKeyDown={handleKeys}
+            onHeightChange={handleNewLine}
+          />
+          <div className='autocomplete'
+          >{autocompletePlaceholder}</div>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

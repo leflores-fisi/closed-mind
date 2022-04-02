@@ -1,0 +1,14 @@
+
+.message-replying-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: var(--gray);
+  border: 1px solid var(--app-color);
+  background-color: var(--black);
+  font-size: 0.9rem;
+  padding: 3px 10px;
+  border-radius: 4px 4px 0 0;
+  border-bottom: none;
+}

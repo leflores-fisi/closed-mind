@@ -3,8 +3,9 @@ import useDateFormatter from '@/hooks/useDateFormatter';
 import useChatConfig from '@/hooks/useChatConfig';
 import YoutubeEmbed from '../chat-interactive/YoutubeEmbed';
 import { getYoutubeID, isURL, isYoutubeURL } from '@/Helpers';
+import { BsArrow90DegRight } from 'react-icons/bs';
 
-function UserMessage({ date, userId, userColor, text }) {
+function UserMessage({ date, userId, userColor, text, messageReplying}) {
 
   const {userCodeVisible} = useChatConfig();
   const formattedDate = useDateFormatter(date);
@@ -60,24 +61,37 @@ function UserMessage({ date, userId, userColor, text }) {
   
   return (
     < >
-      <div>
-        <time className='date'>{formattedDate}</time>
-        <span className='from'>
-          <span className={userColor}>
-            {userId.substring(0, userId.indexOf('#')).concat(!userCodeVisible ? ':' : '')}
+      <div className='wrapper'>
+        {
+          messageReplying &&
+          <div className='replying-to'>
+            <div className='message-replying'>
+              <BsArrow90DegRight className='icon'/>
+              <span>To</span>
+              <span className={`${messageReplying?.color}`}>{messageReplying?.from}:</span>
+              <span className='reply-text'>{messageReplying?.text}</span>
+            </div>
+          </div>
+        }
+        <div className='content'>
+          <time className='date'>{formattedDate}</time>
+          <span className='from'>
+            <span className={userColor}>
+              {userId.substring(0, userId.indexOf('#')).concat(!userCodeVisible ? ':' : '')}
+            </span>
+            {
+              userCodeVisible && 
+                <span className={userColor} style={{opacity: 0.55}}>
+                  {userId.substring(userId.indexOf('#')).concat(':')}
+                </span>
+            }
           </span>
-          {
-            userCodeVisible && 
-              <span className={userColor} style={{opacity: 0.55}}>
-                {userId.substring(userId.indexOf('#')).concat(':')}
-              </span>
-          }
-        </span>
-        <span className='text'>
-          {formattedTextOnBlocks}
-        </span>
+          <span className='text'>
+            {formattedTextOnBlocks}
+          </span>
+        </div>
+        {youtubeEmbed}
       </div>
-      {youtubeEmbed}
     </>
   );
 }

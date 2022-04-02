@@ -20,7 +20,7 @@ function InformationLine({ text, date }) {
           <span className='text'>{text}</span>
         </div>
         <HoverableTitle title='Only you can see this'>
-          {'👁'}
+          {'!'}
         </HoverableTitle>
       </div>
     </div>

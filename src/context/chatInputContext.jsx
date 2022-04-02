@@ -5,13 +5,11 @@ export const chatInputContext = createContext();
 
 export function ChatInputContextProvider({ children }) {
 
-  const [messageSelected, setMessageSelected] = useState({
-    
-  });
+  const [messageReplying, setMessageReplying] = useState(null);
 
   return (
     <chatInputContext.Provider value={{
-      messageSelected, setMessageSelected
+      messageReplying, setMessageReplying
     }}>
       { children }
     </chatInputContext.Provider>

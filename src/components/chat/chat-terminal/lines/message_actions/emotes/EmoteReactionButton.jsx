@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { emitSocketEvent } from '@/services/userSocket';
 import useAppReducer from '@/hooks/useAppReducer';
 import EmotePicker from './EmotePicker';
-import { emitSocketEvent } from '@/services/userSocket';
+import { MdOutlineAddReaction } from 'react-icons/md'
 
 function EmoteReactionButton({ message_id, messageReactions }) {
 
@@ -38,8 +39,10 @@ function EmoteReactionButton({ message_id, messageReactions }) {
 
   return (
     store.room_code &&
-    <div className='react-to-message-btn-container'>
-      <button className='react-to-message-btn' onClick={handleOpenReactions}>{':)'}</button>
+    <div className='message-action react-to-message-btn-container'>
+      <button className='react-to-message-btn' onClick={handleOpenReactions}>
+        <MdOutlineAddReaction/>
+      </button>
       {
         menuOpened &&
           <EmotePicker onPick={handlePick} setVisibility={setMenuOpened}/>

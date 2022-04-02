@@ -39,7 +39,7 @@ function main() {
     console.log('\n🐢 [New socket connection]');
     console.log(' Sockets:', io.allSockets())
 
-    socket.on('creating-chat-room', ({room_name, host}) => {
+    socket.on('creating-chat-room', ({ room_name, host }) => {
 
       const room_code = room_name + generateRoomCode();
 
@@ -120,8 +120,8 @@ function main() {
       })
       // else res.status(400).end(); Handle this
     })
-    socket.on('sending-message', ({ date, message, message_id }) => {
-      ChatRoom.findOneAndUpdate({code: socket.currentRoomCode}, {
+    socket.on('sending-message', ({ date, message, message_id, replyingTo }) => {
+      ChatRoom.findOneAndUpdate({ code: socket.currentRoomCode }, {
         $push: {
           messages: {
             from: socket.currentUser.user_id,
@@ -129,6 +129,7 @@ function main() {
             text: message,
             date: date,
             message_id: message_id,
+            replyingTo: replyingTo,
             reactions: []
           }
         }
@@ -139,7 +140,8 @@ function main() {
           date,
           user: socket.currentUser,
           message,
-          message_id
+          message_id,
+          replyingTo
         });
         io.to(socket.id).emit('message-sent');
       }).catch(error => console.log('Error on socket->message', error));

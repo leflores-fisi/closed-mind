@@ -7,12 +7,13 @@ import { useForceUpdate } from '@/hooks/useForceUpdate';
 import { userSocket } from '@/services/userSocket';
 import WindowHeader from '@/components/WindowHeader'
 
-import CommandInput  from './TerminalInput';
+import ChatMessageInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
 import TerminalRoomHeader from './statics/TerminalRoomHeader';
 import TerminalWelcomeHeader from './statics/TerminalWelcomeHeader';
 import { roomNameFromCode, scrollChatIfIsNear, scrollChatToBottom } from '@/Helpers';
 import './ChatTerminal.scss';
+import { ChatInputContextProvider } from '@/context/chatInputContext';
 
 const APP_TITLE = 'Closedmind | minimalist communication';
 
@@ -72,13 +73,14 @@ function ChatTerminal() {
       localStorage.setItem('last_room_code', joinedChatRoom.code);
       document.title = `${roomNameFromCode(joinedChatRoom.code)} | Closedmind`;
     });
-    userSocket.on('message-received', ({ date, user, message, message_id }) => {
+    userSocket.on('message-received', ({ date, user, message, message_id, replyingTo }) => {
       dispatch(actions.appendMessage({
         date,
         from: user.user_id,
         color: user.user_color,
         text: message,
-        message_id
+        message_id,
+        replyingTo
       }));
       if (document.hidden) {
         document.title = `(${++messagesCountOnTabHidden.current}) ${roomNameFromCode(store.room_code)} | Closedmind`;
@@ -147,28 +149,30 @@ function ChatTerminal() {
   }, [store.room_code])
 
   return (
-    <div className='chat-terminal'>
-      <WindowHeader title='Chat'/>
-      {
-        store.room_code &&
-          <TerminalRoomHeader
-            roomCode={store.room_code}
-            usersQuantity={store.users.length}
-          />
-      }
-      {
-        store.room_code || areHeaderSnippetsClosed
-        ?  null
-        : <TerminalWelcomeHeader
-            input={inputRef}
-            forceUpdate={forceUpdate}
-            selfClose={setAreHeaderSnippetsClosed}
-            lastRoom={store.last_room_code}
-          />
-      }
-      <TerminalLines lines={store.messages}/>
-      <CommandInput ref={inputRef}/>
-    </div>
+    <ChatInputContextProvider>
+      <div className='chat-terminal'>
+        <WindowHeader title='Chat'/>
+        {
+          store.room_code &&
+            <TerminalRoomHeader
+              roomCode={store.room_code}
+              usersQuantity={store.users.length}
+            />
+        }
+        {
+          store.room_code || areHeaderSnippetsClosed
+          ?  null
+          : <TerminalWelcomeHeader
+              input={inputRef}
+              forceUpdate={forceUpdate}
+              selfClose={setAreHeaderSnippetsClosed}
+              lastRoom={store.last_room_code}
+            />
+        }
+        <TerminalLines lines={store.messages}/>
+        <ChatMessageInput ref={inputRef}/>
+      </div>
+    </ChatInputContextProvider>
   );
 }
 

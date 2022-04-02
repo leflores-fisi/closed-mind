@@ -34,18 +34,20 @@ function CommandLine({ line }) {
         : line.from === '@senders/SELF' ?
           <SelfMessageLine
             date={line.date}
-            text={line.text}
             id={line.message_id}
+            text={line.text}
             reactions={line.reactions}
+            replyingTo={line.replyingTo}
           />
         :
           <MessageLine
+            date={line.date}
+            id={line.message_id}
             userId={line.from}
             userColor={line.color}
             text={line.text}
-            date={line.date}
-            id={line.message_id}
             reactions={line.reactions}
+            replyingTo={line.replyingTo}
           />
       }
     </div>
