@@ -5,17 +5,21 @@ import useAppReducer      from '@/hooks/useAppReducer';
 import { useForceUpdate } from '@/hooks/useForceUpdate';
 
 import { userSocket } from '@/services/userSocket';
+import { notificationSound } from '@/services/sounds';
 import WindowHeader from '@/components/WindowHeader'
+import { roomNameFromCode, scrollChatIfIsNear,
+  scrollChatToBottom, waitForSeconds } from '@/Helpers';
 
 import ChatMessageInput  from './TerminalInput';
 import TerminalLines from './TerminalLines';
 import TerminalRoomHeader from './statics/TerminalRoomHeader';
 import TerminalWelcomeHeader from './statics/TerminalWelcomeHeader';
-import { roomNameFromCode, scrollChatIfIsNear, scrollChatToBottom } from '@/Helpers';
-import './ChatTerminal.scss';
 import { ChatInputContextProvider } from '@/context/chatInputContext';
+import './ChatTerminal.scss';
 
 const APP_TITLE = 'Closedmind | minimalist communication';
+
+const waiterEnded = waitForSeconds(1);
 
 function ChatTerminal() {
 
@@ -74,6 +78,12 @@ function ChatTerminal() {
       document.title = `${roomNameFromCode(joinedChatRoom.code)} | Closedmind`;
     });
     userSocket.on('message-received', ({ date, user, message, message_id, replyingTo }) => {
+      if (waiterEnded.next().value) {
+        notificationSound.play();
+      }
+      if (document.hidden) {
+        document.title = `(${++messagesCountOnTabHidden.current}) ${roomNameFromCode(store.room_code)} | Closedmind`;
+      }
       dispatch(actions.appendMessage({
         date,
         from: user.user_id,
@@ -82,9 +92,6 @@ function ChatTerminal() {
         message_id,
         replyingTo
       }));
-      if (document.hidden) {
-        document.title = `(${++messagesCountOnTabHidden.current}) ${roomNameFromCode(store.room_code)} | Closedmind`;
-      }
     });
     userSocket.on('disconnected-from-room', () => {
       dispatch(actions.disconnectFromRoom());

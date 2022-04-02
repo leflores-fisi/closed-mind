@@ -3,23 +3,13 @@ import { nanoid } from 'nanoid';
 import TextareaAutosize from 'react-textarea-autosize';
 import { emitSocketEvent } from '@/services/userSocket';
 import useAppReducer from '@/hooks/useAppReducer';
+import useChatInput from '@/hooks/useChatInput';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '@/context/actions';
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
+import { waitForSeconds } from '@/Helpers';
 import './TerminalInput.scss';
-import useChatInput from '@/hooks/useChatInput';
 
-function* waitForSeconds(seconds) {
-  let initial = Date.now();
-
-  while (true) {
-    if ((Date.now() - initial) > seconds*1000) {
-      initial = Date.now();
-      yield 'Done';
-    }
-    else yield 'Not yet';
-  }
-}
-const waitFor = waitForSeconds(2);
+const waiterEnded = waitForSeconds(2);
 
 // forward ref
 function CommandInput(props, ref) {
@@ -307,7 +297,7 @@ function CommandInput(props, ref) {
         }
         break;
       default:
-        if (store.room_code && e.key.length === 1 && !e.ctrlKey && !e.shiftKey && !e.altKey && waitFor.next().value === 'Done')
+        if (store.room_code && e.key.length === 1 && !e.ctrlKey && !e.shiftKey && !e.altKey && waiterEnded.next().value)
           emitSocketEvent['typing-message']();
     }
     handleAutocomplete(e);

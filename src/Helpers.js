@@ -67,3 +67,16 @@ export function writeOnChatInput(text) {
 export function roomNameFromCode(code) {
   return code.substring(0, code.length - 5);
 }
+
+export function* waitForSeconds(seconds) {
+  let initial = Date.now();
+  yield true;
+
+  while (true) {
+    if ((Date.now() - initial) > seconds*1000) {
+      initial = Date.now();
+      yield true;
+    }
+    else yield false;
+  }
+}
