@@ -1,3 +1,4 @@
+import HoverableTitle from "@/components/overlay/HoverableTitle";
 import { scrollChatIfIsNear } from "@/Helpers";
 import useChatInput from "@/hooks/useChatInput";
 import { BsReply } from "react-icons/bs";
@@ -13,11 +14,13 @@ function ReplyMessageButton({ from, text, color }) {
   }
   
   return (
-    <div className='message-action reply-to-message-container'>
-      <button className='reply-to-message-btn' onClick={handleReply}>
-        <BsReply/>
-      </button>
-    </div>
+    <HoverableTitle title='Reply'>
+      <div className='message-action reply-to-message-container'>
+        <button className='reply-to-message-btn' onClick={handleReply}>
+          <BsReply/>
+        </button>
+      </div>
+    </HoverableTitle>
   );
 }
 export default ReplyMessageButton;

@@ -1,12 +1,15 @@
 
+$message-padding: 5px 8px;
+
 .command-lines-wrapper {
   
   .command-lines {
     padding: 5px 5px 0 5px;
 
     .command-line {
+      position: relative;
+      z-index: 100;
       min-height: 30px;
-      padding: 5px 8px;
       border-bottom: 1px solid black;
       word-break: break-word;
       white-space: pre-wrap;
@@ -15,6 +18,7 @@
       .message-container {
         display: flex;
         justify-content: space-between;
+        min-height: 24px;
 
         .content-wrapper {
           width: calc(100% - 60px);
@@ -32,11 +36,22 @@
         }
         .message-actions {
           display: flex;
-          justify-content: flex-end;
-          width: 60px;
+          width: fit-content;
+          height: fit-content;
+          max-height: 100%;
+          max-width: 60px;
+          overflow: visible;
+          background-color: var(--black);
   
           .message-action {
-            margin-right: 5px;
+            margin-right: 1px;
+
+            button {
+              aspect-ratio: 1/1;
+              padding: 4px;
+              background: none;
+              color: var(--brightBlack);
+            }
             &:last-child {
               margin-right: 0;
             }
@@ -50,6 +65,7 @@
     }
     .user-message {
       justify-content: space-between;
+      padding: $message-padding;
       
       .content-wrapper {
         .date {
@@ -130,10 +146,12 @@
       display: flex;
       justify-content: space-between;
       color: var(--brightRed);
+      padding: $message-padding;
     }
     .server-log {
       justify-content: space-between;
       color: var(--gray);
+      padding: $message-padding;
     }
   }
 }

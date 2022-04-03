@@ -5,6 +5,7 @@ import useAppReducer from '@/hooks/useAppReducer';
 import EmotePicker from './EmotePicker';
 import { MdOutlineAddReaction } from 'react-icons/md'
 import { scrollChatIfIsNear } from '@/Helpers';
+import HoverableTitle from '@/components/overlay/HoverableTitle';
 
 function EmoteReactionButton({ message_id, messageReactions }) {
 
@@ -21,8 +22,8 @@ function EmoteReactionButton({ message_id, messageReactions }) {
   const handleOpenReactions = () => {
     let Overlay = document.querySelector('.app-overlay');
     setMenuOpened(true);
-    Overlay.style.pointerEvents = 'auto';
-    Overlay.addEventListener('click', hideMenu);
+    //Overlay.style.pointerEvents = 'auto';
+    //Overlay.addEventListener('click', hideMenu);
   }
   const handlePick = (emote) => {
     document.querySelector('.app-overlay').style.pointerEvents = 'none';
@@ -45,15 +46,17 @@ function EmoteReactionButton({ message_id, messageReactions }) {
 
   return (
     store.room_code &&
-    <div className='message-action react-to-message-btn-container'>
-      <button className='react-to-message-btn' onClick={handleOpenReactions}>
-        <MdOutlineAddReaction/>
-      </button>
-      {
-        menuOpened &&
-          <EmotePicker onPick={handlePick} setVisibility={setMenuOpened}/>
-      }
-    </div>
+    <HoverableTitle title='Add reaction'>
+      <div className='message-action react-to-message-btn-container'>
+        <button className='react-to-message-btn' onClick={handleOpenReactions}>
+          <MdOutlineAddReaction/>
+        </button>
+        {
+          menuOpened &&
+            <EmotePicker onPick={handlePick} setVisibility={setMenuOpened}/>
+        }
+      </div>
+    </HoverableTitle>
   );
 }
 export default EmoteReactionButton;
