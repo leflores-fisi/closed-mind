@@ -4,6 +4,7 @@ import useChatConfig from '@/hooks/useChatConfig';
 import YoutubeEmbed from '../chat-interactive/YoutubeEmbed';
 import { getYoutubeID, isURL, isYoutubeURL } from '@/Helpers';
 import { BsArrow90DegRight } from 'react-icons/bs';
+import CopyURLButton from '../chat-interactive/CopyURLButton';
 
 function UserMessage({ date, userId, userColor, text, messageReplying}) {
 
@@ -31,9 +32,15 @@ function UserMessage({ date, userId, userColor, text, messageReplying}) {
       let word = words[i];
 
       if (isURL(word)) {
-        if (i !== 0)
-          TextBlocks.push(<span>{(lastWasLink || TextBlocks.length === 0 ? '' : ' ') + pendingBlock.join(' ').concat(' ')}</span>);
-        TextBlocks.push(<a target='_blank' href={word}>{word}</a>)
+        if (i !== 0) {
+          TextBlocks.push(<span>{((lastWasLink || TextBlocks.length === 0 ? '' : ' ') + pendingBlock.join(' ').concat(' ')) || ' '}</span>);
+        }
+        TextBlocks.push(
+          <span className='url-wrapper'>
+            <a target='_blank' href={word}>{word}</a>
+            <CopyURLButton URL={word}/>
+          </span>
+        )
         pendingBlock.length = 0;
         lastWasLink = true;
 
