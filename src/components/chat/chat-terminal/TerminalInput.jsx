@@ -15,7 +15,6 @@ const waiterEnded = waitForSeconds(2);
 function CommandInput(props, ref) {
 
   const {store, dispatch} = useAppReducer();
-
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const [autocompletePlaceholder, setAutocompletePlaceholder] = useState('');
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
@@ -297,7 +296,7 @@ function CommandInput(props, ref) {
         }
         break;
       default:
-        if (store.room_code && e.key.length === 1 && !e.ctrlKey && !e.shiftKey && !e.altKey && waiterEnded.next().value)
+        if (store.room_code && e.key.length === 1 && !e.key.match(/(control|shift|alt)/i) && waiterEnded.next().value)
           emitSocketEvent['typing-message']();
     }
     handleAutocomplete(e);
