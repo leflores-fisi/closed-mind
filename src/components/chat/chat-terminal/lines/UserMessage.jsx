@@ -23,7 +23,7 @@ function UserMessage({ date, userId, userColor, text, messageReplying}) {
    * ]
   */
   const FormatTextOnBlocks = () => {
-    let words = text.split(' ');
+    let words = text.split(/(\s|\n)/g).filter(block => block !== ' ');
     let TextBlocks = [];
     let pendingBlock = [];
     let lastWasLink = false;
