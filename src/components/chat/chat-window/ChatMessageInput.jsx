@@ -7,7 +7,9 @@ import useChatInput from '@/hooks/useChatInput';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearChat } from '@/context/actions';
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
 import { waitForSeconds } from '@/Helpers';
+import { IoSend } from 'react-icons/io5';
 import './ChatInput.scss';
+import HoverableTitle from '@/components/overlay/HoverableTitle';
 
 const waiterEnded = waitForSeconds(2);
 
@@ -18,6 +20,7 @@ function ChatMessageInput(props, ref) {
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const [autocompletePlaceholder, setAutocompletePlaceholder] = useState('');
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
+  const [canSendMessage, setCanSendMessage] = useState(false);
   const { messageReplying, setMessageReplying } = useChatInput();
 
   const [historyIndex, setHistoryIndex] = useState(0);
@@ -134,6 +137,33 @@ function ChatMessageInput(props, ref) {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); // prevent new line or page reload on submit
+    let user_input = ref.current.value.trim();
+    if (!user_input) return;
+
+    if (user_input.startsWith('/')) {
+      let words   = user_input.split(' ');
+      let command = words[0];
+      let args    = words.slice(1);
+
+      if (!CHAT_COMMANDS_ACTIONS.hasOwnProperty(command)) {
+        dispatch(appendErrorMessage({message: `Command '${command}' not recognized, type "/commands" for a hug`}));
+      }
+      else {
+        CHAT_COMMANDS_ACTIONS[command](args);
+      }
+    }
+    else {
+      CHAT_COMMANDS_ACTIONS['send_message'](user_input);
+    }
+
+    ref.current.value = '';
+    clearReplying();
+    dispatch(saveLineToHistory({line: user_input}));
+    setHistoryIndex(0);
+  }
+
   const handleAutocomplete = () => {
     let availableCommands = [
       {
@@ -167,7 +197,16 @@ function ChatMessageInput(props, ref) {
     ];
     let userInput = ref.current.value;
 
-    
+    if (userInput.trim() === '') {
+      setCanSendMessage(false);
+
+      setIsAutocompleting(false);
+      setAutocompletePlaceholder('');
+      setTextToAutocomplete('');
+      return;
+    }
+    setCanSendMessage(true);
+
     if (userInput.trim().startsWith('/')) {
       
       setIsAutocompleting(true);
@@ -247,25 +286,7 @@ function ChatMessageInput(props, ref) {
 
     switch (e.key) {
       case 'Enter':
-        e.preventDefault(); // prevent new line
-        let user_input = ref.current.value.trim();
-        if (!user_input) return;
-
-        if (user_input.startsWith('/')) {
-          let words   = user_input.split(' ');
-          let command = words[0];
-          let args    = words.slice(1);
-
-          if (!CHAT_COMMANDS_ACTIONS.hasOwnProperty(command))
-            dispatch(appendErrorMessage({message: `Command '${command}' not recognized, type "/commands" for a hug`}));
-          else CHAT_COMMANDS_ACTIONS[command](args);
-        }
-        else CHAT_COMMANDS_ACTIONS['send_message'](user_input);
-
-        ref.current.value = '';
-        clearReplying();
-        dispatch(saveLineToHistory({line: user_input}));
-        setHistoryIndex(0);
+        handleSubmit(e);
       break;
       case 'Tab':
         e.preventDefault();
@@ -306,7 +327,7 @@ function ChatMessageInput(props, ref) {
   }, [ref.current?.value])
 
   return (
-    < >
+    <form onSubmit={handleSubmit}>
       {messageReplying &&
         <div className='message-replying-container'>
           <div>
@@ -316,10 +337,9 @@ function ChatMessageInput(props, ref) {
         </div>
       }
       <div className='chat-input-container'>
-        <div className='input-pointer'>{'>'}</div>
         <div className='input-wrapper'>
           <TextareaAutosize
-            maxRows={8}
+            maxRows={12}
             className='textarea-input'
             ref={ref}
             placeholder={'Type something'}
@@ -332,8 +352,15 @@ function ChatMessageInput(props, ref) {
           <div className='autocomplete'
           >{autocompletePlaceholder}</div>
         </div>
+        <div className='send-message-container'>
+          <HoverableTitle title='Send'>
+            <button type='submit' className='send-message-btn' disabled={!canSendMessage}>
+              <IoSend/>
+            </button>
+          </HoverableTitle>
+        </div>
       </div>
-    </>
+    </form>
   )
 }
 

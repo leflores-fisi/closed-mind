@@ -1,5 +1,6 @@
 .chat-input-container {
   display: flex;
+  align-items: stretch;
   position: sticky;
   bottom: 0;
   background-color: #161517;
@@ -8,28 +9,27 @@
   border-bottom: 1px black solid;
   border-top: 1px black solid;
   
-  .input-pointer {
+  .input-wrapper {
     display: flex;
     align-items: center;
-    user-select: none;
-  }
-  .input-wrapper {
     padding-left: 10px;
     width: 100%;
     
     .textarea-input {
       display: flex;
       align-items: center;
-      padding: 6px 0;
+      padding: 10.4px 0;
       position: relative;
       caret-color: var(--purple);
       color: var(--gray);
       width: 100%;
-      min-height: 30px;
+      min-height: 35px;
 
       background: none;
       border: none;
       resize: none;
+      scrollbar-width: none;
+      
       &:focus {
         outline: none;
       }
@@ -48,6 +48,30 @@
       height: 100%;
       opacity: 0.6;
       white-space: pre-wrap;
+    }
+  }
+  .send-message-container {
+    display: flex;
+    align-items: flex-start;
+    min-height: 100%;
+    padding-top: 0.3rem;
+
+    .send-message-btn {
+      font-size: 1.2rem;
+      background: none;
+      color: var(--purple);
+      padding: 4px 8px;
+  
+      &:focus-visible {
+        outline: none;
+      }
+      &:hover {
+        color: var(--brightPurple);
+      }
+      &:disabled {
+        color: var(--brightBlack);
+        cursor: not-allowed;
+      }
     }
   }
 }
