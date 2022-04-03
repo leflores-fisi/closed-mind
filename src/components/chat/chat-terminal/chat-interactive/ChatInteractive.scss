@@ -1,9 +1,29 @@
 
 .youtube-embed {
   display: flex;
+  position: relative;
   margin-top: 5px;
   background-color: var(--black);
   aspect-ratio: 16/9;
   height: fit-content;
   width: fit-content;
+  z-index: -10;
+
+  &::before {
+    text-align: center;
+    display: block;
+    position: absolute;
+    content: 'Fetching youtube video...';
+    font-family: consolas, monospace, var(--fontCascadia);
+    left: 0;
+    top: 85px;
+    opacity: 0.3;
+    width: 100%;
+    height: calc(100% - 85px);
+    background-image: url(https://i.pinimg.com/originals/49/23/29/492329d446c422b0483677d0318ab4fa.gif);
+    background-repeat: no-repeat;
+    background-position: 50% -95px;
+    background-size: 100%;
+    z-index: -5;
+  }
 }
