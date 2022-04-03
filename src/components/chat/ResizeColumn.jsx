@@ -5,7 +5,7 @@ function ResizeColumn() {
 
   const handleMouseMove = (e) => {
     let ChatSidebar = document.querySelector('.chat-sidebar');
-    let ChatContent = document.querySelector('.chat-terminal');
+    let ChatContent = document.querySelector('.chat-window');
     let sidebarInitialFlex = '0 0 300px';
     let chatInitialFlex    = '1 1 auto';
 

@@ -37,7 +37,7 @@ export const disconnectFromRoom = () => {
     type: '@commands/leave'
   };
 };
-export const clearTerminal = () => {
+export const clearChat = () => {
   return {
     type: '@commands/clear'
   };
@@ -45,49 +45,49 @@ export const clearTerminal = () => {
 
 export const appendUser = ({ user, server_log }) => {
   return {
-    type: '@terminal/appendUser',
+    type: '@chat/appendUser',
     payload: { user, server_log }
   };
 };
 export const popUser = ({ user_id, server_log }) => {
   return {
-    type: '@terminal/popUser',
+    type: '@chat/popUser',
     payload: { user_id, server_log }
   };
 };
 export const appendMessage = ({ date, from, color, text, message_id, replyingTo }) => {
   return {
-    type: '@terminal/appendMessage',
+    type: '@chat/appendMessage',
     payload: { date, from, color, text, message_id, replyingTo }
   };
 };
 export const reactToMessage = ({ message_id, emote ,from }) => {
   return {
-    type: '@terminal/reactToMessage',
+    type: '@chat/reactToMessage',
     payload: { message_id, emote, from }
   }
 };
 export const deleteReactionFromMessage = ({ message_id, emote ,from }) => {
   return {
-    type: '@terminal/deleteReaction',
+    type: '@chat/deleteReaction',
     payload: { message_id, emote, from }
   }
 };
 export const decreaseReactionFromMessage = ({ message_id, emote ,from }) => {
   return {
-    type: '@terminal/decreaseReaction',
+    type: '@chat/decreaseReaction',
     payload: { message_id, emote, from }
   }
 };
 export const appendErrorMessage = ({ message }) => {
   return {
-    type: '@terminal/appendErrorMessage',
+    type: '@chat/appendErrorMessage',
     payload: { message }
   };
 };
 export const saveLineToHistory = ({ line }) => {
   return {
-    type: '@terminal/saveLineToHistory',
+    type: '@chat/saveLineToHistory',
     payload: { line }
   };
 };

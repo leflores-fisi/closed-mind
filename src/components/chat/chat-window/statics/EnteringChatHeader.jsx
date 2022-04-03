@@ -1,24 +1,24 @@
-import './TerminalWelcome.scss';
+import './ChatWelcome.scss';
 
-function TerminalWelcomeHeader({ input, forceUpdate, selfClose, lastRoom }) {
+function EnteringChatHeader({ input, forceUpdate, selfClose, lastRoom }) {
 
-  const writeOnTerminal = (command) => {
+  const writeOnChatInput = (command) => {
     input.current.value = command;
     forceUpdate();
     input.current.focus();
   }
   
   return (
-    <div className='terminal-welcome'>
+    <div className='chat-welcome'>
       <button className='close-btn' onClick={() => {selfClose(true)}}>X</button>
       <header className='header'>〰Welcome to <span className='notranslate' translate='no'>closedmind!</span></header>
       <div className='content-container'>
         <div className='snippet'>
-          <button className='snippet-button' onClick={() => writeOnTerminal('/create ')}>
+          <button className='snippet-button' onClick={() => writeOnChatInput('/create ')}>
             Create a room
           </button>
         </div>
-        <div className='snippet' onClick={() => writeOnTerminal('/join ' + (lastRoom ? lastRoom : ''))}>
+        <div className='snippet' onClick={() => writeOnChatInput('/join ' + (lastRoom ? lastRoom : ''))}>
           <button className='snippet-button'>
             {
               lastRoom
@@ -31,4 +31,4 @@ function TerminalWelcomeHeader({ input, forceUpdate, selfClose, lastRoom }) {
     </div>
   );
 }
-export default TerminalWelcomeHeader;
+export default EnteringChatHeader;

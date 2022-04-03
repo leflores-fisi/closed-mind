@@ -3,7 +3,7 @@ import { userSocket } from '@/services/userSocket';
 import { useForceUpdate } from '@/hooks/useForceUpdate';
 import ChatOptions from './ChatOptions';
 
-function TerminalRoomHeader({ roomCode, usersQuantity }) {
+function ChatRoomHeader({ roomCode, usersQuantity }) {
 
   const usersTypingList = useRef([]);
   const updateComponent = useForceUpdate();
@@ -32,7 +32,7 @@ function TerminalRoomHeader({ roomCode, usersQuantity }) {
   }, [usersTypingList.length])
 
   return (
-    <div className='terminal-room-header'>
+    <div className='chat-room-header'>
       <div className='room-header-information'>
         <div className='room-name'>
           {roomCode.substring(0, roomCode.length - 5)}
@@ -53,4 +53,4 @@ function TerminalRoomHeader({ roomCode, usersQuantity }) {
     </div>
   );
 }
-export default TerminalRoomHeader;
+export default ChatRoomHeader;

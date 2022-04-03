@@ -1,10 +1,9 @@
 import { Route, useLocation } from 'wouter';
 import { useEffect }          from 'react';
 
-
 import useAppReducer from '@/hooks/useAppReducer';
 import WelcomeWindow    from '@/components/welcome'
-import InvitationWindow from '@/components/invitations/InvitationWindow';
+import InvitationPage from '@/components/invitations/InvitationPage';
 import Chat             from '@/components/chat/Chat'
 import AppOverlay       from '@/components/overlay/AppOverlay';
 import './App.scss';
@@ -27,7 +26,7 @@ function App() {
         store.socket_is_connected
           ? <Chat/>
           : < >
-              <Route path='/invite/:code' component={InvitationWindow}/>
+              <Route path='/invite/:code' component={InvitationPage}/>
               <Route path='/'             component={WelcomeWindow}/>
             </>
       }

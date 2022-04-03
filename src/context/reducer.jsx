@@ -61,19 +61,19 @@ export const reducer = (state, action) => {
         messages: []
       };
 
-    case '@terminal/popUser':
+    case '@chat/popUser':
       return {
         ...state,
         users: state.users.filter(user => user.user_id !== action.payload.user_id),
         messages: state.messages.concat(action.payload.server_log)
       };
-    case '@terminal/appendUser': 
+    case '@chat/appendUser': 
       return {
         ...state,
         users: state.users.concat(action.payload.user),
         messages: state.messages.concat(action.payload.server_log)
       };
-    case '@terminal/appendMessage':
+    case '@chat/appendMessage':
 
       return {
         ...state,
@@ -87,7 +87,7 @@ export const reducer = (state, action) => {
           reactions: []
         })
       };
-    case '@terminal/reactToMessage':
+    case '@chat/reactToMessage':
 
       messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
       if (messageIndex === -1) return {...state};
@@ -105,7 +105,7 @@ export const reducer = (state, action) => {
         }
         return draftState;
       })
-    case '@terminal/deleteReaction':
+    case '@chat/deleteReaction':
       messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
       if (messageIndex === -1) return {...state};
 
@@ -117,7 +117,7 @@ export const reducer = (state, action) => {
         }
         return draftState;
       })
-    case '@terminal/decreaseReaction':
+    case '@chat/decreaseReaction':
       messageIndex = state.messages.findIndex(message => message.message_id === action.payload.message_id); 
       if (messageIndex === -1) return {...state};
 
@@ -133,7 +133,7 @@ export const reducer = (state, action) => {
         }
         return draftState;
       })
-    case '@terminal/appendErrorMessage':
+    case '@chat/appendErrorMessage':
 
       return {
         ...state,
@@ -143,7 +143,7 @@ export const reducer = (state, action) => {
           text: action.payload.message
         })
       };
-    case '@terminal/saveLineToHistory':
+    case '@chat/saveLineToHistory':
       let line = action.payload.line.trim();
 
       if (line !== state.commands_history.at(-1)) {

@@ -45,18 +45,18 @@ function AppOverlay() {
 
   // Handle resize to make the chat and its sidebar responsive
   const handleResize = () => {
-    let ChatTerminal = document.querySelector('.chat-terminal');
+    let ChatWindow = document.querySelector('.chat-window');
     
     if (document.body.clientWidth <= 800) {
       if (!onMobileRes) setOnMobileRes(true)
     }
     else {
       if (onMobileRes) setOnMobileRes(false);
-      if (ChatTerminal) {
+      if (ChatWindow) {
         // Chat opened and sidebar hidden
-        ChatTerminal.style.pointerEvents = 'auto';
-        ChatTerminal.style.left = 0;
-        ChatTerminal.style.opacity = 1;
+        ChatWindow.style.pointerEvents = 'auto';
+        ChatWindow.style.left = 0;
+        ChatWindow.style.opacity = 1;
       }
     }
   }
@@ -79,20 +79,20 @@ function AppOverlay() {
   */
   let clearListeners;
   const handleDragging = (e) => {
-    let ChatTerminal = document.querySelector('.chat-terminal');
+    let ChatWindow = document.querySelector('.chat-window');
     let documentTop = document.body.clientWidth - 90;
     if (!scrollDirectionChecked.current) {
       // Vertical scrolling detected
       if (Math.abs(getMouseCoords(e).y - initialClickPosRef.current.y) > 4) {
         clearListeners();
-        ChatTerminal.style.left = isChatHidden.current ? documentTop : 0;
+        ChatWindow.style.left = isChatHidden.current ? documentTop : 0;
         return;
       }
       // Horizontal scrolling detected
       else {
-        document.querySelector('.command-lines-wrapper').style.overflowY = 'hidden';
-        ChatTerminal.style.transition = 'width 1s';
-        ChatTerminal.style.opacity = 1;
+        document.querySelector('.chat-lines-wrapper').style.overflowY = 'hidden';
+        ChatWindow.style.transition = 'width 1s';
+        ChatWindow.style.opacity = 1;
       }
       scrollDirectionChecked.current = true;
     }
@@ -103,17 +103,17 @@ function AppOverlay() {
       posX > documentTop ? documentTop :
       posX
     )
-    ChatTerminal.style.left = `${finalPos}px`;
+    ChatWindow.style.left = `${finalPos}px`;
   }
   const handleChatTransitionEnd = () => {
-    let ChatTerminal = document.querySelector('.chat-terminal');
+    let ChatWindow = document.querySelector('.chat-window');
     if (isChatHidden.current && onMobileRes) {
-      ChatTerminal.style.opacity = 0.6;
-      ChatTerminal.style.pointerEvents = 'none';
+      ChatWindow.style.opacity = 0.6;
+      ChatWindow.style.pointerEvents = 'none';
     }
     else {
-      ChatTerminal.style.opacity = 1;
-      ChatTerminal.style.pointerEvents = 'auto';
+      ChatWindow.style.opacity = 1;
+      ChatWindow.style.pointerEvents = 'auto';
     }
     clearListeners();
   }
@@ -121,13 +121,13 @@ function AppOverlay() {
     clearListeners();
     scrollDirectionChecked.current = false;
 
-    const ChatTerminal = document.querySelector('.chat-terminal');
-    ChatTerminal.style.transition = 'width 1s, left 0.15s';
-    ChatTerminal.addEventListener('transitionend', handleChatTransitionEnd);
-    document.querySelector('.command-lines-wrapper').style.overflowY = 'auto';
+    const ChatWindow = document.querySelector('.chat-window');
+    ChatWindow.style.transition = 'width 1s, left 0.15s';
+    ChatWindow.addEventListener('transitionend', handleChatTransitionEnd);
+    document.querySelector('.chat-lines-wrapper').style.overflowY = 'auto';
 
     let dragVelocity = ((getMouseCoords(e).x - initialClickPosRef.current.x) / (Date.now() - startTimestamp.current));
-    let finalDragPos = ChatTerminal.getBoundingClientRect().left;
+    let finalDragPos = ChatWindow.getBoundingClientRect().left;
     let halfDocument = document.body.clientWidth/2;
     console.log('Drag velocity', dragVelocity);
 
@@ -137,20 +137,20 @@ function AppOverlay() {
       if (dragVelocity === 0) {
         // If user clicks on the chat right, then it opens
         if (getMouseCoords(e).x > document.body.clientWidth - 80) {
-          ChatTerminal.style.opacity = 1;
-          ChatTerminal.style.left = '0px';
+          ChatWindow.style.opacity = 1;
+          ChatWindow.style.left = '0px';
           isChatHidden.current = false; // now is visible
           return;
         }
       }
       // Opening the chat by dragging (negative velocity means left drag)
       else if ((finalDragPos < halfDocument) || (dragVelocity < -0.5)) {
-        ChatTerminal.style.left = '0px';
+        ChatWindow.style.left = '0px';
         isChatHidden.current = false;
       }
       // Nothing happens, chat still close
       else {
-        ChatTerminal.style.left = 'calc(100% - 90px)'; // hiding position
+        ChatWindow.style.left = 'calc(100% - 90px)'; // hiding position
         isChatHidden.current = true;
         document.querySelector('.textarea-input').blur();
       }
@@ -159,13 +159,13 @@ function AppOverlay() {
     else {
       // Closing the chat by dragging to right
       if ((finalDragPos > halfDocument) || (dragVelocity > 0.5)) {
-        ChatTerminal.style.left = 'calc(100% - 90px)';
+        ChatWindow.style.left = 'calc(100% - 90px)';
         isChatHidden.current = true;
         document.querySelector('.textarea-input').blur();
       }
       // Nothing happens, chat still open
       else {
-        ChatTerminal.style.left = '0px';
+        ChatWindow.style.left = '0px';
         isChatHidden.current = false;
       }
     }
@@ -175,10 +175,10 @@ function AppOverlay() {
     if (e.button !== undefined && e.button !== 0) {
       return;
     }
-    let ChatTerminal = document.querySelector('.chat-terminal');
+    let ChatWindow = document.querySelector('.chat-window');
     initialClickPosRef.current = getMouseCoords(e);
     startTimestamp.current = Date.now(); // to check the drag velocity
-    initialChatPos.current = ChatTerminal.getBoundingClientRect().left;
+    initialChatPos.current = ChatWindow.getBoundingClientRect().left;
     scrollDirectionChecked.current = false;
     // starts listening for drag and drag end
     document.body.addEventListener(dragListeners.MOVE, handleDragging);
@@ -187,7 +187,7 @@ function AppOverlay() {
   clearListeners = () => {
     document.body.removeEventListener(dragListeners.MOVE, handleDragging);
     document.body.removeEventListener(dragListeners.END, handleEndDrag);
-    document.querySelector('.chat-terminal').removeEventListener('transitionend', handleChatTransitionEnd);
+    document.querySelector('.chat-window').removeEventListener('transitionend', handleChatTransitionEnd);
   }
 
   useEffect(() => {

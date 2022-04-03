@@ -69,7 +69,7 @@
       cursor: col-resize;
       flex-shrink: 0;
     }
-    .chat-terminal {
+    .chat-window {
       display: flex;
       flex-direction: column;
       position: relative;
@@ -92,7 +92,7 @@
       .resize-column {
         display: none;
       }
-      .chat-terminal {
+      .chat-window {
         margin: 10px;
         top: 0;
         left: 0;
@@ -103,9 +103,9 @@
         .window-header {
           margin: 0;
         }
-        .command-lines-wrapper {
+        .chat-lines-wrapper {
 
-          .command-lines {
+          .chat-lines {
             padding-top: 10px;
           }
         }

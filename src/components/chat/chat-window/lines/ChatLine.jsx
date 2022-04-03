@@ -4,16 +4,16 @@ import ServerLogLine   from './ServerLogLine';
 import ErrorLine       from './ErrorLine';
 import SelfMessageLine from './SelfMessageLine';
 import InformationLine from './InformationLine';
-import './TerminalLines.scss';
+import './ChatLines.scss';
 
-function CommandLine({ line }) {
+function ChatLine({ line }) {
 
   useEffect(() => {
-    console.log('🦧 Rendered last command line');
+    console.log('🦧 Rendered last chat line');
   }, [])
 
   return (
-    <div className='command-line'>
+    <div className='chat-line-item'>
       {
         line.from === '@senders/SERVER' ?
           <ServerLogLine
@@ -54,4 +54,4 @@ function CommandLine({ line }) {
   )
 }
 
-export default memo(CommandLine);
+export default memo(ChatLine);

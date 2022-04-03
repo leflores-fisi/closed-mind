@@ -4,15 +4,15 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { emitSocketEvent } from '@/services/userSocket';
 import useAppReducer from '@/hooks/useAppReducer';
 import useChatInput from '@/hooks/useChatInput';
-import { saveLineToHistory, appendMessage, appendErrorMessage, clearTerminal } from '@/context/actions';
+import { saveLineToHistory, appendMessage, appendErrorMessage, clearChat } from '@/context/actions';
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
 import { waitForSeconds } from '@/Helpers';
-import './TerminalInput.scss';
+import './ChatInput.scss';
 
 const waiterEnded = waitForSeconds(2);
 
 // forward ref
-function CommandInput(props, ref) {
+function ChatMessageInput(props, ref) {
 
   const {store, dispatch} = useAppReducer();
   const [isAutocompleting, setIsAutocompleting] = useState(false);
@@ -23,7 +23,7 @@ function CommandInput(props, ref) {
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
 
-  const CONSOLE_ACTIONS = {
+  const CHAT_COMMANDS_ACTIONS = {
 
     '/commands': () => {
       dispatch(appendMessage({
@@ -98,7 +98,7 @@ function CommandInput(props, ref) {
       }
     },
     '/clear': () => {
-      dispatch(clearTerminal());
+      dispatch(clearChat());
     },
     '/ping': () => {
       emitSocketEvent['ping']();
@@ -256,11 +256,11 @@ function CommandInput(props, ref) {
           let command = words[0];
           let args    = words.slice(1);
 
-          if (!CONSOLE_ACTIONS.hasOwnProperty(command))
+          if (!CHAT_COMMANDS_ACTIONS.hasOwnProperty(command))
             dispatch(appendErrorMessage({message: `Command '${command}' not recognized, type "/commands" for a hug`}));
-          else CONSOLE_ACTIONS[command](args);
+          else CHAT_COMMANDS_ACTIONS[command](args);
         }
-        else CONSOLE_ACTIONS['send_message'](user_input);
+        else CHAT_COMMANDS_ACTIONS['send_message'](user_input);
 
         ref.current.value = '';
         clearReplying();
@@ -315,7 +315,7 @@ function CommandInput(props, ref) {
           <button onClick={clearReplying}>x</button>
         </div>
       }
-      <div className='terminal-input-container'>
+      <div className='chat-input-container'>
         <div className='input-pointer'>{'>'}</div>
         <div className='input-wrapper'>
           <TextareaAutosize
@@ -337,4 +337,4 @@ function CommandInput(props, ref) {
   )
 }
 
-export default forwardRef(CommandInput);
+export default forwardRef(ChatMessageInput);

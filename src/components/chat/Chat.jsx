@@ -1,5 +1,5 @@
 import { ChatConfigContextProvider } from '@/context/chatConfigContext';
-import ChatTerminal from './chat-terminal';
+import ChatWindow from './chat-window';
 import ResizeColumn from './ResizeColumn';
 import ChatSidebar  from './sidebar';
 
@@ -9,7 +9,7 @@ function Chat({ params }) {
     <ChatConfigContextProvider>
       <ChatSidebar/>
       <ResizeColumn/>
-      <ChatTerminal params={params}/>
+      <ChatWindow params={params}/>
     </ChatConfigContextProvider>
   )
 }

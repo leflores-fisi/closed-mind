@@ -10,18 +10,18 @@ import WindowHeader from '@/components/WindowHeader'
 import { roomNameFromCode, scrollChatIfIsNear,
   scrollChatToBottom, waitForSeconds } from '@/Helpers';
 
-import ChatMessageInput  from './TerminalInput';
-import TerminalLines from './TerminalLines';
-import TerminalRoomHeader from './statics/TerminalRoomHeader';
-import TerminalWelcomeHeader from './statics/TerminalWelcomeHeader';
+import ChatMessageInput from './ChatMessageInput';
+import ChatMessageLines from './ChatMessageLines';
+import ChatRoomHeader from './statics/ChatRoomHeader';
+import EnteringChatHeader from './statics/EnteringChatHeader';
 import { ChatInputContextProvider } from '@/context/chatInputContext';
-import './ChatTerminal.scss';
+import './ChatWindow.scss';
 
 const APP_TITLE = 'Closedmind | minimalist communication';
 
 const waiterEnded = waitForSeconds(1);
 
-function ChatTerminal() {
+function ChatWindow() {
 
   const {store, dispatch} = useAppReducer();
   const { messagesCountOnTabHidden } = useChatConfig();
@@ -159,11 +159,11 @@ function ChatTerminal() {
 
   return (
     <ChatInputContextProvider>
-      <div className='chat-terminal'>
+      <div className='chat-window'>
         <WindowHeader title='Chat'/>
         {
           store.room_code &&
-            <TerminalRoomHeader
+            <ChatRoomHeader
               roomCode={store.room_code}
               usersQuantity={store.users.length}
             />
@@ -171,18 +171,18 @@ function ChatTerminal() {
         {
           store.room_code || areHeaderSnippetsClosed
           ?  null
-          : <TerminalWelcomeHeader
+          : <EnteringChatHeader
               input={inputRef}
               forceUpdate={forceUpdate}
               selfClose={setAreHeaderSnippetsClosed}
               lastRoom={store.last_room_code}
             />
         }
-        <TerminalLines lines={store.messages}/>
+        <ChatMessageLines lines={store.messages}/>
         <ChatMessageInput ref={inputRef}/>
       </div>
     </ChatInputContextProvider>
   );
 }
 
-export default ChatTerminal;
+export default ChatWindow;

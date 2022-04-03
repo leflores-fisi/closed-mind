@@ -40,8 +40,8 @@ export function isEmptyObject(obj) {
 }
 
 export function scrollChatIfIsNear(distance = 200) {
-  const Wrapper = document.querySelector('.command-lines-wrapper');
-  const LinesHeight = document.querySelector('.command-lines').getBoundingClientRect().height;
+  const Wrapper = document.querySelector('.chat-lines-wrapper');
+  const LinesHeight = document.querySelector('.chat-lines').getBoundingClientRect().height;
 
   if (LinesHeight - (Wrapper.scrollTop + Wrapper.getBoundingClientRect().height) < distance) {
     setTimeout(() => {
@@ -51,8 +51,8 @@ export function scrollChatIfIsNear(distance = 200) {
 }
 
 export function scrollChatToBottom() {
-  const Wrapper = document.querySelector('.command-lines-wrapper');
-  const LinesHeight = document.querySelector('.command-lines').getBoundingClientRect().height;
+  const Wrapper = document.querySelector('.chat-lines-wrapper');
+  const LinesHeight = document.querySelector('.chat-lines').getBoundingClientRect().height;
   Wrapper.scrollTo(0, LinesHeight);
 
   console.log('Scrolling chat to bottom')

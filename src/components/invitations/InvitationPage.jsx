@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useLocation }         from 'wouter';
-import { motion }              from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useLocation } from 'wouter';
 
 import { emitSocketEvent, API_URL } from '@/services/userSocket';
-import UserForm            from '@/components/welcome/UserForm';
+import UserForm from '@/components/welcome/UserForm';
 
-import ClosedmindHeader from '../ClosedmindHeader';
 import closedmind_sad_logo from '@/assets/logos/closedmind-sad.png';
-import './InvitationWindow.scss';
+import ClosedmindHeader from '../ClosedmindHeader';
+import './InvitationPage.scss';
 
-function InvitationWindow({ params }) {
+function InvitationPage({ params }) {
   
   const [location, setLocation] = useLocation();
   const [fetchedInvitation, setFetchedInvitation] = useState({});
@@ -107,4 +107,4 @@ function InvitationWindow({ params }) {
   );
 }
 
-export default InvitationWindow;
+export default InvitationPage;
