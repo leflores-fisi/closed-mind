@@ -14,7 +14,7 @@ function InformationLine({ text, date }) {
   return (
     <div className='server-log'>
       <div className='message-container'>
-        <div>
+        <div className='content-wrapper'>
           <time className='date'>{formattedDate}</time>
           <span className='from'>{'[Info]:'}</span>
           <span className='text'>{text}</span>

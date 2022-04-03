@@ -68,7 +68,7 @@ function UserMessage({ date, userId, userColor, text, messageReplying}) {
   
   return (
     < >
-      <div className='wrapper'>
+      <div className='content-wrapper'>
         {
           messageReplying &&
           <div className='replying-to'>

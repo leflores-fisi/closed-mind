@@ -18,7 +18,7 @@ function ServerLogLine({date, log, id, reactions}) {
     serverLogVisible &&
       <div className='server-log'>
         <div className='message-container'>
-          <div>
+          <div className='content-wrapper'>
             <time className='date'>{formattedDate}</time>
             <span className='from'>{'[Server]:'}</span>
             <span className='text'>{log}</span>

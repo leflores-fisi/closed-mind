@@ -16,25 +16,30 @@
         display: flex;
         justify-content: space-between;
 
-        .date {
-          margin-right: 7px;
-          flex-shrink: 0;
-          color: var(--brightBlack);
-          user-select: none;
-        }
-        .from {
-          font-weight: 500;
-          margin-right: 7px;
-        }
-      }
-      .message-actions {
-        display: flex;
-        width: 60px;
+        .content-wrapper {
+          width: calc(100% - 60px);
 
-        .message-action {
-          margin-right: 5px;
-          &:last-child {
-            margin-right: 0;
+          .date {
+            margin-right: 7px;
+            flex-shrink: 0;
+            color: var(--brightBlack);
+            user-select: none;
+          }
+          .from {
+            font-weight: 500;
+            margin-right: 7px;
+          }
+        }
+        .message-actions {
+          display: flex;
+          justify-content: flex-end;
+          width: 60px;
+  
+          .message-action {
+            margin-right: 5px;
+            &:last-child {
+              margin-right: 0;
+            }
           }
         }
       }
@@ -46,7 +51,7 @@
     .user-message {
       justify-content: space-between;
       
-      .wrapper {
+      .content-wrapper {
         .date {
           justify-self: flex-end;
         }
@@ -94,7 +99,7 @@
         user-select: none;
         margin-bottom: 5px;
         width: 400px;
-        max-width: 100%;
+        max-width: 85%;
         
         .icon {
           width: 1rem;
