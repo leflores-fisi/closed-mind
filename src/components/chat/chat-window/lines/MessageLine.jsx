@@ -4,8 +4,9 @@ import EmoteReactionButton from './message_actions/emotes/EmoteReactionButton';
 import MessageReactionsList from './message_actions/emotes/MessageReactionsList';
 import UserMessage from './UserMessage';
 import ReplyMessageButton from './message_actions/replies/ReplyMessageButton';
+import MessageMedia from '../chat-interactive/MessageMedia';
 
-function MessageLine({ date, userId, userColor, text, id, reactions, replyingTo }) {
+function MessageLine({ date, userId, userColor, text, id, reactions, replyingTo, media }) {
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -25,6 +26,7 @@ function MessageLine({ date, userId, userColor, text, id, reactions, replyingTo 
           </div>
         }
       </div>
+      <MessageMedia media={media}/>
       <MessageReactionsList message_id={id} reactions={reactions}/>
     </div>
   )

@@ -22,9 +22,11 @@ function ChatMessageInput(props, ref) {
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
   const [canSendMessage, setCanSendMessage] = useState(false);
   const { messageReplying, setMessageReplying } = useChatInput();
+  const [filePreviews, setFilesPreviews] = useState([]);
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
+  const fileInputRef = useRef(null);
 
   const CHAT_COMMANDS_ACTIONS = {
 
@@ -106,7 +108,7 @@ function ChatMessageInput(props, ref) {
     '/ping': () => {
       emitSocketEvent['ping']();
     },
-    'send_message': (message) => {
+    'send_message': (message, mediaData = []) => {
       let date = new Date().toUTCString();
       let message_id = nanoid();
       // If is not connected, only appends the message
@@ -116,7 +118,8 @@ function ChatMessageInput(props, ref) {
           from: '@senders/SELF',
           text: message,
           message_id,
-          replyingTo: messageReplying
+          replyingTo: messageReplying,
+          media: mediaData
         }));
       }
       else {
@@ -125,19 +128,21 @@ function ChatMessageInput(props, ref) {
           from: '@senders/SELF',
           text: message,
           message_id,
-          replyingTo: messageReplying
+          replyingTo: messageReplying,
+          media: mediaData
         }));
         emitSocketEvent['sending-message']({
           date,
           message,
           message_id,
-          replyingTo: messageReplying
+          replyingTo: messageReplying,
+          media: mediaData
         })
       }
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // prevent new line or page reload on submit
     let user_input = ref.current.value.trim();
     if (!user_input) return;
@@ -155,7 +160,26 @@ function ChatMessageInput(props, ref) {
       }
     }
     else {
-      CHAT_COMMANDS_ACTIONS['send_message'](user_input);
+      const formData = new FormData();
+      let mediaData = [];
+
+      if (fileInputRef.current.files.length > 0) {
+
+        Array.from(fileInputRef.current.files).forEach(file => {
+          let fileName = file.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
+          console.log('working with', fileName);
+          formData.append(fileName, file);
+        })
+        const response = await fetch('http://localhost:4000/media', {
+          method: 'POST',
+          body: formData
+        });
+        mediaData = await response.json();
+      }
+
+      CHAT_COMMANDS_ACTIONS['send_message'](user_input, mediaData);
+      fileInputRef.current.value = null;
+      setFilesPreviews([]);
     }
 
     ref.current.value = '';
@@ -326,9 +350,29 @@ function ChatMessageInput(props, ref) {
     handleAutocomplete();
   }, [ref.current?.value])
 
+  const handleFileSubmit = () => {
+    console.log('Reading files for previews');
+  
+    const readingPromises = [];
+    Array.from(fileInputRef.current.files).forEach((file) => {
+      const fileReading = new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror   = () => reject();
+      })
+      readingPromises.push(fileReading);
+    })
+    Promise.allSettled(readingPromises).then(results => {
+      setFilesPreviews(results.map(result => result.value));
+      console.log(results.map(result => result.value))
+    })
+  }
+
   return (
     <form onSubmit={handleSubmit}>
-      {messageReplying &&
+      {
+        messageReplying &&
         <div className='message-replying-container'>
           <div>
             Replying to <span className={`${messageReplying.color}`}>{messageReplying.from}</span>
@@ -336,6 +380,11 @@ function ChatMessageInput(props, ref) {
           <button onClick={clearReplying}>x</button>
         </div>
       }
+      <div className='media-preview'>
+        {
+          filePreviews.map((preview, i) => <img src={preview} key={i}/>)
+        }
+      </div>
       <div className='chat-input-container'>
         <div className='input-wrapper'>
           <TextareaAutosize
@@ -353,6 +402,13 @@ function ChatMessageInput(props, ref) {
           >{autocompletePlaceholder}</div>
         </div>
         <div className='send-message-container'>
+          <input
+            type='file'
+            multiple
+            ref={fileInputRef}
+            onChange={handleFileSubmit}
+            accept='image/*,video/mp4,video/3gpp,video/quicktime'
+          />
           <HoverableTitle title='Send'>
             <button type='submit' className='send-message-btn' disabled={!canSendMessage}>
               <IoSend/>

@@ -75,3 +75,14 @@
     }
   }
 }
+.media-preview {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: initial;
+
+  img {
+    margin: 10px;
+    height: 6rem;
+  }
+}

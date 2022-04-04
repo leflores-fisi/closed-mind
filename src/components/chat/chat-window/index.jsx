@@ -79,7 +79,7 @@ function ChatWindow() {
       localStorage.setItem('last_room_code', joinedChatRoom.code);
       document.title = `${roomNameFromCode(joinedChatRoom.code)} | Closedmind`;
     });
-    userSocket.on('message-received', ({ date, user, message, message_id, replyingTo }) => {
+    userSocket.on('message-received', ({ date, user, message, message_id, replyingTo, media }) => {
       if (waiterEnded.next().value) {
         notificationSound.play();
       }
@@ -92,7 +92,8 @@ function ChatWindow() {
         color: user.user_color,
         text: message,
         message_id,
-        replyingTo
+        replyingTo,
+        media
       }));
     });
     userSocket.on('disconnected-from-room', () => {

@@ -38,6 +38,7 @@ function ChatLine({ line }) {
             text={line.text}
             reactions={line.reactions}
             replyingTo={line.replyingTo}
+            media={line.media}
           />
         :
           <MessageLine
@@ -48,6 +49,7 @@ function ChatLine({ line }) {
             text={line.text}
             reactions={line.reactions}
             replyingTo={line.replyingTo}
+            media={line.media}
           />
       }
     </div>

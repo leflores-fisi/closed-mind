@@ -26,12 +26,13 @@ export const emitSocketEvent = {
    * @param {string} params.date current date on UTCString
    * @param {string} params.message user message
    */
-  "sending-message": ({ date, message, message_id, replyingTo }) => {
+  "sending-message": ({ date, message, message_id, replyingTo, media }) => {
     userSocket.emit('sending-message', {
       date,
       message,
       message_id,
-      replyingTo
+      replyingTo,
+      media
     })
   },
   /**

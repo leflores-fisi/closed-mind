@@ -84,7 +84,8 @@ export const reducer = (state, action) => {
           color: action.payload.color,
           message_id: action.payload.message_id,
           replyingTo: action.payload.replyingTo,
-          reactions: []
+          reactions: [],
+          media: action.payload.media || []
         })
       };
     case '@chat/reactToMessage':
