@@ -171,7 +171,7 @@ function ChatMessageInput(props, ref) {
           console.log('working with', fileName);
           formData.append(fileName, file);
         })
-        const response = await fetch(MEDIA_API_URL, {
+        const response = await fetch(`${MEDIA_API_URL}/media`, {
           method: 'POST',
           body: formData
         });
