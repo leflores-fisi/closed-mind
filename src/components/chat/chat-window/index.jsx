@@ -36,9 +36,10 @@ function ChatWindow() {
     const focusInput = (e) => {
       let doing_command = e.key.match(/(control|shift|alt)/i);
       let pasting_text = e.ctrlKey && e.key.toLowerCase() === 'v';
+      let copying_text = e.ctrlKey && e.key.toLowerCase() === 'c';
       let focused_other_input = document.activeElement.classList[0] === 'invitation-message-input';
 
-      if (!focused_other_input && (!doing_command || pasting_text)) {
+      if (!focused_other_input && (!doing_command || pasting_text) && !copying_text) {
         inputRef.current.focus();
       }
     }
