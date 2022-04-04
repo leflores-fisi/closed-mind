@@ -8,8 +8,9 @@ import { saveLineToHistory, appendMessage, appendErrorMessage, clearChat } from 
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
 import { waitForSeconds } from '@/Helpers';
 import { IoSend } from 'react-icons/io5';
-import './ChatInput.scss';
 import HoverableTitle from '@/components/overlay/HoverableTitle';
+import { MEDIA_API_URL } from '@/services/userSocket';
+import './ChatInput.scss';
 
 const waiterEnded = waitForSeconds(2);
 
@@ -170,7 +171,7 @@ function ChatMessageInput(props, ref) {
           console.log('working with', fileName);
           formData.append(fileName, file);
         })
-        const response = await fetch('http://localhost:4000/media', {
+        const response = await fetch(MEDIA_API_URL, {
           method: 'POST',
           body: formData
         });
