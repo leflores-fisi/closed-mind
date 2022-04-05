@@ -12,7 +12,7 @@ function MessageMedia({ media }) {
     <div className='message-media'>
       {
         media.map(resource => (
-          <div className='media-wrapper' role='button'>
+          <div className='media-wrapper' role='button' key={resource.title}>
             <img
               src={resource.url}
               alt={resource.title || 'image'}

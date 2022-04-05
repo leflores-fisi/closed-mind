@@ -185,7 +185,6 @@ function ChatMessageInput(props, ref) {
         CHAT_COMMANDS_ACTIONS['send_message'](user_input);
       }
     }
-
     ref.current.value = '';
     clearReplying();
     dispatch(saveLineToHistory({line: user_input}));
@@ -356,13 +355,17 @@ function ChatMessageInput(props, ref) {
 
   const handleFileSubmit = () => {
     console.log('Reading files for previews');
-    const blobsPreview = [];
+    const previews = [];
 
     Array.from(fileInputRef.current.files).forEach((file) => {
-      const imgBlobPreview = URL.createObjectURL(file);
-      blobsPreview.push(imgBlobPreview);
+      const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
+      previews.push({
+        blobSrc: imgBlobPreview,
+        type: file.type,
+        title: file.name
+      });
     })
-    setMediaPreviews(blobsPreview);
+    setMediaPreviews(previews);
   }
 
   return (
@@ -378,7 +381,18 @@ function ChatMessageInput(props, ref) {
       }
       <div className='media-preview'>
         {
-          mediaPreviews.map((previewSrc, i) => <img src={previewSrc} key={i}/>)
+          mediaPreviews.map((preview, i) => (
+            <div>
+              <div>{preview.title}</div>
+              {
+                preview.type.includes('image')
+                ? <img src={preview.blobSrc} key={i}/>
+                : <video controls>
+                    <source src={preview.blobSrc} type={preview.type}/>
+                  </video>
+              }
+            </div>
+          ))
         }
       </div>
       <div className='chat-input-container'>
