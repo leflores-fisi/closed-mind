@@ -23,7 +23,7 @@ function ChatMessageInput(props, ref) {
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
   const [canSendMessage, setCanSendMessage] = useState(false);
   const { messageReplying, setMessageReplying } = useChatInput();
-  const [filePreviews, setFilesPreviews] = useState([]);
+  const [mediaPreviews, setMediaPreviews] = useState([]);
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
@@ -162,7 +162,6 @@ function ChatMessageInput(props, ref) {
     }
     else {
       const formData = new FormData();
-      let mediaData = [];
 
       if (fileInputRef.current.files.length > 0) {
 
@@ -179,13 +178,11 @@ function ChatMessageInput(props, ref) {
             console.log('RECEIVED RESPONSE FROM POST', media);
             CHAT_COMMANDS_ACTIONS['send_message'](user_input, media);
             fileInputRef.current.value = null;
-            setFilesPreviews([]);
+            setMediaPreviews([]);
           })
       }
       else {
         CHAT_COMMANDS_ACTIONS['send_message'](user_input);
-        fileInputRef.current.value = null;
-        setFilesPreviews([]);
       }
     }
 
@@ -359,21 +356,13 @@ function ChatMessageInput(props, ref) {
 
   const handleFileSubmit = () => {
     console.log('Reading files for previews');
-  
-    const readingPromises = [];
+    const blobsPreview = [];
+
     Array.from(fileInputRef.current.files).forEach((file) => {
-      const fileReading = new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror   = () => reject();
-      })
-      readingPromises.push(fileReading);
+      const imgBlobPreview = URL.createObjectURL(file);
+      previews.push(imgBlobPreview);
     })
-    Promise.allSettled(readingPromises).then(results => {
-      setFilesPreviews(results.map(result => result.value));
-      console.log(results.map(result => result.value))
-    })
+    setMediaPreviews(blobsPreview);
   }
 
   return (
@@ -387,11 +376,11 @@ function ChatMessageInput(props, ref) {
           <button onClick={clearReplying}>x</button>
         </div>
       }
-      {/* <div className='media-preview'>
+      <div className='media-preview'>
         {
-          filePreviews.map((preview, i) => <img src={preview} key={i}/>)
+          mediaPreviews.map((previewSrc, i) => <img src={previewSrc} key={i}/>)
         }
-      </div> */}
+      </div>
       <div className='chat-input-container'>
         <div className='input-wrapper'>
           <TextareaAutosize
