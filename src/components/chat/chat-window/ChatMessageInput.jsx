@@ -171,16 +171,22 @@ function ChatMessageInput(props, ref) {
           console.log('working with', fileName);
           formData.append(fileName, file);
         })
-        const response = await fetch(`${MEDIA_API_URL}/media`, {
+        fetch(`${MEDIA_API_URL}/media`, {
           method: 'POST',
-          body: formData
-        });
-        mediaData = await response.json();
+            body: formData
+        }).then(response => response.json())
+          .then(media => {
+            console.log('RECEIVED RESPONSE FROM POST', media);
+            CHAT_COMMANDS_ACTIONS['send_message'](user_input, media);
+            fileInputRef.current.value = null;
+            setFilesPreviews([]);
+          })
       }
-
-      CHAT_COMMANDS_ACTIONS['send_message'](user_input, mediaData);
-      fileInputRef.current.value = null;
-      setFilesPreviews([]);
+      else {
+        CHAT_COMMANDS_ACTIONS['send_message'](user_input);
+        fileInputRef.current.value = null;
+        setFilesPreviews([]);
+      }
     }
 
     ref.current.value = '';
@@ -381,11 +387,11 @@ function ChatMessageInput(props, ref) {
           <button onClick={clearReplying}>x</button>
         </div>
       }
-      <div className='media-preview'>
+      {/* <div className='media-preview'>
         {
           filePreviews.map((preview, i) => <img src={preview} key={i}/>)
         }
-      </div>
+      </div> */}
       <div className='chat-input-container'>
         <div className='input-wrapper'>
           <TextareaAutosize

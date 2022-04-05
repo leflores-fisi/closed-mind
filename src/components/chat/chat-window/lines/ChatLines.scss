@@ -133,15 +133,6 @@ $message-padding: 5px 8px;
           }
         }
       }
-      .message-media {
-
-        .media-wrapper {
-          padding: 5px 2px;
-          img {
-            height: 18rem;
-          }
-        }
-      }
     }
     .user-message.self {
       &.sent {
