@@ -360,7 +360,7 @@ function ChatMessageInput(props, ref) {
 
     Array.from(fileInputRef.current.files).forEach((file) => {
       const imgBlobPreview = URL.createObjectURL(file);
-      previews.push(imgBlobPreview);
+      blobsPreview.push(imgBlobPreview);
     })
     setMediaPreviews(blobsPreview);
   }
