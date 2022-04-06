@@ -24,7 +24,9 @@ function ChatMessageInput(props, ref) {
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
   const [canSendMessage, setCanSendMessage] = useState(false);
   const { messageReplying, setMessageReplying } = useChatInput();
+
   const [mediaPreviews, setMediaPreviews] = useState([]);
+  const [appendedMedia, setAppendedMedia] = useState([]);
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
@@ -164,13 +166,14 @@ function ChatMessageInput(props, ref) {
     else {
       const formData = new FormData();
 
-      if (fileInputRef.current.files.length > 0) {
+      if (appendedMedia.length > 0) {
 
-        Array.from(fileInputRef.current.files).forEach(file => {
-          let fileName = file.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
+        appendedMedia.forEach(mediaFile => {
+          let fileName = mediaFile.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
           console.log('working with', fileName);
-          formData.append(fileName, file);
+          formData.append(fileName, mediaFile);
         })
+
         fetch(`${MEDIA_API_URL}/media`, {
           method: 'POST',
           body: formData
@@ -178,8 +181,11 @@ function ChatMessageInput(props, ref) {
           .then(media => {
             console.log('RECEIVED RESPONSE FROM POST', media);
             CHAT_COMMANDS_ACTIONS['send_message'](user_input, media);
+
+            // cleaning all files
             fileInputRef.current.value = null;
-            mediaPreviews.forEach(preview => URL.revokeObjectURL(preview.blobSrc))
+            mediaPreviews.forEach(preview => URL.revokeObjectURL(preview.blobSrc));
+            setAppendedMedia([]);
             setMediaPreviews([]);
           })
       }
@@ -355,19 +361,22 @@ function ChatMessageInput(props, ref) {
     handleAutocomplete();
   }, [ref.current?.value])
 
-  const handleFileSubmit = () => {
+  const handleFileSubmit = ({ currentTarget: filesInput }) => {
     console.log('Reading files for previews');
-    const previews = [];
-
-    Array.from(fileInputRef.current.files).forEach((file) => {
+    const newFilesAppended = Array.from(filesInput.files);
+    const allFilesAppended = appendedMedia.concat(newFilesAppended);
+    setAppendedMedia(allFilesAppended);
+    
+    const mediaPreviews = [];
+    allFilesAppended.forEach((file) => {
       const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
-      previews.push({
+      mediaPreviews.push({
         blobSrc: imgBlobPreview,
         type: file.type,
         title: file.name
       });
     })
-    setMediaPreviews(previews);
+    setMediaPreviews(mediaPreviews);
   }
 
   return (
