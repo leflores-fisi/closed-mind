@@ -26,7 +26,7 @@ function MessageLine({ date, userId, userColor, text, id, reactions, replyingTo,
           </div>
         }
       </div>
-      <MessageMedia media={media}/>
+      <MessageMedia mediaFiles={media}/>
       <MessageReactionsList message_id={id} reactions={reactions}/>
     </div>
   )

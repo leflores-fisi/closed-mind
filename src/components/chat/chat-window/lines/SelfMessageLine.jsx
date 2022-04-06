@@ -38,7 +38,7 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, media }) {
           </div>
         }
       </div>
-      <MessageMedia media={media}/>
+      <MessageMedia mediaFiles={media}/>
       <MessageReactionsList message_id={id} reactions={reactions}/>
     </div>
   )

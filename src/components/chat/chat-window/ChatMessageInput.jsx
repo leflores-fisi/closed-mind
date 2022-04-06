@@ -11,6 +11,7 @@ import { IoSend } from 'react-icons/io5';
 import HoverableTitle from '@/components/overlay/HoverableTitle';
 import { MEDIA_API_URL } from '@/services/userSocket';
 import './ChatInput.scss';
+import MultimediaPreview from './MultimediaPreview';
 
 const waiterEnded = waitForSeconds(2);
 
@@ -172,7 +173,7 @@ function ChatMessageInput(props, ref) {
         })
         fetch(`${MEDIA_API_URL}/media`, {
           method: 'POST',
-            body: formData
+          body: formData
         }).then(response => response.json())
           .then(media => {
             console.log('RECEIVED RESPONSE FROM POST', media);
@@ -379,22 +380,7 @@ function ChatMessageInput(props, ref) {
           <button onClick={clearReplying}>x</button>
         </div>
       }
-      <div className='media-preview'>
-        {
-          mediaPreviews.map((preview, i) => (
-            <div>
-              <div>{preview.title}</div>
-              {
-                preview.type.includes('image')
-                ? <img src={preview.blobSrc} key={i}/>
-                : <video controls>
-                    <source src={preview.blobSrc} type={preview.type}/>
-                  </video>
-              }
-            </div>
-          ))
-        }
-      </div>
+      <MultimediaPreview mediaPreviews={mediaPreviews}/>
       <div className='chat-input-container'>
         <div className='input-wrapper'>
           <TextareaAutosize
