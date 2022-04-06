@@ -179,6 +179,7 @@ function ChatMessageInput(props, ref) {
             console.log('RECEIVED RESPONSE FROM POST', media);
             CHAT_COMMANDS_ACTIONS['send_message'](user_input, media);
             fileInputRef.current.value = null;
+            mediaPreviews.forEach(preview => URL.revokeObjectURL(preview.blobSrc))
             setMediaPreviews([]);
           })
       }
