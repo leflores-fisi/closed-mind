@@ -1,6 +1,7 @@
 .vscode
 node_modules
-socket-server/node_modules
-socket-server/.env
+servers/*
+main-server/node_modules
+main-server/.env
 media-cloud-server/node_modules
 media-cloud-server/.env
