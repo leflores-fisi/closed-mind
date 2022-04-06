@@ -29,15 +29,14 @@
 }
 .message-media {
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
+  margin: 4px 0 6px 0;
 
   .media-wrapper {
-    padding: 5px 2px;
+    margin-right: 15px;
 
     img, video {
       height: 18rem;
-      margin-right: 15px;
-      outline: 1px solid var(--app-color);
       border: none;
       width: 20rem;
       // Loading image
