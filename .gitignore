@@ -3,5 +3,5 @@ node_modules
 servers/*
 main-server/node_modules
 main-server/.env
-media-cloud-server/node_modules
-media-cloud-server/.env
+cloud-server/node_modules
+cloud-server/.env
