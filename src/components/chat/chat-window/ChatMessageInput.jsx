@@ -361,14 +361,12 @@ function ChatMessageInput(props, ref) {
     handleAutocomplete();
   }, [ref.current?.value])
 
-  const handleFileSubmit = ({ currentTarget: filesInput }) => {
-    console.log('Reading files for previews');
-    const newFilesAppended = Array.from(filesInput.files);
-    const allFilesAppended = appendedMedia.concat(newFilesAppended);
-    setAppendedMedia(allFilesAppended);
-    
+  const appendNewFileAndUpdate = (newFilesAppended) => {
+    const updatedAppendedMedia = appendedMedia.concat(newFilesAppended);
+    setAppendedMedia(updatedAppendedMedia);
+
     const mediaPreviews = [];
-    allFilesAppended.forEach((file) => {
+    updatedAppendedMedia.forEach((file) => {
       const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
       mediaPreviews.push({
         blobSrc: imgBlobPreview,
@@ -377,6 +375,18 @@ function ChatMessageInput(props, ref) {
       });
     })
     setMediaPreviews(mediaPreviews);
+  }
+
+  const handleInputPaste = (e) => {
+    console.log(e.clipboardData.files.length)
+    if (e.clipboardData.files.length > 0) {
+      appendNewFileAndUpdate(Array.from(e.clipboardData.files));
+    }
+  }
+
+  const handleFileSubmit = ({ currentTarget: filesInput }) => {
+    console.log('Reading files for previews');
+    appendNewFileAndUpdate(Array.from(filesInput.files));
   }
 
   return (
@@ -403,6 +413,7 @@ function ChatMessageInput(props, ref) {
             onBlur={handleAutocomplete}
             onKeyDown={handleKeys}
             onHeightChange={handleNewLine}
+            onPaste={handleInputPaste}
           />
           <div className='autocomplete'
           >{autocompletePlaceholder}</div>
