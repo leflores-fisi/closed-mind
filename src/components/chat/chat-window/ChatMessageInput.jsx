@@ -378,7 +378,7 @@ function ChatMessageInput(props, ref) {
   }
 
   const handleInputPaste = (e) => {
-    console.log(e.clipboardData.files.length)
+    console.log(e.clipboardData.files);
     if (e.clipboardData.files.length > 0) {
       appendNewFileAndUpdate(Array.from(e.clipboardData.files));
     }

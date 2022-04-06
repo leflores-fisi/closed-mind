@@ -11,8 +11,8 @@ function MessageMedia({ mediaFiles }) {
     mediaFiles.length > 0 &&
     <div className='message-media'>
       {
-        mediaFiles.map(mediaResource => (
-          <div className='media-wrapper' role='button' key={mediaResource.title}>
+        mediaFiles.map((mediaResource, i) => (
+          <div className='media-wrapper' role='button' key={i}>
             {
               mediaResource.type.includes('image') ?
                 <img
