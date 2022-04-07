@@ -29,16 +29,23 @@
 }
 .message-media {
   display: flex;
+  flex-direction: column;
   overflow-x: auto;
   margin: 4px 0 6px 0;
 
   .media-wrapper {
-    margin-right: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    width: fit-content;
+    height: fit-content;
+    overflow: hidden;
 
     img, video {
-      height: 18rem;
+      height: auto;
+      max-height: 20rem;
+      width: auto;
+      max-width: 22rem;
       border: none;
-      width: 20rem;
       // Loading image
       // TODO: customize it
       background-image: url(https://i.pinimg.com/originals/49/23/29/492329d446c422b0483677d0318ab4fa.gif);
@@ -51,8 +58,13 @@
       display: flex;
       align-items: center;
       height: 60px;
-      background-color: var(--black);
-      padding: 4px 10px;
+      background-color: #1a191c;
+      padding: 4px 8px 4px 4px;
+      border: 1px solid black;
+      min-width: 18rem;
+      max-width: 22rem;
+      flex-shrink: 0;
+      flex-grow: 1;
 
       .file-icon-container {
         display: flex;
@@ -73,7 +85,12 @@
         }
       }
       .content-information {
-        max-width: 290px;
+        min-width: 0;
+        display: flex;
+        justify-content: flex-start;
+        flex-grow: 1;
+        flex-shrink: 10;
+
         .file-name {
           overflow: hidden;
           text-overflow: ellipsis;
@@ -86,6 +103,10 @@
         }
       }
       .download-file {
+        display: flex;
+        justify-content: flex-end;
+        flex-grow: 1;
+        flex-shrink: 0;
         margin-left: 5px;
       }
     }
