@@ -405,7 +405,10 @@ function ChatMessageInput(props, ref) {
       setMediaPreviews(mediaPreviews);
       return updatedAppendedMedia;
     });
-
+  }
+  const removeFileFromPreview = (index) => {
+    setMediaPreviews(prevMedia => prevMedia.filter((_, i) => i !== index))
+    setAppendedMedia(prevMedia => prevMedia.filter((_, i) => i !== index))
   }
 
   const handleInputPaste = (e) => {
@@ -436,7 +439,7 @@ function ChatMessageInput(props, ref) {
             <button onClick={clearReplying}>x</button>
           </div>
         }
-        <MultimediaPreview mediaPreviews={mediaPreviews}/>
+        <MultimediaPreview mediaPreviews={mediaPreviews} fileRemover={removeFileFromPreview}/>
         <div className='chat-input-container'>
           <div className='input-wrapper'>
             <TextareaAutosize
