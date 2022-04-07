@@ -4,7 +4,7 @@ import laugh from '@/assets/emotes/laugh.png';
 import sad   from '@/assets/emotes/sad.png';
 import angry from '@/assets/emotes/angry.gif';
 import hello from '@/assets/emotes/hello.gif';
-import doge  from '@/assets/emotes/doge.gif';
+import dancing from '@/assets/emotes/dancing.gif';
 
 export const emotes_sources = {
   'check': check,
@@ -13,7 +13,7 @@ export const emotes_sources = {
   'sad'  : sad,
   'angry': angry,
   'hello': hello,
-  'doge' : doge
+  'dancing' : dancing
 }
 
 export const emotes_list = [
@@ -42,7 +42,7 @@ export const emotes_list = [
     src: hello
   }, 
   {
-    text: 'doge',
-    src: doge
+    text: 'dancing',
+    src: dancing
   }
 ];

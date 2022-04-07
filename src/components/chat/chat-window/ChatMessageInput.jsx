@@ -1,4 +1,4 @@
-import { useState, forwardRef, useRef, useEffect } from 'react';
+import { useState, forwardRef, useRef, useEffect, useCallback } from 'react';
 import { nanoid } from 'nanoid';
 import TextareaAutosize from 'react-textarea-autosize';
 import { emitSocketEvent } from '@/services/userSocket';
@@ -10,8 +10,9 @@ import { waitForSeconds } from '@/Helpers';
 import { IoSend } from 'react-icons/io5';
 import HoverableTitle from '@/components/overlay/HoverableTitle';
 import { MEDIA_API_URL } from '@/services/userSocket';
-import './ChatInput.scss';
 import MultimediaPreview from './MultimediaPreview';
+import FilesDropArea from './chat-interactive/FilesDropArea';
+import './ChatInput.scss';
 
 const waiterEnded = waitForSeconds(2);
 
@@ -169,6 +170,7 @@ function ChatMessageInput(props, ref) {
       if (appendedMedia.length > 0) {
 
         appendedMedia.forEach(mediaFile => {
+          console.log('Appended media:', appendedMedia)
           let fileName = mediaFile.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
           console.log('working with', fileName);
           formData.append(fileName, mediaFile);
@@ -361,79 +363,92 @@ function ChatMessageInput(props, ref) {
     handleAutocomplete();
   }, [ref.current?.value])
 
+  /**
+   * @param {FileList | File[]} newFilesAppended List of files as a FileList object
+   */
   const appendNewFileAndUpdate = (newFilesAppended) => {
-    const updatedAppendedMedia = appendedMedia.concat(newFilesAppended);
-    setAppendedMedia(updatedAppendedMedia);
+    setAppendedMedia(prevMedia => {
+      const updatedAppendedMedia = prevMedia.concat(Array.from(newFilesAppended));
+      const mediaPreviews = [];
 
-    const mediaPreviews = [];
-    updatedAppendedMedia.forEach((file) => {
-      const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
-      mediaPreviews.push({
-        blobSrc: imgBlobPreview,
-        type: file.type,
-        title: file.name
-      });
-    })
-    setMediaPreviews(mediaPreviews);
+      console.log('Updated: ', updatedAppendedMedia);
+      updatedAppendedMedia.forEach((file) => {
+        console.log('Blobbing...', file)
+        const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
+        mediaPreviews.push({
+          blobSrc: imgBlobPreview,
+          type: file.type,
+          title: file.name
+        });
+      })
+      setMediaPreviews(mediaPreviews);
+      return updatedAppendedMedia;
+    });
+
   }
 
   const handleInputPaste = (e) => {
     console.log(e.clipboardData.files);
     if (e.clipboardData.files.length > 0) {
-      appendNewFileAndUpdate(Array.from(e.clipboardData.files));
+      appendNewFileAndUpdate(e.clipboardData.files);
     }
   }
-
   const handleFileSubmit = ({ currentTarget: filesInput }) => {
-    console.log('Reading files for previews');
-    appendNewFileAndUpdate(Array.from(filesInput.files));
+    console.log('Reading files for previews:', filesInput);
+    appendNewFileAndUpdate(filesInput.files);
+  }
+  const handleFilesDropped = (files) => {
+    appendNewFileAndUpdate(files);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      {
-        messageReplying &&
-        <div className='message-replying-container'>
-          <div>
-            Replying to <span className={`${messageReplying.color}`}>{messageReplying.from}</span>
+    <>
+      <FilesDropArea onDrop={handleFilesDropped}/>
+      <form onSubmit={handleSubmit}>
+        {
+          messageReplying &&
+          <div className='message-replying-container'>
+            <div>
+              Replying to <span className={`${messageReplying.color}`}>{messageReplying.from}</span>
+            </div>
+            <button onClick={clearReplying}>x</button>
           </div>
-          <button onClick={clearReplying}>x</button>
+        }
+        <MultimediaPreview mediaPreviews={mediaPreviews}/>
+        <div className='chat-input-container'>
+          <div className='input-wrapper'>
+            <TextareaAutosize
+              maxRows={12}
+              className='textarea-input'
+              ref={ref}
+              placeholder={'Type something'}
+              onChange={handleAutocomplete}
+              onFocus={handleAutocomplete}
+              onBlur={handleAutocomplete}
+              onKeyDown={handleKeys}
+              onHeightChange={handleNewLine}
+              onPaste={handleInputPaste}
+            />
+            <div className='autocomplete'
+            >{autocompletePlaceholder}</div>
+          </div>
+          <div className='send-message-container'>
+            <input
+              type='file'
+              multiple
+              ref={fileInputRef}
+              onChange={handleFileSubmit}
+              accept='image/*,video/mp4,video/3gpp,video/quicktime'
+            />
+            <HoverableTitle title='Send'>
+              <button type='submit' className='send-message-btn' disabled={!canSendMessage}>
+                <IoSend/>
+              </button>
+            </HoverableTitle>
+          </div>
         </div>
-      }
-      <MultimediaPreview mediaPreviews={mediaPreviews}/>
-      <div className='chat-input-container'>
-        <div className='input-wrapper'>
-          <TextareaAutosize
-            maxRows={12}
-            className='textarea-input'
-            ref={ref}
-            placeholder={'Type something'}
-            onChange={handleAutocomplete}
-            onFocus={handleAutocomplete}
-            onBlur={handleAutocomplete}
-            onKeyDown={handleKeys}
-            onHeightChange={handleNewLine}
-            onPaste={handleInputPaste}
-          />
-          <div className='autocomplete'
-          >{autocompletePlaceholder}</div>
-        </div>
-        <div className='send-message-container'>
-          <input
-            type='file'
-            multiple
-            ref={fileInputRef}
-            onChange={handleFileSubmit}
-            accept='image/*,video/mp4,video/3gpp,video/quicktime'
-          />
-          <HoverableTitle title='Send'>
-            <button type='submit' className='send-message-btn' disabled={!canSendMessage}>
-              <IoSend/>
-            </button>
-          </HoverableTitle>
-        </div>
-      </div>
-    </form>
+      </form>
+    </>
   )
 }
 
