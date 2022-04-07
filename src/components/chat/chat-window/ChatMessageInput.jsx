@@ -13,6 +13,7 @@ import { MEDIA_API_URL } from '@/services/userSocket';
 import MultimediaPreview from './MultimediaPreview';
 import FilesDropArea from './chat-interactive/FilesDropArea';
 import './ChatInput.scss';
+import InvalidFilesOverlay from './InvalidFilesOverlay';
 
 const waiterEnded = waitForSeconds(2);
 
@@ -28,6 +29,8 @@ function ChatMessageInput(props, ref) {
 
   const [mediaPreviews, setMediaPreviews] = useState([]);
   const [appendedMedia, setAppendedMedia] = useState([]);
+
+  const [invalidFiles, setInvalidFiles] = useState([]);
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
@@ -363,10 +366,28 @@ function ChatMessageInput(props, ref) {
     handleAutocomplete();
   }, [ref.current?.value])
 
+  const areInvalidFiles = (files) => {
+    console.log('Validating files...', files);
+    const invalidFilesInfo = [];
+    for (let file of Array.from(files)) {
+      if (!file.type) invalidFilesInfo.push({
+        name: file.name,
+        reason: "We don't know the reason yet"
+      });
+    }
+    if (invalidFilesInfo.length > 0) {
+      console.log('Founded invalid files:', invalidFilesInfo)
+      setInvalidFiles(invalidFilesInfo);
+      return true;
+    }
+    else return false;
+  }
   /**
    * @param {FileList | File[]} newFilesAppended List of files as a FileList object
    */
   const appendNewFileAndUpdate = (newFilesAppended) => {
+    if (areInvalidFiles(newFilesAppended)) return;
+
     setAppendedMedia(prevMedia => {
       const updatedAppendedMedia = prevMedia.concat(Array.from(newFilesAppended));
       const mediaPreviews = [];
@@ -403,6 +424,7 @@ function ChatMessageInput(props, ref) {
 
   return (
     <>
+      <InvalidFilesOverlay invalidFiles={invalidFiles} onClose={() => setInvalidFiles([])}/>
       <FilesDropArea onDrop={handleFilesDropped}/>
       <form onSubmit={handleSubmit}>
         {

@@ -86,7 +86,7 @@
     height: 6rem;
   }
 }
-.drop-area {
+.overlay-area {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,15 +99,14 @@
   z-index: 1;
   animation: fadeOut 0.8 forwards;
 
-  .drop-media-message {
+  .modal-container {
     display: flex;
     background-color: #1a181c;
     padding: 20px 10px;
     outline: 10px solid #1a181c;
     border: 2px dashed #2c292e;
-    pointer-events: none;
 
-    .dog-container {
+    .image-container {
       margin-right: 20px;
       margin-left: 10px;
       position: relative;

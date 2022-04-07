@@ -59,19 +59,20 @@ function FilesDropArea({ onDrop }) {
     setIsDraggingFiles(false);
   
     const {files} = e.dataTransfer;
+    console.log('DROPPED FILES', e.dataTransfer)
     if (files.length > 0) onDrop(files);
   };
 
   return (
     isDraggingFiles
-    ? <motion.div
-        className='drop-area'
-        animate={{y: 0}}
-        initial={{y: 20}}
-        ref={drop}
+    ? <div className='overlay-area' ref={drop}
       >
-        <div className='drop-media-message'>
-          <div className='dog-container'>
+        <motion.div
+          className='modal-container no-pointer-events'
+          animate={{y: 0}}
+          initial={{y: 20}}
+        >
+          <div className='image-container'>
             <img src={dancing_dog_gif} height={96} width={96}/>
           </div>
           <div className='message'>
@@ -86,8 +87,8 @@ function FilesDropArea({ onDrop }) {
               </ul>
             </div>
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     : null
   )
 }
