@@ -12,7 +12,6 @@
   .input-wrapper {
     display: flex;
     align-items: center;
-    padding-left: 10px;
     width: 100%;
     
     .textarea-input {
@@ -71,6 +70,35 @@
       &:disabled {
         color: var(--brightBlack);
         cursor: not-allowed;
+      }
+    }
+  }
+}
+.add-files-container {
+  display: flex;
+  align-items: center;
+  input {
+    display: none;
+  }
+  button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    height: 2rem;
+    width: 2rem;
+
+    svg {
+      position: absolute;
+      color: var(--brightBlack);
+      height: 100%;
+      width: 2rem;
+      height: 1.5rem;
+    }
+    &:hover {
+      svg {
+        color: var(--gray);
       }
     }
   }

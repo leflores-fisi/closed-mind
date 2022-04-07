@@ -1,4 +1,4 @@
-import { useState, forwardRef, useRef, useEffect, useCallback } from 'react';
+import { useState, forwardRef, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import TextareaAutosize from 'react-textarea-autosize';
 import { emitSocketEvent } from '@/services/userSocket';
@@ -7,13 +7,14 @@ import useChatInput from '@/hooks/useChatInput';
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearChat } from '@/context/actions';
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
 import { waitForSeconds } from '@/Helpers';
+import { MdAddCircleOutline } from 'react-icons/md';
 import { IoSend } from 'react-icons/io5';
 import HoverableTitle from '@/components/overlay/HoverableTitle';
 import { MEDIA_API_URL } from '@/services/userSocket';
 import MultimediaPreview from './MultimediaPreview';
 import FilesDropArea from './chat-interactive/FilesDropArea';
-import './ChatInput.scss';
 import InvalidFilesOverlay from './InvalidFilesOverlay';
+import './ChatInput.scss';
 
 const waiterEnded = waitForSeconds(2);
 
@@ -441,6 +442,20 @@ function ChatMessageInput(props, ref) {
         }
         <MultimediaPreview mediaPreviews={mediaPreviews} fileRemover={removeFileFromPreview}/>
         <div className='chat-input-container'>
+          <div className='add-files-container'>
+            <input
+              className='file-input'
+              type='file'
+              multiple
+              ref={fileInputRef}
+              onChange={handleFileSubmit}
+            />
+            <HoverableTitle title='Add files'>
+              <button className='add-files-btn' type='button' onClick={() => fileInputRef.current.click()}>
+                <MdAddCircleOutline/>
+              </button>
+            </HoverableTitle>
+          </div>
           <div className='input-wrapper'>
             <TextareaAutosize
               maxRows={12}
@@ -458,12 +473,6 @@ function ChatMessageInput(props, ref) {
             >{autocompletePlaceholder}</div>
           </div>
           <div className='send-message-container'>
-            <input
-              type='file'
-              multiple
-              ref={fileInputRef}
-              onChange={handleFileSubmit}
-            />
             <HoverableTitle title='Send'>
               <button type='submit' className='send-message-btn' disabled={!canSendMessage}>
                 <IoSend/>
