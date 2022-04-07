@@ -80,10 +80,68 @@
   align-items: center;
   overflow-x: auto;
   scrollbar-width: initial;
+  background-color: #1d1d1e;
 
-  img, video {
-    margin: 10px;
-    height: 6rem;
+  .file-preview-container {
+    min-width: 14rem;
+    max-width: 14rem;
+    position: relative;
+    margin: 15px 20px;
+    background-color: #151515;
+    padding: 0 10px;
+    
+    .remove-file-btn {
+      position: absolute;
+      z-index: 10;
+      top: 5px;
+      left: calc(100% - 24px);
+
+      button {
+        display: flex;
+        align-items: center;
+        aspect-ratio: 1/1;
+        background-color: var(--brightRed);
+        color: var(--background);
+      }
+    }
+    .file-container {
+      display: flex;
+      justify-content: center;
+      height: 8rem;
+      margin-top: 10px;
+
+      .file {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+
+        img, video {
+          object-fit: contain;
+          padding: 5px 10px;
+          height: 100%;
+          width: 100%;
+        }
+      }
+    }
+    .file-name {
+      display: flex;
+      align-items: center;
+      color: var(--brightGray);
+      font-size: 0.75rem;
+      height: 1.5rem;
+      margin-bottom: 5px;
+      min-width: 0;
+      
+      .text {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        align-items: center;
+        width: 100%;
+      }
+    }
   }
 }
 .overlay-area {
@@ -96,7 +154,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 100000;
   animation: fadeOut 0.8 forwards;
 
   .modal-container {

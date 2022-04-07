@@ -370,10 +370,10 @@ function ChatMessageInput(props, ref) {
     console.log('Validating files...', files);
     const invalidFilesInfo = [];
     for (let file of Array.from(files)) {
-      if (!file.type) invalidFilesInfo.push({
-        name: file.name,
-        reason: "We don't know the reason yet"
-      });
+      // if (!file.type) invalidFilesInfo.push({
+      //   name: file.name,
+      //   reason: "We don't know the reason yet"
+      // });
     }
     if (invalidFilesInfo.length > 0) {
       console.log('Founded invalid files:', invalidFilesInfo)
@@ -463,7 +463,6 @@ function ChatMessageInput(props, ref) {
               multiple
               ref={fileInputRef}
               onChange={handleFileSubmit}
-              accept='image/*,video/mp4,video/3gpp,video/quicktime'
             />
             <HoverableTitle title='Send'>
               <button type='submit' className='send-message-btn' disabled={!canSendMessage}>

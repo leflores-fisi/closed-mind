@@ -47,5 +47,47 @@
       background-size: 100%;
       object-fit: contain;
     }
+    .other-file-viewer {
+      display: flex;
+      align-items: center;
+      height: 60px;
+      background-color: var(--black);
+      padding: 4px 10px;
+
+      .file-icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        position: relative;
+
+        svg {
+          height: 40px;
+        }
+        .file-format {
+          position: absolute;
+          top: 50%;
+          color: var(--background);
+          font-size: 0.6rem;
+          font-weight: 800;
+        }
+      }
+      .content-information {
+        max-width: 290px;
+        .file-name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          line-height: 1.2;
+          font-size: 0.8rem;
+          color: var(--brightBlue);
+          text-decoration: underline 1px solid var(--brightBlue);
+          text-underline-offset: 0.15rem;
+        }
+      }
+      .download-file {
+        margin-left: 5px;
+      }
+    }
   }
 }

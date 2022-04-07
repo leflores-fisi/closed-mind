@@ -1,4 +1,6 @@
 import { useEffect } from 'react';
+import { AiFillFile } from 'react-icons/ai';
+import { MdOutlineFileDownload } from 'react-icons/md';
 import unable_to_load_img from '@/assets/app-messages/unable-to-load.jpg';
 
 function MessageMedia({ mediaFiles }) {
@@ -14,8 +16,8 @@ function MessageMedia({ mediaFiles }) {
         mediaFiles.map((mediaResource, i) => (
           <div className='media-wrapper' role='button' key={i}>
             {
-              mediaResource.type.includes('image') ?
-                <img
+              mediaResource.type.includes('image')
+              ? <img
                   src={mediaResource.url}
                   alt={mediaResource.title || 'image'}
                   loading='lazy'
@@ -24,11 +26,30 @@ function MessageMedia({ mediaFiles }) {
                     currentTarget.src = unable_to_load_img;
                   }}
                 /> :
-              mediaResource.type.includes('video') ?
-                <video controls>
+
+              mediaResource.type.includes('video')
+              ? <video controls>
                   <source src={mediaResource.url} type={mediaResource.type || 'video/mp4'}/>
                 </video>
-              : <img src={unable_to_load_img}></img>
+
+              : <div className='other-file-viewer'>
+                  <div className='file-icon-container'>
+                    <div className='file-icon'>
+                      <AiFillFile size={50}/>
+                    </div>
+                    <div className='file-format'>
+                      .{mediaResource.type.substring(mediaResource.type.indexOf('/')+1, mediaResource.type.length)}
+                    </div>
+                  </div>
+                  <div className='content-information'>
+                    <div className='file-name'>{mediaResource.title}</div>
+                  </div>
+                  <div className='download-file'>
+                    <a href={mediaResource.url} target='_blank'>
+                      <MdOutlineFileDownload size={30}/>
+                    </a>
+                  </div>
+                </div>
             }
           </div>
         ))
