@@ -87,6 +87,7 @@
       .content-information {
         min-width: 0;
         display: flex;
+        flex-direction: column;
         justify-content: flex-start;
         flex-grow: 1;
         flex-shrink: 10;
@@ -96,10 +97,15 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           line-height: 1.2;
-          font-size: 0.8rem;
+          font-size: 0.9rem;
           color: var(--brightBlue);
           text-decoration: underline 1px solid var(--brightBlue);
           text-underline-offset: 0.15rem;
+          margin-bottom: 5px;
+        }
+        .file-size {
+          font-size: 0.7rem;
+          color: var(--gray);
         }
       }
       .download-file {

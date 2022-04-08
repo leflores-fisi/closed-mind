@@ -55,10 +55,12 @@ function main() {
         res.json(results.map((result, i) => {
           if (result.status !== 'rejected') {
             return ({
-              title: filesInformation[i].name,
+              fileName: filesInformation[i].name,
               url: result.value.secure_url,
-              public_id: result.value.public_id,
-              type: filesInformation[i].mimetype || 'unknown'
+              //public_id: result.value.public_id,
+              type: filesInformation[i].mimetype || 'unknown',
+              format: result.value.format,
+              size: result.value.bytes
             })
           }
         }));

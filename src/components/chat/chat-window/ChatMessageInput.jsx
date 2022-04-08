@@ -369,12 +369,15 @@ function ChatMessageInput(props, ref) {
 
   const areInvalidFiles = (files) => {
     console.log('Validating files...', files);
+    const MAX_FILE_SIZE = 10485760;
     const invalidFilesInfo = [];
     for (let file of Array.from(files)) {
-      // if (!file.type) invalidFilesInfo.push({
-      //   name: file.name,
-      //   reason: "We don't know the reason yet"
-      // });
+      if (file.size >= MAX_FILE_SIZE) {
+        invalidFilesInfo.push({
+          name: file.name,
+          reason: "File is too large"
+        });
+      }
     }
     if (invalidFilesInfo.length > 0) {
       console.log('Founded invalid files:', invalidFilesInfo)
@@ -400,7 +403,8 @@ function ChatMessageInput(props, ref) {
         mediaPreviews.push({
           blobSrc: imgBlobPreview,
           type: file.type,
-          title: file.name
+          fileName: file.name,
+          size: file.size
         });
       })
       setMediaPreviews(mediaPreviews);

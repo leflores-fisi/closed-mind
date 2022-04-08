@@ -17,4 +17,4 @@ const deleteMedia = async (id) => {
   return await cloudinary.v2.uploader.destroy(id);
 }
 
-module.exports = { uploadMedia, deleteMedia }
+module.exports = { uploadMedia, deleteMedia };

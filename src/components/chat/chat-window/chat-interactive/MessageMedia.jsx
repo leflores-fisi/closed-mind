@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { AiFillFile } from 'react-icons/ai';
 import { MdOutlineFileDownload } from 'react-icons/md';
 import unable_to_load_img from '@/assets/app-messages/unable-to-load.jpg';
+import { formatBytes } from '@/Helpers';
 
 function MessageMedia({ mediaFiles }) {
 
@@ -19,7 +20,7 @@ function MessageMedia({ mediaFiles }) {
               mediaResource.type.includes('image')
               ? <img
                   src={mediaResource.url}
-                  alt={mediaResource.title || 'image'}
+                  alt={mediaResource.fileName || 'image'}
                   loading='lazy'
                   onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
@@ -38,11 +39,12 @@ function MessageMedia({ mediaFiles }) {
                       <AiFillFile size={50}/>
                     </div>
                     <div className='file-format'>
-                      .{mediaResource.type.substring(mediaResource.type.indexOf('/')+1, mediaResource.type.length)}
+                      {mediaResource.format}
                     </div>
                   </div>
                   <div className='content-information'>
-                    <div className='file-name'>{mediaResource.title}</div>
+                    <div className='file-name'>{mediaResource.fileName}</div>
+                    <div className='file-size'>{formatBytes(mediaResource.size)}</div>
                   </div>
                   <div className='download-file'>
                     <a href={mediaResource.url} target='_blank'>

@@ -144,6 +144,7 @@
         align-items: center;
         width: 100%;
         height: 100%;
+        word-break: break-all;
 
         img, video {
           object-fit: contain;
@@ -191,13 +192,16 @@
     padding: 20px 10px;
     outline: 10px solid #1a181c;
     border: 2px dashed #2c292e;
-
+    width: 100%;
+    min-width: 300px;
+    max-width: 34rem;
+    
     .image-container {
       margin-right: 20px;
       margin-left: 10px;
       position: relative;
       align-self: center;
-
+      
       img {
         position: relative;
         height: 8rem;
@@ -217,7 +221,7 @@
     .message {
       margin-right: 15px;
       align-self: center;
-
+      
       .title {
         font-weight: 600;
         font-size: 1.2rem;
@@ -233,6 +237,7 @@
       .text {
         margin-left: 5px;
         font-size: 0.7rem;
+        word-break: break-all;
       }
     }
   }

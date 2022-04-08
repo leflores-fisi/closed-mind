@@ -1,3 +1,4 @@
+import { formatBytes } from '@/Helpers';
 
 function MultimediaPreview({ mediaPreviews, fileRemover }) {
 
@@ -23,12 +24,13 @@ function MultimediaPreview({ mediaPreviews, fileRemover }) {
                   : <div>
                       <a href={preview.blobSrc}></a>
                       <div>{preview.type}</div>
+                      <div className='file-size'>{formatBytes(preview.size)}</div>
                     </div>
                 }
               </div>
             </div>
             <div className='file-name'>
-              <div className='text'>{preview.title}</div>
+              <div className='text'>{preview.fileName}</div>
             </div>
           </div>
         ))
