@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 export const API_URL = import.meta.env.MODE === 'development'       ? 'http://localhost:8001' : 'https://closedmind-api.herokuapp.com';
-export const MEDIA_API_URL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://closedmind-cloudify-service.herokuapp.com';
+export const CLOUD_API_URL = import.meta.env.MODE === 'development' ? 'http://localhost:4000' : 'https://closedmind-cloudify-service.herokuapp.com';
 export const SELF_URL = import.meta.env.MODE === 'development'      ? 'http://localhost:3000' : 'https://closedmind.vercel.app';
 
 export const userSocket = io(API_URL, {
@@ -27,13 +27,13 @@ export const emitSocketEvent = {
    * @param {string} params.date current date on UTCString
    * @param {string} params.message user message
    */
-  "sending-message": ({ date, message, message_id, replyingTo, media }) => {
+  "sending-message": ({ date, message, message_id, replyingTo, attachments }) => {
     userSocket.emit('sending-message', {
       date,
       message,
       message_id,
       replyingTo,
-      media
+      attachments
     })
   },
   /**

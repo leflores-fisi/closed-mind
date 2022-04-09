@@ -1,12 +1,12 @@
 import { formatBytes } from '@/Helpers';
 import { AiFillFileText } from 'react-icons/ai';
 
-function MultimediaPreview({ mediaPreviews, fileRemover }) {
+function AttachmentsPreview({ attachments, fileRemover }) {
 
   return (
-    <div className='media-preview'>
+    <div className='attachments-preview'>
       {
-        mediaPreviews.map((preview, i) => (
+        attachments.map((attachment, i) => (
           <figure className='file-preview-container' key={i}>
             <div className='remove-file-btn'>
               <button onClick={() => fileRemover(i)}>x</button>
@@ -14,24 +14,24 @@ function MultimediaPreview({ mediaPreviews, fileRemover }) {
             <div className='file-container'>
               <div className='file'>
                 {
-                  preview.type.includes('image')
-                  ? <img src={preview.blobSrc}/> :
+                  attachment.type.includes('image')
+                  ? <img src={attachment.blobSrc}/> :
 
-                  preview.type.includes('video')
+                  attachment.type.includes('video')
                   ? <video controls>
-                      <source src={preview.blobSrc} type={preview.type}/>
+                      <source src={attachment.blobSrc} type={attachment.type}/>
                     </video>
 
                   : <div className='without-preview'>
                       <AiFillFileText size={70}/>
-                      <div className='file-type'>{preview.type}</div>
-                      <div className='file-size'>{formatBytes(preview.size)}</div>
+                      <div className='file-type'>{attachment.type}</div>
+                      <div className='file-size'>{formatBytes(attachment.size)}</div>
                     </div>
                 }
               </div>
             </div>
             <figcaption className='file-name'>
-              <div className='text'>{preview.name}</div>
+              <div className='text'>{attachment.name}</div>
               <div>{`(${i+1})`}</div>
             </figcaption>
           </figure>
@@ -40,4 +40,4 @@ function MultimediaPreview({ mediaPreviews, fileRemover }) {
     </div>
   );
 }
-export default MultimediaPreview;
+export default AttachmentsPreview;

@@ -27,13 +27,13 @@
     z-index: -5;
   }
 }
-.message-media {
+.message-attachments {
   display: flex;
   flex-direction: column;
   overflow-x: auto;
   margin: 4px 0 6px 0;
 
-  .media-wrapper {
+  .attachment-container {
     margin-bottom: 10px;
     border-radius: 4px;
     width: fit-content;

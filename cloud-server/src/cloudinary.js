@@ -7,14 +7,14 @@ cloudinary.v2.config({
   api_secret: process.env.API_SECRET
 })
 
-const uploadMedia = async (path, type) => {
+const uploadFile = async (path) => {
   return await cloudinary.v2.uploader.upload(path, {
-    folder: 'closedmind-media',
+    folder: 'closedmind-cloud',
     resource_type: 'auto'
   });
 }
-const deleteMedia = async (id) => {
+const deleteFile = async (id) => {
   return await cloudinary.v2.uploader.destroy(id);
 }
 
-module.exports = { uploadMedia, deleteMedia };
+module.exports = { uploadFile, deleteFile };

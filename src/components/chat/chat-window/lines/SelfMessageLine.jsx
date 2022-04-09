@@ -6,9 +6,9 @@ import EmoteReactionButton from './message_actions/emotes/EmoteReactionButton';
 import MessageReactionsList from './message_actions/emotes/MessageReactionsList';
 import { scrollChatToBottom } from '@/Helpers';
 import ReplyMessageButton from './message_actions/replies/ReplyMessageButton';
-import MessageMedia from '../chat-interactive/MessageMedia';
+import MessageAttachments from '../chat-interactive/MessageAttachments';
 
-function SelMessageLine({ text, date, id, reactions, replyingTo, media }) {
+function SelMessageLine({ text, date, id, reactions, replyingTo, attachments }) {
 
   const [isHovered, setIsHovered] = useState(false);
   const [sent, setSent] = useState(false);
@@ -38,7 +38,7 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, media }) {
           </div>
         }
       </div>
-      <MessageMedia mediaFiles={media}/>
+      <MessageAttachments attachments={attachments}/>
       <MessageReactionsList message_id={id} reactions={reactions}/>
     </div>
   )

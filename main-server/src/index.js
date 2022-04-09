@@ -120,7 +120,7 @@ function main() {
       })
       // else res.status(400).end(); Handle this
     })
-    socket.on('sending-message', ({ date, message, message_id, replyingTo, media }) => {
+    socket.on('sending-message', ({ date, message, message_id, replyingTo, attachments }) => {
       ChatRoom.findOneAndUpdate({ code: socket.currentRoomCode }, {
         $push: {
           messages: {
@@ -131,7 +131,7 @@ function main() {
             message_id: message_id,
             replyingTo: replyingTo,
             reactions: [],
-            media: media
+            attachments: attachments
           }
         }
       }, {new: true}).then(updatedChatRoom => {
@@ -143,7 +143,7 @@ function main() {
           message,
           message_id,
           replyingTo,
-          media
+          attachments
         });
         io.to(socket.id).emit('message-sent');
       }).catch(error => console.log('Error on socket->message', error));

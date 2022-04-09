@@ -1,26 +1,21 @@
-import { useEffect } from 'react';
 import { AiFillFile } from 'react-icons/ai';
 import { MdOutlineFileDownload } from 'react-icons/md';
 import unable_to_load_img from '@/assets/app-messages/unable-to-load.jpg';
 import { formatBytes } from '@/Helpers';
 
-function MessageMedia({ mediaFiles }) {
-
-  useEffect(() => {
-
-  })
+function MessageAttachments({ attachments }) {
   
   return (
-    mediaFiles.length > 0 &&
-    <div className='message-media'>
+    attachments.length > 0 &&
+    <div className='message-attachments'>
       {
-        mediaFiles.map((mediaResource, i) => (
-          <div className='media-wrapper' role='button' key={i}>
+        attachments.map((attachment, i) => (
+          <div className='attachment-container' role='button' key={i}>
             {
-              mediaResource.type.includes('image')
+              attachment.type.includes('image')
               ? <img
-                  src={mediaResource.url}
-                  alt={mediaResource.fileName || 'image'}
+                  src={attachment.url}
+                  alt={attachment.fileName || 'image'}
                   loading='lazy'
                   onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
@@ -28,26 +23,26 @@ function MessageMedia({ mediaFiles }) {
                   }}
                 /> :
 
-              mediaResource.type.includes('video')
+              attachment.type.includes('video')
               ? <video controls>
-                  <source src={mediaResource.url} type={mediaResource.type || 'video/mp4'}/>
+                  <source src={attachment.url} type={attachment.type || 'video/mp4'}/>
                 </video>
 
               : <div className='other-file-viewer'>
                   <div className='file-icon-container'>
                     <div className='file-icon'>
-                      <AiFillFile size={90}/>
+                      <AiFillFile size={50}/>
                     </div>
                     <div className='file-format'>
-                      {mediaResource.format}
+                      {attachment.format}
                     </div>
                   </div>
                   <div className='content-information'>
-                    <div className='file-name'>{mediaResource.fileName}</div>
-                    <div className='file-size'>{formatBytes(mediaResource.size)}</div>
+                    <div className='file-name'>{attachment.fileName}</div>
+                    <div className='file-size'>{formatBytes(attachment.size)}</div>
                   </div>
                   <div className='download-file'>
-                    <a href={mediaResource.url} target='_blank'>
+                    <a href={attachment.url} target='_blank'>
                       <MdOutlineFileDownload size={30}/>
                     </a>
                   </div>
@@ -59,4 +54,4 @@ function MessageMedia({ mediaFiles }) {
     </div>
   );
 }
-export default MessageMedia;
+export default MessageAttachments;

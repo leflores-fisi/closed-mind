@@ -20,7 +20,7 @@ const MessageSchema = new mongoose.Schema({
     emote: String,
     users_list: [String]
   }],
-  media: [{
+  attachments: [{
     url: String,
     public_id: String
   }]

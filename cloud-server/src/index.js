@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload');
 const cors       = require('cors');
 const fs         = require('fs-extra');
 
-const { uploadMedia, deleteMedia } = require('./cloudinary');
+const { uploadFile, deleteFile } = require('./cloudinary');
 const { plainFilesTree } = require('./helpers');
 
 const PORT = Number(process.env.PORT);
@@ -17,7 +17,7 @@ function main() {
   app.use(express.json());
   app.use(cors());
   app.use(fileUpload({
-    tempFileDir: './temp-media',
+    tempFileDir: './temp-files',
     useTempFiles: true
   }));
   app.use((req, res, next) => {
@@ -25,7 +25,7 @@ function main() {
     next();
   });
   
-  app.post('/media', (req, res) => {
+  app.post('/attachments', (req, res) => {
     console.log(req.files);
     const uploadingPromises = [];
     const filesInformation = [];
@@ -37,7 +37,7 @@ function main() {
 
         if (file.size < MAX_FILE_SIZE) {
           uploadingPromises.push(
-            uploadMedia(file.tempFilePath, file.mimetype)
+            uploadFile(file.tempFilePath, file.mimetype)
           );
           filesInformation.push({
             name: file.name,
@@ -70,8 +70,8 @@ function main() {
       res.status(400).send('No files provided');
     }
   })
-  app.delete('/media/:id', (req, res) => {
-    deleteMedia(req.params.id).then(() => {
+  app.delete('/attachments/:id', (req, res) => {
+    deleteFile(req.params.id).then(() => {
       res.sendStatus(204);
     }).catch(error => {
       console.log(error);

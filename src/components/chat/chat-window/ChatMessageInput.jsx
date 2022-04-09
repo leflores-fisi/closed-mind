@@ -10,8 +10,8 @@ import { waitForSeconds } from '@/Helpers';
 import { MdAddCircleOutline } from 'react-icons/md';
 import { IoSend } from 'react-icons/io5';
 import HoverableTitle from '@/components/overlay/HoverableTitle';
-import { MEDIA_API_URL } from '@/services/userSocket';
-import MultimediaPreview from './MultimediaPreview';
+import { CLOUD_API_URL } from '@/services/userSocket';
+import AttachmentsPreview from './AttachmentsPreview';
 import FilesDropArea from './chat-interactive/FilesDropArea';
 import InvalidFilesOverlay from './InvalidFilesOverlay';
 import './ChatInput.scss';
@@ -28,8 +28,7 @@ function ChatMessageInput(props, ref) {
   const [canSendMessage, setCanSendMessage] = useState(false);
   const { messageReplying, setMessageReplying } = useChatInput();
 
-  const [appendedMedia, setAppendedMedia] = useState([]);
-
+  const [appendedAttachments, setAppendedAttachments] = useState([]);
   const [filesAreInvalid, setFilesAreInvalid] = useState(null);
 
   const [historyIndex, setHistoryIndex] = useState(0);
@@ -116,7 +115,7 @@ function ChatMessageInput(props, ref) {
     '/ping': () => {
       emitSocketEvent['ping']();
     },
-    'send_message': (message, mediaData = []) => {
+    'send_message': (message, attachmentsList = []) => {
       let date = new Date().toUTCString();
       let message_id = nanoid();
       // If is not connected, only appends the message
@@ -127,7 +126,7 @@ function ChatMessageInput(props, ref) {
           text: message,
           message_id,
           replyingTo: messageReplying,
-          media: mediaData
+          attachments: attachmentsList
         }));
       }
       else {
@@ -137,14 +136,14 @@ function ChatMessageInput(props, ref) {
           text: message,
           message_id,
           replyingTo: messageReplying,
-          media: mediaData
+          attachments: attachmentsList
         }));
         emitSocketEvent['sending-message']({
           date,
           message,
           message_id,
           replyingTo: messageReplying,
-          media: mediaData
+          attachments: attachmentsList
         })
       }
     }
@@ -170,26 +169,26 @@ function ChatMessageInput(props, ref) {
     else {
       const formData = new FormData();
 
-      if (appendedMedia.length > 0) {
-        appendedMedia.forEach(mediaFile => {
-          console.log('Appended media:', appendedMedia)
-          let fileName = mediaFile.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
+      if (appendedAttachments.length > 0) {
+        appendedAttachments.forEach(attachment => {
+          console.log('Appended files:', appendedAttachments)
+          let fileName = attachment.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
           console.log('working with', fileName);
-          formData.append(fileName, mediaFile);
+          formData.append(fileName, attachment);
         })
 
-        fetch(`${MEDIA_API_URL}/media`, {
+        fetch(`${CLOUD_API_URL}/attachments`, {
           method: 'POST',
           body: formData
         }).then(response => response.json())
-          .then(media => {
-            console.log('RECEIVED RESPONSE FROM POST', media);
-            CHAT_COMMANDS_ACTIONS['send_message'](user_input, media);
+          .then(attachmentsListInfo => {
+            console.log('RECEIVED RESPONSE FROM POST', attachmentsListInfo);
+            CHAT_COMMANDS_ACTIONS['send_message'](user_input, attachmentsListInfo);
 
             // cleaning all files
             fileInputRef.current.value = null;
-            appendedMedia.forEach(file => URL.revokeObjectURL(file.blobSrc));
-            setAppendedMedia([]);
+            appendedAttachments.forEach(file => URL.revokeObjectURL(file.blobSrc));
+            setAppendedAttachments([]);
           })
       }
       else {
@@ -370,7 +369,7 @@ function ChatMessageInput(props, ref) {
     const MAX_FILES_AMOUNT = 15;
     let invalidReason = '';
 
-      console.log('VALIDATING WITH MEDIA', currentFiles)
+      console.log('VALIDATING WITH FILES:', currentFiles)
       if (currentFiles.length + newFiles.length > MAX_FILES_AMOUNT) {
         invalidReason = 'We have a limit of 15 files per message';
       }
@@ -389,32 +388,27 @@ function ChatMessageInput(props, ref) {
     else return false;
   }
   /**
-   * @param {FileList | File[]} newFilesAppended List of files as a FileList object
+   * @param {FileList | File[]} newAttachments List of files as a FileList object
    */
-  const appendNewFileAndUpdate = (newFilesAppended) => {
-    
-    setAppendedMedia(prevMedia => {
-      const updatedAppendedMedia = prevMedia.concat(Array.from(newFilesAppended));
-      console.log('Prev media:', prevMedia);
-      console.log('New media:', newFilesAppended);
-      console.log('Now we have:', updatedAppendedMedia);
-      if (areInvalidFiles(prevMedia, newFilesAppended))
-        return prevMedia;
+  const appendNewFileAndUpdate = (newAttachments) => {
 
+    setAppendedAttachments(currentAttachments => {
+      if (areInvalidFiles(currentAttachments, newAttachments))
+        return currentAttachments;
       // Creating blobs for each new file
       // The blobs will been revoke on submit or on removing file from preview
-      Array.from(newFilesAppended).forEach((file) => {
+      Array.from(newAttachments).forEach((file) => {
         console.log('Blobbing...', file)
         const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
         file.blobSrc = imgBlobPreview;
       })
 
-      return updatedAppendedMedia;
+      return currentAttachments.concat(Array.from(newAttachments));
     });
   }
   const removeFileFromPreview = (index) => {
-    setAppendedMedia(prevMedia => (
-      prevMedia.filter((file, i) => {
+    setAppendedAttachments(currentAttachments => (
+      currentAttachments.filter((file, i) => {
         if (i === index) {
           console.log('Removing blob', file.blobSrc);
           URL.revokeObjectURL(file.blobSrc);
@@ -454,7 +448,7 @@ function ChatMessageInput(props, ref) {
             <button onClick={clearReplying}>x</button>
           </div>
         }
-        <MultimediaPreview mediaPreviews={appendedMedia} fileRemover={removeFileFromPreview}/>
+        <AttachmentsPreview attachments={appendedAttachments} fileRemover={removeFileFromPreview}/>
         <div className='chat-input-container'>
           <div className='add-files-container'>
             <input

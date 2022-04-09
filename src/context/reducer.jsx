@@ -85,7 +85,7 @@ export const reducer = (state, action) => {
           message_id: action.payload.message_id,
           replyingTo: action.payload.replyingTo,
           reactions: [],
-          media: action.payload.media || []
+          attachments: action.payload.attachments || []
         })
       };
     case '@chat/reactToMessage':
