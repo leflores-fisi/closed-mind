@@ -17,6 +17,8 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, filesToSubmit }
 
   const [isHovered, setIsHovered] = useState(false);
   const [fetchedAttachments, setFetchedAttachments] = useState([]);
+  const [submitProgress, setSubmitProgress] = useState(0);
+  const [filesLoaded, setFilesLoaded] = useState(false);
   const [sent, setSent] = useState(false);
   const {store} = useAppReducer();
 
@@ -44,30 +46,26 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, filesToSubmit }
       })
   
       axios.post(`${CLOUD_API_URL}/attachments`, formData, {
-        headers: {
-          'Content-type': 'multipart/form-data'
-        },
+        headers: { 'Content-type': 'multipart/form-data' },
         onUploadProgress(e) {
-          console.log(e)
+          setSubmitProgress((e.loaded/e.total)*100);
+          console.log(`${(e.loaded/e.total)*100}%`, e)
         }
-      }).then(response => response.json())
-        .then(attachmentsListInfo => {
-          console.log('RECEIVED RESPONSE FROM POST', attachmentsListInfo);
-          filesToSubmit.forEach(file => URL.revokeObjectURL(file.blobSrc));
+      }).then(response => {
+        const attachmentsListInfo = response.data;
+        console.log('RECEIVED RESPONSE FROM POST', attachmentsListInfo);
+        filesToSubmit.forEach(file => URL.revokeObjectURL(file.blobSrc));
 
-          emitSocketEvent['sending-message']({
-            date: date,
-            message: text,
-            message_id: id,
-            replyingTo: replyingTo,
-            attachments: attachmentsListInfo
-          })
-          setFetchedAttachments(attachmentsListInfo)
+        emitSocketEvent['sending-message']({
+          date: date,
+          message: text,
+          message_id: id,
+          replyingTo: replyingTo,
+          attachments: attachmentsListInfo
         })
-        // fetch(`${CLOUD_API_URL}/attachments`, {
-        //   method: 'POST',
-        //   body: formData
-        // }).then(response => response.json())
+        setFetchedAttachments(attachmentsListInfo);
+        setTimeout(() => setFilesLoaded(true), 500)
+      })
     }
   }, [])
 
@@ -90,6 +88,12 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, filesToSubmit }
           <MessageAttachments attachments={filesToSubmit}/> : null
       }
       <MessageReactionsList message_id={id} reactions={reactions}/>
+      {
+        !filesLoaded ?
+        <div className='attachments-progress-bar'>
+          <span className='progress' style={{width: `${submitProgress}%`}}></span>
+        </div> : null
+      }
     </div>
   )
 }

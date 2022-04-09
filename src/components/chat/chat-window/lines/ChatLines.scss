@@ -139,7 +139,21 @@ $message-padding: 5px 8px;
         opacity: 1;
       }
       &:not(.sent) {
-        opacity: 0.5;
+        opacity: 0.45;
+      }
+      .attachments-progress-bar {
+        position: absolute;
+        left: -4px;
+        bottom: 2px;
+        width: calc(100% + 8px);
+        border: none;
+        
+        .progress {
+          display: inline-block;
+          height: 2px;
+          transition: width 0.8s;
+          background-color: var(--purple);
+        }
       }
     }
     .error-message {
