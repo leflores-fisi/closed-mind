@@ -38,7 +38,7 @@ function ChatLine({ line }) {
             text={line.text}
             reactions={line.reactions}
             replyingTo={line.replyingTo}
-            attachments={line.attachments}
+            filesToSubmit={line.filesToSubmit || []}
           />
         :
           <MessageLine

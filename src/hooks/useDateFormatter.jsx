@@ -1,6 +1,7 @@
 
 const useDateFormatter = (date) => {
 
+  console.log('Formatting', date);
   if (!date) return '??:??';
 
   let d = new Date(date);

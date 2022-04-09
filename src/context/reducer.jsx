@@ -85,6 +85,7 @@ export const reducer = (state, action) => {
           message_id: action.payload.message_id,
           replyingTo: action.payload.replyingTo,
           reactions: [],
+          filesToSubmit: action.payload.filesToSubmit || [],
           attachments: action.payload.attachments || []
         })
       };

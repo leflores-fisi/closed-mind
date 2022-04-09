@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.26.1",
     "framer-motion": "6.2.8",
     "howler": "^2.2.3",
     "immer": "9.0.12",

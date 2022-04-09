@@ -1,9 +1,9 @@
 import React, { useEffect, useState, memo } from 'react';
 import useDateFormatter from '@/hooks/useDateFormatter';
-import useChatConfig from '@/hooks/useChatConfig';
-import YoutubeEmbed from '../chat-interactive/YoutubeEmbed';
+import useChatConfig    from '@/hooks/useChatConfig';
 import { getYoutubeID, isURL, isYoutubeURL } from '@/Helpers';
 import { BsArrow90DegRight } from 'react-icons/bs';
+import YoutubeEmbed  from '../chat-interactive/YoutubeEmbed';
 import CopyURLButton from '../chat-interactive/CopyURLButton';
 
 function UserMessage({ date, userId, userColor, text, messageReplying}) {
@@ -102,4 +102,4 @@ function UserMessage({ date, userId, userColor, text, messageReplying}) {
     </>
   );
 }
-export default memo(UserMessage);
+export default memo(UserMessage, () => true);

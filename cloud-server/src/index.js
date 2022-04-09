@@ -55,12 +55,22 @@ function main() {
         res.json(results.map((result, i) => {
           if (result.status !== 'rejected') {
             return ({
-              fileName: filesInformation[i].name,
+              name: filesInformation[i].name,
               url: result.value.secure_url,
               //public_id: result.value.public_id,
               type: filesInformation[i].mimetype || 'unknown',
               format: result.value.format,
               size: result.value.bytes
+            })
+          }
+          else {
+            return ({
+              name: 'File Failed',
+              url: 'https://st2.depositphotos.com/1001911/7684/v/600/depositphotos_76840879-stock-illustration-depressed-emoticon.jpg',
+              //public_id: result.value.public_id,
+              type: 'image/jpeg',
+              format: 'jpeg',
+              size: 696969
             })
           }
         }));

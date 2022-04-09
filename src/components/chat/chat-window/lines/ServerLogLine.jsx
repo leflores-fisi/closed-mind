@@ -36,4 +36,4 @@ function ServerLogLine({date, log, id, reactions}) {
 )
 }
 
-export default ServerLogLine
+export default ServerLogLine;

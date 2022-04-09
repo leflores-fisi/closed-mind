@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { scrollChatIfIsNear } from '@/Helpers';
-import EmoteReactionButton from './message_actions/emotes/EmoteReactionButton';
-import MessageReactionsList from './message_actions/emotes/MessageReactionsList';
 import UserMessage from './UserMessage';
-import ReplyMessageButton from './message_actions/replies/ReplyMessageButton';
-import MessageAttachments from '../chat-interactive/MessageAttachments';
+
+import EmoteReactionButton  from './message_actions/emotes/EmoteReactionButton';
+import MessageReactionsList from './message_actions/emotes/MessageReactionsList';
+import ReplyMessageButton   from './message_actions/replies/ReplyMessageButton';
+import MessageAttachments   from '../chat-interactive/MessageAttachments';
 
 function MessageLine({ date, userId, userColor, text, id, reactions, replyingTo, attachments }) {
 
@@ -26,7 +27,10 @@ function MessageLine({ date, userId, userColor, text, id, reactions, replyingTo,
           </div>
         }
       </div>
-      <MessageAttachments attachments={attachments}/>
+      {
+        attachments.length > 0 &&
+        <MessageAttachments attachments={attachments}/> 
+      }
       <MessageReactionsList message_id={id} reactions={reactions}/>
     </div>
   )

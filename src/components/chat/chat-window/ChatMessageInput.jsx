@@ -1,27 +1,28 @@
 import { useState, forwardRef, useRef, useEffect } from 'react';
 import { nanoid } from 'nanoid';
-import TextareaAutosize from 'react-textarea-autosize';
 import { emitSocketEvent } from '@/services/userSocket';
-import useAppReducer from '@/hooks/useAppReducer';
-import useChatInput from '@/hooks/useChatInput';
+import useAppReducer       from '@/hooks/useAppReducer';
+import useChatInput        from '@/hooks/useChatInput';
+import { CLOUD_API_URL }   from '@/services/userSocket';
+import HoverableTitle      from '@/components/overlay/HoverableTitle';
+import { waitForSeconds }  from '@/Helpers';
+
 import { saveLineToHistory, appendMessage, appendErrorMessage, clearChat } from '@/context/actions';
+import TextareaAutosize from 'react-textarea-autosize';
 import AvailableCommandsTable from './statics/AvailableCommandsTable';
-import { waitForSeconds } from '@/Helpers';
 import { MdAddCircleOutline } from 'react-icons/md';
+import AttachmentsPreview     from './AttachmentsPreview';
+import InvalidFilesOverlay    from './InvalidFilesOverlay';
+import FilesDropArea          from './chat-interactive/FilesDropArea';
 import { IoSend } from 'react-icons/io5';
-import HoverableTitle from '@/components/overlay/HoverableTitle';
-import { CLOUD_API_URL } from '@/services/userSocket';
-import AttachmentsPreview from './AttachmentsPreview';
-import FilesDropArea from './chat-interactive/FilesDropArea';
-import InvalidFilesOverlay from './InvalidFilesOverlay';
 import './ChatInput.scss';
 
 const waiterEnded = waitForSeconds(2);
 
 // forward ref
-function ChatMessageInput(props, ref) {
+function ChatMessageInput(_props, ref) {
 
-  const {store, dispatch} = useAppReducer();
+  const { store, dispatch } = useAppReducer();
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const [autocompletePlaceholder, setAutocompletePlaceholder] = useState('');
   const [textToAutocomplete, setTextToAutocomplete] = useState('');
@@ -121,30 +122,40 @@ function ChatMessageInput(props, ref) {
       // If is not connected, only appends the message
       if (!store.room_code) {
         dispatch(appendMessage({
-          date,
+          date: date,
           from: '@senders/SELF',
           text: message,
-          message_id,
+          message_id: message_id,
           replyingTo: messageReplying,
-          attachments: attachmentsList
+          filesToSubmit: attachmentsList
         }));
       }
       else {
-        dispatch(appendMessage({
-          date,
-          from: '@senders/SELF',
-          text: message,
-          message_id,
-          replyingTo: messageReplying,
-          attachments: attachmentsList
-        }));
-        emitSocketEvent['sending-message']({
-          date,
-          message,
-          message_id,
-          replyingTo: messageReplying,
-          attachments: attachmentsList
-        })
+        if (attachmentsList.length > 0) {
+          dispatch(appendMessage({
+            date: date,
+            from: '@senders/SELF',
+            text: message,
+            message_id: message_id,
+            replyingTo: messageReplying,
+            filesToSubmit: attachmentsList
+          }));
+        }
+        else {
+          dispatch(appendMessage({
+            date: date,
+            from: '@senders/SELF',
+            text: message,
+            message_id: message_id,
+            replyingTo: messageReplying
+          }));
+          emitSocketEvent['sending-message']({
+            date: date,
+            message: message,
+            message_id: message_id,
+            replyingTo: messageReplying
+          })
+        }
       }
     }
   };
@@ -167,29 +178,12 @@ function ChatMessageInput(props, ref) {
       }
     }
     else {
-      const formData = new FormData();
-
       if (appendedAttachments.length > 0) {
-        appendedAttachments.forEach(attachment => {
-          console.log('Appended files:', appendedAttachments)
-          let fileName = attachment.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
-          console.log('working with', fileName);
-          formData.append(fileName, attachment);
-        })
-
-        fetch(`${CLOUD_API_URL}/attachments`, {
-          method: 'POST',
-          body: formData
-        }).then(response => response.json())
-          .then(attachmentsListInfo => {
-            console.log('RECEIVED RESPONSE FROM POST', attachmentsListInfo);
-            CHAT_COMMANDS_ACTIONS['send_message'](user_input, attachmentsListInfo);
-
-            // cleaning all files
-            fileInputRef.current.value = null;
-            appendedAttachments.forEach(file => URL.revokeObjectURL(file.blobSrc));
-            setAppendedAttachments([]);
-          })
+        // Here we don't revoke the blob,
+        // first we wait for the post to cloudinary on SelfMessageLine
+        CHAT_COMMANDS_ACTIONS['send_message'](user_input, appendedAttachments);
+        fileInputRef.current.value = null;
+        setAppendedAttachments([]);
       }
       else {
         CHAT_COMMANDS_ACTIONS['send_message'](user_input);
