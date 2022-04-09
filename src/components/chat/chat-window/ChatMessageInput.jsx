@@ -28,10 +28,9 @@ function ChatMessageInput(props, ref) {
   const [canSendMessage, setCanSendMessage] = useState(false);
   const { messageReplying, setMessageReplying } = useChatInput();
 
-  const [mediaPreviews, setMediaPreviews] = useState([]);
   const [appendedMedia, setAppendedMedia] = useState([]);
 
-  const [invalidFiles, setInvalidFiles] = useState([]);
+  const [filesAreInvalid, setFilesAreInvalid] = useState(null);
 
   const [historyIndex, setHistoryIndex] = useState(0);
   const focusedRow = useRef(0);
@@ -172,7 +171,6 @@ function ChatMessageInput(props, ref) {
       const formData = new FormData();
 
       if (appendedMedia.length > 0) {
-
         appendedMedia.forEach(mediaFile => {
           console.log('Appended media:', appendedMedia)
           let fileName = mediaFile.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
@@ -190,9 +188,8 @@ function ChatMessageInput(props, ref) {
 
             // cleaning all files
             fileInputRef.current.value = null;
-            mediaPreviews.forEach(preview => URL.revokeObjectURL(preview.blobSrc));
+            appendedMedia.forEach(file => URL.revokeObjectURL(file.blobSrc));
             setAppendedMedia([]);
-            setMediaPreviews([]);
           })
       }
       else {
@@ -367,21 +364,26 @@ function ChatMessageInput(props, ref) {
     handleAutocomplete();
   }, [ref.current?.value])
 
-  const areInvalidFiles = (files) => {
-    console.log('Validating files...', files);
+
+  const areInvalidFiles = (currentFiles, newFiles) => {
     const MAX_FILE_SIZE = 10485760;
-    const invalidFilesInfo = [];
-    for (let file of Array.from(files)) {
-      if (file.size >= MAX_FILE_SIZE) {
-        invalidFilesInfo.push({
-          name: file.name,
-          reason: "File is too large"
-        });
+    const MAX_FILES_AMOUNT = 15;
+    let invalidReason = '';
+
+      console.log('VALIDATING WITH MEDIA', currentFiles)
+      if (currentFiles.length + newFiles.length > MAX_FILES_AMOUNT) {
+        invalidReason = 'We have a limit of 15 files per message';
       }
-    }
-    if (invalidFilesInfo.length > 0) {
-      console.log('Founded invalid files:', invalidFilesInfo)
-      setInvalidFiles(invalidFilesInfo);
+  
+      for (let file of Array.from(newFiles)) {
+        if (file.size >= MAX_FILE_SIZE) {
+          invalidReason = `${file.name} is too large`;
+        }
+      }
+
+    if (invalidReason) {
+      setFilesAreInvalid({ reason: invalidReason });
+      console.log('Founded invalid files:', invalidReason);
       return true;
     }
     else return false;
@@ -390,34 +392,41 @@ function ChatMessageInput(props, ref) {
    * @param {FileList | File[]} newFilesAppended List of files as a FileList object
    */
   const appendNewFileAndUpdate = (newFilesAppended) => {
-    if (areInvalidFiles(newFilesAppended)) return;
-
+    
     setAppendedMedia(prevMedia => {
       const updatedAppendedMedia = prevMedia.concat(Array.from(newFilesAppended));
-      const mediaPreviews = [];
+      console.log('Prev media:', prevMedia);
+      console.log('New media:', newFilesAppended);
+      console.log('Now we have:', updatedAppendedMedia);
+      if (areInvalidFiles(prevMedia, newFilesAppended))
+        return prevMedia;
 
-      console.log('Updated: ', updatedAppendedMedia);
-      updatedAppendedMedia.forEach((file) => {
+      // Creating blobs for each new file
+      // The blobs will been revoke on submit or on removing file from preview
+      Array.from(newFilesAppended).forEach((file) => {
         console.log('Blobbing...', file)
         const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
-        mediaPreviews.push({
-          blobSrc: imgBlobPreview,
-          type: file.type,
-          fileName: file.name,
-          size: file.size
-        });
+        file.blobSrc = imgBlobPreview;
       })
-      setMediaPreviews(mediaPreviews);
+
       return updatedAppendedMedia;
     });
   }
   const removeFileFromPreview = (index) => {
-    setMediaPreviews(prevMedia => prevMedia.filter((_, i) => i !== index))
-    setAppendedMedia(prevMedia => prevMedia.filter((_, i) => i !== index))
+    setAppendedMedia(prevMedia => (
+      prevMedia.filter((file, i) => {
+        if (i === index) {
+          console.log('Removing blob', file.blobSrc);
+          URL.revokeObjectURL(file.blobSrc);
+          return false;
+        }
+        return true;
+      })
+    ))
   }
 
   const handleInputPaste = (e) => {
-    console.log(e.clipboardData.files);
+    console.log('Handling files pasted', e.clipboardData.files);
     if (e.clipboardData.files.length > 0) {
       appendNewFileAndUpdate(e.clipboardData.files);
     }
@@ -427,12 +436,13 @@ function ChatMessageInput(props, ref) {
     appendNewFileAndUpdate(filesInput.files);
   }
   const handleFilesDropped = (files) => {
+    console.log('Handling files dropped', files);
     appendNewFileAndUpdate(files);
   }
 
   return (
     <>
-      <InvalidFilesOverlay invalidFiles={invalidFiles} onClose={() => setInvalidFiles([])}/>
+      <InvalidFilesOverlay filesAreInvalid={filesAreInvalid} onClose={() => setFilesAreInvalid(null)}/>
       <FilesDropArea onDrop={handleFilesDropped}/>
       <form onSubmit={handleSubmit}>
         {
@@ -444,7 +454,7 @@ function ChatMessageInput(props, ref) {
             <button onClick={clearReplying}>x</button>
           </div>
         }
-        <MultimediaPreview mediaPreviews={mediaPreviews} fileRemover={removeFileFromPreview}/>
+        <MultimediaPreview mediaPreviews={appendedMedia} fileRemover={removeFileFromPreview}/>
         <div className='chat-input-container'>
           <div className='add-files-container'>
             <input

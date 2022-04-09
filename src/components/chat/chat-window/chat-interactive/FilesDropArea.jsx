@@ -20,7 +20,6 @@ function FilesDropArea({ onDrop }) {
   const drop = useRef(null);
 
   const handleDraggingToWindow = (e) => {
-    console.log(e.dataTransfer)
     if (e.dataTransfer.types.includes('Files') ||
       e.dataTransfer.types.includes('application/x-moz-file')) {
 

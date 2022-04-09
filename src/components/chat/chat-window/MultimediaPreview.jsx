@@ -1,4 +1,5 @@
 import { formatBytes } from '@/Helpers';
+import { AiFillFileText } from 'react-icons/ai';
 
 function MultimediaPreview({ mediaPreviews, fileRemover }) {
 
@@ -6,7 +7,7 @@ function MultimediaPreview({ mediaPreviews, fileRemover }) {
     <div className='media-preview'>
       {
         mediaPreviews.map((preview, i) => (
-          <div className='file-preview-container' key={i}>
+          <figure className='file-preview-container' key={i}>
             <div className='remove-file-btn'>
               <button onClick={() => fileRemover(i)}>x</button>
             </div>
@@ -21,18 +22,19 @@ function MultimediaPreview({ mediaPreviews, fileRemover }) {
                       <source src={preview.blobSrc} type={preview.type}/>
                     </video>
 
-                  : <div>
-                      <a href={preview.blobSrc}></a>
-                      <div>{preview.type}</div>
+                  : <div className='without-preview'>
+                      <AiFillFileText size={70}/>
+                      <div className='file-type'>{preview.type}</div>
                       <div className='file-size'>{formatBytes(preview.size)}</div>
                     </div>
                 }
               </div>
             </div>
-            <div className='file-name'>
-              <div className='text'>{preview.fileName}</div>
-            </div>
-          </div>
+            <figcaption className='file-name'>
+              <div className='text'>{preview.name}</div>
+              <div>{`(${i+1})`}</div>
+            </figcaption>
+          </figure>
         ))
       }
     </div>

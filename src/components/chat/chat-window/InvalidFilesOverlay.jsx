@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import angry_image from '@/assets/emotes/angry.gif';
 
-function InvalidFilesOverlay({ invalidFiles, onClose }) {
+function InvalidFilesOverlay({ filesAreInvalid, onClose }) {
 
   return (
-    invalidFiles.length > 0
+    filesAreInvalid
     ? <div
         className='overlay-area'
         onClick={onClose}
@@ -24,18 +24,10 @@ function InvalidFilesOverlay({ invalidFiles, onClose }) {
           </div>
           <div className='message'>
             <div className='title'>
-              Oh no! Some invalid files founded
+              Oh no!
             </div>
             <div className='text'>
-              <div className='subtitle'>You provide</div>
-              <ul>
-              {
-                invalidFiles.map((invalidFile, i) => {
-                  console.log('Rendering invalid file information:', invalidFile)
-                  return <li key={i}>{invalidFile.name}: {invalidFile.reason}</li>
-                })
-              }
-              </ul>
+              <div className='subtitle'>{filesAreInvalid.reason}</div>
             </div>
             <button onClick={onClose}>Im sorry!</button>
           </div>

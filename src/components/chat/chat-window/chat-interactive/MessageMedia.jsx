@@ -36,7 +36,7 @@ function MessageMedia({ mediaFiles }) {
               : <div className='other-file-viewer'>
                   <div className='file-icon-container'>
                     <div className='file-icon'>
-                      <AiFillFile size={50}/>
+                      <AiFillFile size={90}/>
                     </div>
                     <div className='file-format'>
                       {mediaResource.format}
