@@ -35,9 +35,6 @@ function FilesDropArea({ onDrop }) {
 
     return () => {
       window.removeEventListener('dragenter', handleDraggingToWindow);
-      drop.current.removeEventListener('dragover',  handleDragOver);
-      drop.current.removeEventListener('drop',      handleDrop);
-      drop.current.removeEventListener('dragleave', finishDrag);
     };
   }, []);
   
