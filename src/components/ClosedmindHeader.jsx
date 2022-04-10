@@ -1,4 +1,5 @@
 import github_logo from '@/assets/logos/github.png';
+import { SELF_URL } from '@/services/userSocket';
 import ClosedmindLogo from './ClosedmindLogo';
 import HoverableTitle from './overlay/HoverableTitle';
 
@@ -8,7 +9,9 @@ function ClosedmindHeader({ description = false }) {
     <header className='welcome-header'>
       {
         <picture className='closedmind-logo'>
-          <ClosedmindLogo/>
+          <a href={SELF_URL}>
+            <ClosedmindLogo/>
+          </a>
             {
               description
               ? <div>

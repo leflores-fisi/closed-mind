@@ -57,7 +57,10 @@ function FilesDropArea({ onDrop }) {
     const {files} = e.dataTransfer;
     console.log('DROPPED FILES', files)
     Array.from(e.dataTransfer.items).forEach((item, i) => {
-      files[i].isDirectory = item.webkitGetAsEntry().isDirectory;
+      if ('getAsEntry' in DataTransferItem.prototype)
+        files[i].isDirectory = item.getAsEntry().isDirectory;
+      else
+        files[i].isDirectory = item.webkitGetAsEntry().isDirectory;
     })
     if (files.length > 0) onDrop(files);
   };
