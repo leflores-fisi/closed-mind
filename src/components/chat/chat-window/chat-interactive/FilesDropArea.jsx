@@ -58,7 +58,10 @@ function FilesDropArea({ onDrop }) {
     setIsDraggingFiles(false);
   
     const {files} = e.dataTransfer;
-    console.log('DROPPED FILES', e.dataTransfer)
+    console.log('DROPPED FILES', files)
+    Array.from(e.dataTransfer.items).forEach((item, i) => {
+      files[i].isDirectory = item.webkitGetAsEntry().isDirectory;
+    })
     if (files.length > 0) onDrop(files);
   };
 
@@ -82,7 +85,7 @@ function FilesDropArea({ onDrop }) {
               <div className='subtitle'>Drop them anywhere</div>
               <ul>
                 <li>Max size is 10mb</li>
-                <li>We allow only images or videos</li>
+                <li>All file formats are allowed 👌</li>
               </ul>
             </div>
           </div>

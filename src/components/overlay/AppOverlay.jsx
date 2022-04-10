@@ -213,8 +213,8 @@ function AppOverlay() {
           <motion.picture
             className='image-detail-container'
             onClick={(e) => e.stopPropagation()}
-            initial={{y: 50, scale: 0.8}}
-            animate={{y: 0, scale: 1}}
+            initial={{y: 50, scale: 0.9}}
+            animate={{y: 0,  scale: 1}}
           >
             <img
               src={imageOnDetail.src}

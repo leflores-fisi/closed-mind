@@ -163,7 +163,7 @@ function ChatMessageInput(_props, ref) {
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent new line or page reload on submit
     let user_input = ref.current.value.trim();
-    if (!user_input) return;
+    if ((!user_input && appendedAttachments.length === 0) || !canSendMessage) return;
 
     if (user_input.startsWith('/')) {
       let words   = user_input.split(' ');
@@ -193,6 +193,7 @@ function ChatMessageInput(_props, ref) {
     clearReplying();
     dispatch(saveLineToHistory({line: user_input}));
     setHistoryIndex(0);
+    setCanSendMessage(false);
   }
 
   const handleAutocomplete = () => {
@@ -228,7 +229,7 @@ function ChatMessageInput(_props, ref) {
     ];
     let userInput = ref.current.value;
 
-    if (userInput.trim() === '') {
+    if (userInput.trim() === '' && appendedAttachments.length === 0) {
       setCanSendMessage(false);
 
       setIsAutocompleting(false);
@@ -367,10 +368,12 @@ function ChatMessageInput(_props, ref) {
       if (currentFiles.length + newFiles.length > MAX_FILES_AMOUNT) {
         invalidReason = 'We have a limit of 15 files per message';
       }
-  
       for (let file of Array.from(newFiles)) {
         if (file.size >= MAX_FILE_SIZE) {
           invalidReason = `${file.name} is too large`;
+        }
+        else if (file.isDirectory) {
+          invalidReason = `${file.name} is a folder, and is weird`;
         }
       }
 
@@ -392,11 +395,13 @@ function ChatMessageInput(_props, ref) {
       // Creating blobs for each new file
       // The blobs will been revoke on submit or on removing file from preview
       Array.from(newAttachments).forEach((file) => {
-        console.log('Blobbing...', file)
-        const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
-        file.blobSrc = imgBlobPreview;
+        if (file.type.includes('image') || file.type.includes('video')) {
+          console.log('Blobbing...', file)
+          const imgBlobPreview = URL.createObjectURL(file); // TODO: Revoke object URL
+          file.blobSrc = imgBlobPreview;
+        }
       })
-
+      if (!canSendMessage) setCanSendMessage(true);
       return currentAttachments.concat(Array.from(newAttachments));
     });
   }
@@ -405,7 +410,7 @@ function ChatMessageInput(_props, ref) {
       currentAttachments.filter((file, i) => {
         if (i === index) {
           console.log('Removing blob', file.blobSrc);
-          URL.revokeObjectURL(file.blobSrc);
+          if (file.blobSrc) URL.revokeObjectURL(file.blobSrc);
           return false;
         }
         return true;
@@ -429,7 +434,7 @@ function ChatMessageInput(_props, ref) {
   }
 
   return (
-    <>
+    < >
       <InvalidFilesOverlay filesAreInvalid={filesAreInvalid} onClose={() => setFilesAreInvalid(null)}/>
       <FilesDropArea onDrop={handleFilesDropped}/>
       <form onSubmit={handleSubmit}>

@@ -41,12 +41,13 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, filesToSubmit }
   
       filesToSubmit.forEach(file => {
         let fileName = file.name.replace(/(\.\w+)$/, '').replaceAll(' ', '-');
-        console.log('Submitting:', fileName);
+        console.log('Submitting:', file);
         formData.append(fileName, file);
       })
-  
+      console.log('Posting with', formData);
       axios.post(`${CLOUD_API_URL}/attachments`, formData, {
         headers: { 'Content-type': 'multipart/form-data' },
+        timeout: 5000,
         onUploadProgress(e) {
           setSubmitProgress((e.loaded/e.total)*100);
           console.log(`${(e.loaded/e.total)*100}%`, e)
@@ -54,7 +55,9 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, filesToSubmit }
       }).then(response => {
         const attachmentsListInfo = response.data;
         console.log('RECEIVED RESPONSE FROM POST', attachmentsListInfo);
-        filesToSubmit.forEach(file => URL.revokeObjectURL(file.blobSrc));
+        filesToSubmit.forEach(file => {
+          if (file.blobSrc) URL.revokeObjectURL(file.blobSrc)
+        });
 
         emitSocketEvent['sending-message']({
           date: date,

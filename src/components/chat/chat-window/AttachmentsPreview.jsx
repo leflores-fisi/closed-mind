@@ -31,7 +31,7 @@ function AttachmentsPreview({ attachments, fileRemover }) {
               </div>
             </div>
             <figcaption className='file-name'>
-              <div className='text'>{attachment.name}</div>
+              <div className='text' title={attachment.name}>{attachment.name}</div>
               <div>{`(${i+1})`}</div>
             </figcaption>
           </figure>

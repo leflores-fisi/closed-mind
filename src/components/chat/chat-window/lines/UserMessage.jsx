@@ -63,7 +63,7 @@ function UserMessage({ date, userId, userColor, text, messageReplying}) {
   }
 
   useEffect(() => {
-    setFormattedText(FormatTextOnBlocks());
+    if (text) setFormattedText(FormatTextOnBlocks());
   }, [])
   
   return (
@@ -93,9 +93,12 @@ function UserMessage({ date, userId, userColor, text, messageReplying}) {
                 </span>
             }
           </span>
-          <span className='text'>
-            {formattedTextOnBlocks}
-          </span>
+          {
+            text &&
+            <span className='text'>
+              {formattedTextOnBlocks}
+            </span>
+          }
         </div>
         {youtubeEmbed}
       </div>

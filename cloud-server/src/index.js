@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const express    = require('express');
+const path       = require('path');
 const fileUpload = require('express-fileupload');
 const cors       = require('cors');
 const fs         = require('fs-extra');
@@ -36,8 +37,10 @@ function main() {
       for (let file of files) {
 
         if (file.size < MAX_FILE_SIZE) {
+          const stats = fs.statSync(file.tempFilePath);
+          console.log('STATS 😐', stats);
           uploadingPromises.push(
-            uploadFile(file.tempFilePath, file.mimetype)
+            uploadFile(file.tempFilePath, path.extname(file.name).substr(1))
           );
           filesInformation.push({
             name: file.name,
@@ -57,7 +60,6 @@ function main() {
             return ({
               name: filesInformation[i].name,
               url: result.value.secure_url,
-              //public_id: result.value.public_id,
               type: filesInformation[i].mimetype || 'unknown',
               format: result.value.format,
               size: result.value.bytes
@@ -67,7 +69,6 @@ function main() {
             return ({
               name: 'File Failed',
               url: 'https://st2.depositphotos.com/1001911/7684/v/600/depositphotos_76840879-stock-illustration-depressed-emoticon.jpg',
-              //public_id: result.value.public_id,
               type: 'image/jpeg',
               format: 'jpeg',
               size: 696969
