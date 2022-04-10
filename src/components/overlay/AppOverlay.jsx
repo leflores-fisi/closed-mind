@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import unable_to_load_img from '@/assets/app-messages/unable-to-load.jpg';
 
-import useOverlay    from './../../hooks/useOverlay';
-import useAppReducer from './../../hooks/useAppReducer';
+import useOverlay    from '@/hooks/useOverlay';
+import useAppReducer from '@/hooks/useAppReducer';
 import './AppOverlay.scss'
 
 // Check if the browser has touch events
@@ -34,7 +35,7 @@ function getMouseCoords(e) {
 
 function AppOverlay() {
 
-  const {onMobileRes, setOnMobileRes} = useOverlay();
+  const {onMobileRes, setOnMobileRes, imageOnDetail, setImageOnDetail} = useOverlay();
   const {store} = useAppReducer();
 
   const isChatHidden       = useRef(false);
@@ -206,6 +207,28 @@ function AppOverlay() {
 
   return (
     <div className='app-overlay'>
+      {
+        imageOnDetail.src &&
+        <div className='image-detail-overlay' onClick={() => setImageOnDetail({})}>
+          <motion.picture
+            className='image-detail-container'
+            onClick={(e) => e.stopPropagation()}
+            initial={{y: 50, scale: 0.8}}
+            animate={{y: 0, scale: 1}}
+          >
+            <img
+              src={imageOnDetail.src}
+              alt={imageOnDetail.name || 'Unable to load'}
+              loading='lazy'
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = unable_to_load_img;
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.picture>
+        </div>
+      }
       <motion.div
         className='title'
         whileInView={{opacity: 1}}

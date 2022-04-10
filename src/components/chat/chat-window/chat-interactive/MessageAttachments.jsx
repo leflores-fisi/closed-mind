@@ -4,6 +4,8 @@ import { memo } from 'react';
 
 import { AiFillFile }            from 'react-icons/ai';
 import { MdOutlineFileDownload } from 'react-icons/md';
+import ImageAttachment from './ImageAttachment';
+import VideoAttachment from './VideoAttachment';
 
 function MessageAttachments({ attachments }) {
   
@@ -14,20 +16,10 @@ function MessageAttachments({ attachments }) {
           <div className='attachment-container' role='button' key={i}>
             {
               attachment.type.includes('image')
-              ? <img
-                  src={attachment.url || attachment.blobSrc}
-                  alt={attachment.name || 'image'}
-                  loading='lazy'
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null; // prevents looping
-                    currentTarget.src = unable_to_load_img;
-                  }}
-                /> :
+              ? <ImageAttachment src={attachment.url || attachment.blobSrc} name={attachment.name}/> :
 
               attachment.type.includes('video')
-              ? <video controls>
-                  <source src={attachment.url || attachment.blobSrc} type={attachment.type || 'video/mp4'}/>
-                </video>
+              ? <VideoAttachment src={attachment.url || attachment.blobSrc} type={attachment.type} name={attachment.name}/>
 
               : <div className='other-file-viewer'>
                   <div className='file-icon-container'>
@@ -39,7 +31,7 @@ function MessageAttachments({ attachments }) {
                     </div>
                   </div>
                   <div className='content-information'>
-                    <div className='file-name'>{attachment.name}</div>
+                    <div className='file-name'><a href={attachment.url} target='_blank' download={attachment.name}>{attachment.name}</a></div>
                     <div className='file-size'>{formatBytes(attachment.size)}</div>
                   </div>
                   <div className='download-file'>
