@@ -20,9 +20,7 @@ function WelcomeWindow() {
               </div>
             </div>
             <div className='right'>
-              <figure initial={{y: 10}}
-                animate={{y: 0}}
-                transition={{duration: 1, delay: 0}}>
+              <figure className='closedmind-welcome-logo'>
                 <ClosedmindLogo width={60} opacity={0.8}/>
                 <h1 className='logo notranslate' translate='no'>〰closedmind〰</h1>
                 <h3 className='slogan'>
