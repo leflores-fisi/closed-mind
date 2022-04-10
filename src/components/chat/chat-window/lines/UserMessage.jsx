@@ -1,15 +1,14 @@
 import React, { useEffect, useState, memo } from 'react';
-import useDateFormatter from '@/hooks/useDateFormatter';
 import useChatConfig    from '@/hooks/useChatConfig';
 import { getYoutubeID, isURL, isYoutubeURL } from '@/Helpers';
 import { BsArrow90DegRight } from 'react-icons/bs';
 import YoutubeEmbed  from '../chat-interactive/YoutubeEmbed';
 import CopyURLButton from '../chat-interactive/CopyURLButton';
+import MessageHour from './MessageHour';
 
 function UserMessage({ date, userId, userColor, text, messageReplying}) {
 
   const {userCodeVisible} = useChatConfig();
-  const formattedDate = useDateFormatter(date);
   const [formattedTextOnBlocks, setFormattedText] = useState(null);
   const [youtubeEmbed, setYoutubeEmbed] = useState(null);
 
@@ -81,7 +80,7 @@ function UserMessage({ date, userId, userColor, text, messageReplying}) {
           </div>
         }
         <div className='content'>
-          <time className='date'>{formattedDate}</time>
+          <MessageHour date={date}/>
           <span className='from'>
             <span className={userColor}>
               {userId.substring(0, userId.indexOf('#')).concat(!userCodeVisible ? ':' : '')}

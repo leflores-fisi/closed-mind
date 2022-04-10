@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import { scrollChatToBottom } from '@/Helpers';
 import HoverableTitle from '@/components/overlay/HoverableTitle';
-import useDateFormatter from '@/hooks/useDateFormatter';
+import MessageHour from './MessageHour';
 
 function InformationLine({ text, date }) {
-
-  const formattedDate = useDateFormatter(date); 
 
   useEffect(() => {
     scrollChatToBottom();
@@ -15,7 +13,7 @@ function InformationLine({ text, date }) {
     <div className='server-log'>
       <div className='message-container'>
         <div className='content-wrapper'>
-          <time className='date'>{formattedDate}</time>
+          <MessageHour date={date}/>
           <span className='from'>{'[Info]:'}</span>
           <span className='text'>{text}</span>
         </div>

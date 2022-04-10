@@ -117,3 +117,26 @@ export function formatBytes(bytes, decimals = 2) {
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+export function formatDate(date) {
+
+  console.log('Formatting', date);
+  if (!date) return {
+    hour: '??:??',
+    day: '1970-01-01'
+  };
+
+  let d = new Date(date);
+  
+  let hour   = new Intl.DateTimeFormat('en',   { hour: '2-digit', hour12: false }).format(d);
+  let minute = new Intl.DateTimeFormat('en', { minute: '2-digit' }).format(d);
+
+  let year  = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
+  let day   = new Intl.DateTimeFormat('en', { day: '2-digit'  }).format(d);
+  let month = new Intl.DateTimeFormat('en', { day: '2-digit'  }).format(d);
+  
+  return {
+    hour: `${hour.replace(/ PM| AM/, '')}:${minute}`,
+    day: `${year}-${month}-${day}`
+  };
+}
