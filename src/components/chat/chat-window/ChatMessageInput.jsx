@@ -476,7 +476,7 @@ function ChatMessageInput(_props, ref) {
               onHeightChange={handleNewLine}
               onPaste={handleInputPaste}
             />
-            <div className='autocomplete'
+            <div className='autocomplete notranslate' translate='no'
             >{autocompletePlaceholder}</div>
           </div>
           <div className='send-message-container'>
