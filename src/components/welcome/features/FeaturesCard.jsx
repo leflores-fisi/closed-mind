@@ -3,17 +3,18 @@ import Feature from './Feature';
 
 function FeaturesCard() {
 
-  const features = [{
-      title: 'Create chat rooms',
-      description: 'Just type /create'
-    },
+  const features = [
     {
       title: 'Create chat rooms',
-      description: 'Just type /create'
+      description: 'Just need some clicks'
     },
     {
       title: 'Enroll with friends',
-      description: 'Talk, share videos, make polls'
+      description: 'Share codes or join to a public room'
+    },
+    {
+      title: 'Enroll with friends',
+      description: 'Talk, share media, enjoy'
     },
   ]
   const container = {

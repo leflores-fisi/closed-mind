@@ -45,42 +45,6 @@ function ChatMessageInput(_props, ref) {
         text: <AvailableCommandsTable/>
       }));
     },
-    '/create': (args) => {
-      if (store.room_code) {
-        dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
-      }
-      else if (args.length > 1 || args.length === 0) {
-        dispatch(appendErrorMessage({message: `Expected one argument for <room-code>, given ${args.length}`}));
-      }
-      else {
-        let room_name = args[0];
-        emitSocketEvent['creating-chat-room']({
-          room_name: room_name,
-          host: {
-            user_id: store.user_id,
-            user_color: store.user_color
-          }
-        });
-      }
-    },
-    '/join': (args) => {
-      if (store.room_code) {
-        dispatch(appendErrorMessage({message: 'You are already connected, type "/leave" first'}));
-      }
-      else if (args.length > 1 || args.length === 0) {
-        dispatch(appendErrorMessage({message: `Expected one argument for <room-code>, given ${args.length}`}))
-      }
-      else  {
-        let room_code = args[0];
-        emitSocketEvent['joining-to-chat']({
-          room_code,
-          user: {
-            user_id: store.user_id,
-            user_color: store.user_color
-          }
-        })
-      }
-    },
     '/leave': (args) => {
       if (!store.room_code) {
         dispatch(appendErrorMessage({message: 'You should be on a room first'}));
@@ -200,14 +164,6 @@ function ChatMessageInput(_props, ref) {
       {
         key: '/commands',
         arguments: []
-      },
-      {
-        key: '/create',
-        arguments: ['<room-name>']
-      },
-      {
-        key: '/join',
-        arguments: ['<room-code>']
       },
       {
         key: '/leave',

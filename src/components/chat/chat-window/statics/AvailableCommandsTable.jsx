@@ -9,16 +9,6 @@ function AvailableCommandsTable() {
         <th>Description</th>
       </tr>
       <tr>
-        <td className='brightCyan notranslate' translate='no'>/create</td>
-        <td className='brightBlack'>{'<room-name>'}</td>
-        <td>create a new chat room</td>
-      </tr>
-      <tr>
-        <td className='brightCyan notranslate' translate='no'>/join</td>
-        <td className='brightBlack'>{'<room-code>'}</td>
-        <td>join to a existing room</td>
-      </tr>
-      <tr>
         <td className='brightCyan notranslate' translate='no'>/leave</td>
         <td className='brightBlack'>{'<farewell?>'}</td>
         <td>leave from the current room</td>
