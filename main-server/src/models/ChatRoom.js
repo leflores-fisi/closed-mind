@@ -31,6 +31,8 @@ const chatRoomSchema = new mongoose.Schema({
   host: UserSchema,
   created_date: String,
   privacy: String,
+  messagesCount: Number,
+  usersOnline: Number,
   users: [UserSchema],
   messages: [MessageSchema]
 });

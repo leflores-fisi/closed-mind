@@ -8,10 +8,10 @@ function ChatLobbyUI() {
   
   return (
     <div className='closedmind-chat-lobby'>
-      <div className='joining-options-container'>
+      <section className='joining-options-container'>
         <CreateRoomForm/>
         <JoinToRoomForm/>
-      </div>
+      </section>
       <div className='rooms-options-container'>
         <PublicRoomsList/>
         <RoomsHistory/>

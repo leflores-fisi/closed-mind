@@ -31,7 +31,7 @@ function RoomsHistory() {
   }
   
   return (
-    <div className='rooms-history'>
+    <section className='rooms-history'>
       {
         history.length > 0 &&
         < >
@@ -65,7 +65,7 @@ function RoomsHistory() {
           </ul>
         </>
       }
-    </div>
+    </section>
   );
 }
 export default RoomsHistory;

@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import { API_URL, emitSocketEvent } from '@/services/userSocket';
 import useAppReducer from '@/hooks/useAppReducer';
 import { HiUsers } from 'react-icons/hi';
+import { ImSpinner2 } from 'react-icons/im';
 
 function PublicRoomsList() {
 
   const [roomsFetched, setRoomsFetched] = useState([]);
+  const [totalCount, setTotalCount] = useState([]);
+  const [searchIndex, setSearchIndex] = useState(0);
+  const [isFetching, setIsFetching] = useState(false);
+  const ROOMS_PER_PAGE = 5;
   const { store } = useAppReducer();
 
   const handleJoiningRoom = (room_code) => {
@@ -17,16 +22,42 @@ function PublicRoomsList() {
       }
     })
   }
+  const fetchPublicRooms = (offset) => {
+    let initialDate = Date.now();
+    console.log('fetching with index', offset)
+    setIsFetching(true);
+    fetch(`${API_URL}/public_rooms/${offset}`)
+      .then(res => res.json())
+      .then(publicRooms => {
+        if (publicRooms.results.length > 0) {
+          setRoomsFetched(publicRooms.results);
+        }
+        //setTotalCount(publicRooms.total)
+        setTimeout(() => setIsFetching(false), 500)
+      })
+  }
 
   useEffect(() => {
-    fetch(`${API_URL}/public_rooms`)
-      .then(res => res.json())
-      .then(publicRooms => setRoomsFetched(publicRooms))
-  }, [])
+    console.log('Setting interval for fetching public rooms with 😳', searchIndex);
+    let fetchInterval = window.setInterval(() => fetchPublicRooms(searchIndex), 5000);
+    return () => {
+      console.log('Clearing interval for fetching public rooms 😳');
+      window.clearInterval(fetchInterval);
+    }
+  }, [searchIndex])
+
+  useEffect(() => {
+    fetchPublicRooms(searchIndex);
+  }, [searchIndex])
 
   return (
-    <div className='public-rooms-container'>   
-      <header>Public rooms</header>
+    <section className='public-rooms-container'>   
+      <header>
+        <div className='spinner-container'>
+          {isFetching && <ImSpinner2 className='spinner' size={15}/>}
+        </div>
+        <div>Public rooms</div>
+      </header>
       <div className='public-rooms-list-wrapper'>
         {
           roomsFetched &&
@@ -57,7 +88,14 @@ function PublicRoomsList() {
           </ul>
         }
       </div>
-    </div>
+      <footer>
+        <div className='rooms-count'>{totalCount}</div>
+        <div className='navigation'>
+          <button onClick={() => setSearchIndex(prev => (prev > 0 ? prev-1 : prev))}>Less</button>
+          <button onClick={() => setSearchIndex(prev => prev+1)}>More</button>
+        </div>
+      </footer>
+    </section>
   );
 }
 export default PublicRoomsList;

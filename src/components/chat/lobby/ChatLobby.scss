@@ -130,10 +130,17 @@
       width: 100%;
       
       header {
+        display: flex;
+        justify-content: end;
         margin-left: 2px;
         font-size: 0.8rem;
         text-align: end;
         margin-bottom: 5px;
+
+        .spinner-container {
+          padding: 0 8px;
+          height: 15px;
+        }
       }
       .public-rooms-list-wrapper {
   

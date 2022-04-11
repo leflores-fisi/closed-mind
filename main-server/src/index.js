@@ -49,6 +49,8 @@ function main() {
         code: room_code,
         privacy: 'public',
         created_date: new Date().toUTCString(),
+        usersOnline: 1,
+        messagesCount: 0,
         users: [
           {user_id: host.user_id, user_color: host.user_color}
         ],
@@ -97,6 +99,9 @@ function main() {
                 user_color: user.user_color
               },
               messages: server_log
+            },
+            $inc: {
+              usersOnline: +1
             }
           }, {new: true}).then(joinedChatRoom => {
             console.log('😐 Fetched');
@@ -127,6 +132,9 @@ function main() {
             reactions: [],
             attachments: attachments
           }
+        },
+        $inc: {
+          messagesCount: +1
         }
       }, {new: true}).then(updatedChatRoom => {
         console.log(`🐌 <${socket.currentRoomCode}> ${socket.currentUser.user_id} says: ${message} with id ${message_id}`);
@@ -254,6 +262,9 @@ function main() {
         },
         $push: {
           messages: server_log
+        },
+        $inc: {
+          usersOnline: -1
         }
       }, {new: true})
         .then(updatedChatRoom => {
@@ -286,6 +297,9 @@ function main() {
         },
         $push: {
           messages: server_log
+        },
+        $inc: {
+          usersOnline: -1
         }
       }, {new: true}).then(updatedChatRoom => {
 
@@ -328,6 +342,9 @@ function main() {
           },
           $push: {
             messages: server_log
+          },
+          $inc: {
+            usersOnline: -1
           }
         }, {new: true}).then(updatedRoom => {
           socket.leave(socket.currentRoomCode);

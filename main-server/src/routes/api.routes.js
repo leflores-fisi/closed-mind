@@ -40,15 +40,25 @@ router.get('/room_info/:code', (req, res) => {
   }
 })
 // Get all public rooms
-router.get('/public_rooms', (req, res) => {
-  ChatRoom.find({ privacy: 'public'}).then(publicRooms => {
-    res.json(publicRooms.map(room => ({
-      name: room.name,
-      users_online: room.users.length,
-      code: room.code,
-      host: room.host
-    })));
-  })
+router.get('/public_rooms/:index?', (req, res) => {
+  let { index } = req.params;
+  if (!index || index < 0) index = 0;
+  
+  ChatRoom.find({ privacy: 'public'})
+    .limit(5)
+    .sort({ usersOnline: -1, messagesCount: -1 })
+    .skip(5 * index)
+    .then(publicRooms => {
+      res.json({
+        results: publicRooms.map(room => ({
+          name: room.name,
+          users_online: room.users.length,
+          code: room.code,
+          host: room.host
+        })),
+        total: publicRooms.length
+      });
+    })
 })
 // Get a chat room by his room_code
 router.get('/rooms/:id', (req, res, next) => {
