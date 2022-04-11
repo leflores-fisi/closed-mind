@@ -1,0 +1,243 @@
+
+@media screen and (max-aspect-ratio: 5 / 4), only screen and (max-width: 40rem) {
+  .closedmind-chat-lobby {
+  }  
+}
+.closedmind-chat-lobby {
+  overflow-y: scroll;
+  
+  .joining-options-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 2.5rem auto;
+    padding: 0 25px;
+    max-width: 800px;
+
+    .create-room-container, .join-to-room-container {
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      max-width: 350px;
+      width: 100%;
+      
+      $form-border: #2c2b2d;
+      .toggle-btn {
+        display: flex;
+        width: 100%;
+        padding: 10px;
+        background-color: transparent;
+        border-radius: 5px;
+        transition: background-color 0.2s;
+        border: 1px solid $form-border;
+
+        .icon {
+          align-self: center;
+          margin-right: 10px;
+
+          svg {
+            height: 1.5rem;
+            width:  1.5rem;
+          }
+        }
+        .content {
+          text-align: start;
+          
+          .title {
+            font-size: 1rem;
+          }
+          .description {
+            font-size: 0.75rem;
+            color: var(--gray);
+          }
+        }
+        &:focus {
+          background-color: #17161a;
+          outline: none;
+        }
+        &.opened {
+          border-bottom: none;
+          border-radius: 5px 5px 0 0;
+        }
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        //background-color: #44394a;
+        border: 1px solid $form-border;
+        border-top: none;
+
+        .input-container {
+          display: flex;
+          $margin: 5px;
+          margin: $margin;
+          margin-bottom: 0;
+          width: calc(100% - ($margin * 2));
+          background-color: #161717;
+          align-items: center;
+          svg {
+            color: var(--gray);
+            width: 1.2rem;
+            height: 1.2rem;
+          }
+          input {
+            background-color: transparent;
+            border: none;
+            height: 2rem;
+            color: var(--foreground);
+            padding: 5px 10px;
+            width: 100%;
+            
+            &:focus {outline: 1px solid #2a232f}
+            &::placeholder {
+              color: var(--gray);
+              font-size: 0.8rem;
+            }
+            &::selection {
+              outline: none;
+            }
+          }
+        }
+        button[type="submit"] {
+          background-color: #423457;
+          color: black;
+          align-self: center;
+          margin: 5px;
+          margin-top: 4px;
+          border-radius: 5px;
+          padding: 2px 10px;
+          transition: color 0.2s, background-color 0.2s;
+
+          &:disabled {
+            outline: 1px solid #423457;
+            color: #423457;
+            background-color: transparent;
+            cursor: not-allowed;
+          }
+        }
+      }
+    }
+  }
+  .rooms-options-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    
+    .public-rooms-container {
+      padding: 0 25px;
+      width: 100%;
+      
+      header {
+        margin-left: 2px;
+        font-size: 0.8rem;
+        text-align: end;
+        margin-bottom: 5px;
+      }
+      .public-rooms-list-wrapper {
+  
+        .public-rooms-list {
+          
+          .room-item {
+            list-style: none;
+            
+            .join-to-room-btn {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin: 5px 0px;
+              height: 2.2rem;
+              padding: 0;
+              border-radius: 5px;
+              background-color: #141515;
+              overflow: hidden;
+              box-shadow: rgba(8, 8, 11, 0.25) 0px 2px 5px -1px, rgba(34, 34, 34, 0.3) 0px 1px 3px -1px;
+              
+              .room-info {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                padding: 0 10px;
+                
+                .room-name {
+                }
+                .room-host {
+                  font-size: 0.7rem;
+                }
+              }
+              .users-online {
+                display: flex;
+                align-items: center;
+                background-color: #24282f;
+                height: 100%;
+                padding: 0 6px;
+  
+                svg {
+                  margin-left: 4px;
+                  height: 12px;
+                  width: 12px;
+                  color: var(--yellow);
+                }
+              }
+              &:hover {
+                background-color: #1f1f21;
+              }
+              &:active {
+                outline: 1px solid white;
+                // background-color: var(--gray);
+              }
+            }
+          }
+        }
+      }
+    }
+    .rooms-history {
+      width: 100%;
+      padding: 0 25px;
+      margin-top: 1.5rem;
+      margin-bottom: 2.5rem;
+      
+      header {
+        margin-left: 2px;
+        font-size: 0.8rem;
+        text-align: end;
+        margin-bottom: 5px;
+      }
+      .history-list {
+        
+        .history-item {
+          display: flex;
+          margin-bottom: 0.2rem;
+          
+          .delete-btn {
+            background-color: transparent;
+          }
+          .join-room-btn {
+            flex-grow: 1;
+            background-color: #171617;
+            padding: 5px 0 5px 10px;
+    
+            .room-info {
+              display: flex;
+              justify-content: space-between;
+    
+              .room-name {
+                margin-bottom: 2px;
+              }
+              .room-code {
+                font-size: 0.7rem;
+              }
+            }
+            .logged-as {
+              text-align: left;
+              color: var(--gray);
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}

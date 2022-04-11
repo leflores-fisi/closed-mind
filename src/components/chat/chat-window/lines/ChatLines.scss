@@ -19,6 +19,7 @@ $message-padding: 5px 8px;
         justify-content: space-between;
         min-height: 24px;
 
+        .focusable {display: inline-flex;}
         .content-wrapper {
           width: calc(100% - 60px);
 
@@ -79,7 +80,6 @@ $message-padding: 5px 8px;
           line-height: 1.3;
         }
         .focusable {
-          display: inline-flex;
           position: relative;
           top: 0.12rem;
           height: 19px;

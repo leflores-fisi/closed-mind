@@ -27,9 +27,10 @@ const MessageSchema = new mongoose.Schema({
 }, {strict: false})
 const chatRoomSchema = new mongoose.Schema({
   code: String,
+  name: String,
   host: UserSchema,
   created_date: String,
-  invitations_only: Boolean,
+  privacy: String,
   users: [UserSchema],
   messages: [MessageSchema]
 });

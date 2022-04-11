@@ -3,7 +3,7 @@ import { userSocket } from '@/services/userSocket';
 import { useForceUpdate } from '@/hooks/useForceUpdate';
 import ChatOptions from './ChatOptions';
 
-function ChatRoomHeader({ roomCode, usersQuantity }) {
+function ChatRoomHeader({ roomName, usersQuantity }) {
 
   const usersTypingList = useRef([]);
   const updateComponent = useForceUpdate();
@@ -35,7 +35,7 @@ function ChatRoomHeader({ roomCode, usersQuantity }) {
     <div className='chat-room-header'>
       <div className='room-header-information'>
         <div className='room-name'>
-          {roomCode.substring(0, roomCode.length - 5)}
+          {roomName}
         </div>
         {
           usersTypingList.current.length > 0

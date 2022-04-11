@@ -41,12 +41,13 @@ function main() {
 
     socket.on('creating-chat-room', ({ room_name, host }) => {
 
-      const room_code = room_name + generateRoomCode();
+      const room_code = generateRoomCode();
 
       const newChatRoom = new ChatRoom({
         host: host,
+        name: room_name,
         code: room_code,
-        invitations_only: false,
+        privacy: 'public',
         created_date: new Date().toUTCString(),
         users: [
           {user_id: host.user_id, user_color: host.user_color}
@@ -63,11 +64,11 @@ function main() {
         socket.join(room_code);
         socket.currentRoomCode = room_code;
         socket.currentUser = host;
-        console.log('\n🗣 New room created:', room_code)
+        console.log('\n🗣 New room created:', room_name, 'with code', room_code)
         socket.emit('room-created', {createdChatRoom})
       })
     })
-    socket.on('joining-to-chat', ({ room_code, user, from_invitation }) => {
+    socket.on('joining-to-chat', ({ room_code, user }) => {
 
       console.log('😖 Fetching room to database');
       console.time('fetching');
@@ -78,13 +79,6 @@ function main() {
             message: 'Room not founded'
           });
           console.log('😐 Not founded');
-          console.timeEnd('fetching');
-        }
-        else if (room.invitations_only && !from_invitation) {
-          socket.emit('error', {
-            message: 'Room is invitations only!'
-          });
-          console.log('😳 Rejected');
           console.timeEnd('fetching');
         }
         else {

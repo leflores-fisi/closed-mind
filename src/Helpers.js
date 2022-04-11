@@ -64,10 +64,6 @@ export function writeOnChatInput(text) {
   ChatInput.focus();
 }
 
-export function roomNameFromCode(code) {
-  return code.substring(0, code.length - 5);
-}
-
 export function* waitForSeconds(seconds) {
   let initial = Date.now();
   yield true;
@@ -139,4 +135,43 @@ export function formatDate(date) {
     hour: `${hour.replace(/ PM| AM/, '')}:${minute}`,
     day: `${year}-${month}-${day}`
   };
+}
+
+export function getRoomsHistory() {
+  return JSON.parse(localStorage.getItem('rooms_history')) || [];
+}
+
+export function removeRoomFromHistory(room_code) {
+  let currentRooms = getRoomsHistory();
+  let updatedRoom = currentRooms.filter(room => room.code !== room_code);
+  localStorage.setItem('rooms_history', JSON.stringify(updatedRoom));
+  return updatedRoom;
+}
+
+export function saveRoomToHistory(room_name, room_code, logged_as, user_color) {
+
+  let currentRooms = getRoomsHistory();
+  let roomToSave = {
+    name: room_name,
+    code: room_code,
+    logged_as: logged_as,
+    user_color: user_color
+  }
+
+  if (currentRooms && Array.isArray(currentRooms)) {
+    // If already exist that code on the history, we delete it and create a new one
+    if (currentRooms.map(room => room.code).includes(room_code)) {
+      let codeIndexToReplace = currentRooms.findIndex(room => room.code === room_code);
+
+      localStorage.setItem('rooms_history',
+        JSON.stringify(
+          currentRooms.filter((_, i) => i !== codeIndexToReplace).concat(roomToSave)
+        )
+      );
+    }
+    else localStorage.setItem('rooms_history', JSON.stringify(currentRooms.concat(roomToSave)));
+  }
+  else {
+    localStorage.setItem('rooms_history', JSON.stringify(Array(roomToSave)));
+  }
 }

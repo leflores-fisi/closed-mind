@@ -1,6 +1,53 @@
 
 .chat-window {
 
+  .chat-room-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 5px 7px 15px;
+    background-color: var(--black);
+    border-bottom: 1px solid black;
+    
+    .room-header-information {
+      max-width: calc(100% - 100px);
+      padding-right: 10px;
+  
+      .room-name {
+        font-size: 1.1rem;
+        margin-bottom: 4px;
+      }
+      .users-online, .users-typing {
+        font-size: 0.75rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .users-online {
+        color: var(--gray);
+      }
+      .users-typing {
+        color: var(--green);
+      }
+    }
+    .chat-options {
+      display: flex;
+      width: 100px;
+      flex-shrink: 0;
+  
+      button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        background: none;
+        color: var(--gray);
+        font-size: 1.2rem;
+        height: 15px;
+        border-radius: 0;
+      }
+    }
+  }  
   .focusable {
     margin-right: 5px;
     height: min-content;

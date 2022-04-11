@@ -61,13 +61,11 @@ export const emitSocketEvent = {
    * @param {object} params.user
    * @param {string} params.user.user_id the user id
    * @param {string} params.user.user_color the user color
-   * @param {boolean} params.from_invitation is joining from invitation?
    */
-  "joining-to-chat": ({ room_code, user, from_invitation }) => {
+  "joining-to-chat": ({ room_code, user }) => {
     userSocket.emit('joining-to-chat', {
       room_code,
-      user,
-      from_invitation
+      user
     });
   },
   /**

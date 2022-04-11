@@ -22,8 +22,7 @@ function InvitationPage({ params }) {
       user: {
         user_id: userId,
         user_color: userColor
-      },
-      from_invitation: true
+      }
     });
     setLocation('/');
   };
@@ -71,7 +70,7 @@ function InvitationPage({ params }) {
                         ? <div className='wrapper'>
                             <header className='invitation-header'>
                               <div className='subtitle'>You were invited to join</div>
-                              <div className='room-code'>{fetchedInvitation.room_code.slice(0, fetchedInvitation.room_code.length - 5)}</div>
+                              <div className='room-code'>{fetchedInvitation.room_name}</div>
                             </header>
 
                             <div className='description'>

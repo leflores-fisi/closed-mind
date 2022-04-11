@@ -6,7 +6,7 @@ function NewInvitationForm({ onSubmit, onCancel }) {
 
   const textRef  = useRef(null);
   const {store} = useAppReducer();
-  const [isInvitationsOnly, setIsInvitationsOnly] = useState(true);
+  const [wannaSetRoomPrivate, setWannaSetRoomPrivate] = useState(true);
 
   return (
     <form className='invitation-form' id='create-invitation' onSubmit={(e) => {
@@ -16,17 +16,20 @@ function NewInvitationForm({ onSubmit, onCancel }) {
         method: 'PATCH',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          invitations_only: isInvitationsOnly
+          privacy: wannaSetRoomPrivate ? 'private' : 'public'
         })
       })
     }}>
       <textarea className='invitation-message-input' placeholder='Wanna say something?' ref={textRef}/>
-      <div className='only-invitations-check'>
-        <input type='checkbox' checked={isInvitationsOnly} onChange={() => {
-          setIsInvitationsOnly(prev => !prev)
-        }}/>
-        <div>Make invitations only</div>
-      </div>
+      {
+        store.privacy === 'public' &&
+        <div className='room-privacy-check'>
+          <input type='checkbox' checked={wannaSetRoomPrivate} onChange={() => {
+            setWannaSetRoomPrivate(prev => !prev)
+          }}/>
+          <div>Make room private</div>
+        </div>
+      }
       <div className='form-buttons'>
         <button type='submit' form='create-invitation'>Create</button>
         <button type='button' onClick={onCancel}>Cancel</button>

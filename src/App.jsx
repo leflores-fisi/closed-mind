@@ -24,11 +24,11 @@ function App() {
       <div className='app-content'>
       {
         store.socket_is_connected
-          ? <Chat/>
-          : < >
-              <Route path='/invite/:code' component={InvitationPage}/>
-              <Route path='/'             component={WelcomeWindow}/>
-            </>
+        ? <Chat/>
+        : < >
+            <Route path='/invite/:code' component={InvitationPage}/>
+            <Route path='/'             component={WelcomeWindow}/>
+          </>
       }
       </div>
       <AppOverlay/>

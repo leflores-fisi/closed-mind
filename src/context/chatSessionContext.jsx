@@ -5,19 +5,18 @@ export const chatSessionContext = createContext();
 
 export function ChatSessionContextProvider ({ children }) {
 
-  //const [id, setId] = useState('6216710863e5fff221c16a54');
-
   const initialAppState = {
     socket_is_connected: false,
     username: '',   // "myUsername"
     user_code: '',  // "#af12"
     user_id: '',    // "myUsername#af12"
     user_color: 'default', // css var name
-    room_code: '',  // "room#10a2",
-    last_room_code : localStorage.getItem('last_room_code') || '',
+
+    room_code: '',  // "#10a2",
+    room_name: '', // "myEpicRoom"
     host: '',
     created_date: undefined,
-    invitations_only: undefined,
+    privacy: '', // public or private
     users: [],
     messages: [],
     commands_history: []

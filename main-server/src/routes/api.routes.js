@@ -20,6 +20,36 @@ router.get('/rooms', (req, res) => {
     res.json(rooms);
   });
 });
+
+router.get('/room_info/:code', (req, res) => {
+  const { code } = req.params.code;
+  if (!code || code.length !== 5 || code[0] !== '#') {
+    res.status(400).send({
+      message: 'Bad request, room code must have the format #xxxx'
+    })
+  }
+  else {
+    ChatRoom.find({ code: code }).then(roomFound => {
+      res.json({
+        name: room.name,
+        users_online: room.users.length,
+        code: room.code,
+        host: room.host
+      });
+    })
+  }
+})
+// Get all public rooms
+router.get('/public_rooms', (req, res) => {
+  ChatRoom.find({ privacy: 'public'}).then(publicRooms => {
+    res.json(publicRooms.map(room => ({
+      name: room.name,
+      users_online: room.users.length,
+      code: room.code,
+      host: room.host
+    })));
+  })
+})
 // Get a chat room by his room_code
 router.get('/rooms/:id', (req, res, next) => {
   const {id} = req.params;
@@ -35,7 +65,7 @@ router.put('/rooms/:id', (req, res, next) => {
   const room = req.body;
 
   const newRoomInfo = {
-    invitations_only: room.invitations_only,
+    privacy: room.privacy,
     users: room.users,
     messages: room.messages
   };
@@ -69,7 +99,7 @@ router.post('/rooms', (req, res, next) => {
       code: room.code,
       host: room.host,
       created_date: new Date(),
-      invitations_only: room.invitations_only ?? undefined,
+      privacy: room.privacy ?? 'public',
       users: [{ username: room.host }],
       messages: []
     });
@@ -100,7 +130,7 @@ router.patch('/rooms/:code/edit-config', (req, res, next) => {
   const room_code = req.params.code;
 
   ChatRoom.findOneAndUpdate({code: room_code}, {
-    invitations_only: config.invitations_only
+    privacy: config.privacy
   }, {new: true})
   .then(updatedRoom => {
     if (!updatedRoom) {
@@ -126,6 +156,7 @@ router.post('/invitations', (req, res, next) => {
     const newInvitation = new RoomInvitation({
       invitation_code: generateInvitationCode(),
       room_code: invitation.room_code,
+      room_name: invitation.room_name,
       host: invitation.host,
       description: invitation.description,
     });

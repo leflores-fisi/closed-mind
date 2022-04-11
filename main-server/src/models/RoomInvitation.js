@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const roomInvitationSchema = new mongoose.Schema({
   invitation_code: String,
   room_code: String,
+  room_name: String,
   host: String,
   description: String,
 })

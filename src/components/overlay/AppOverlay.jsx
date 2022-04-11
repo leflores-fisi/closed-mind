@@ -91,7 +91,9 @@ function AppOverlay() {
       }
       // Horizontal scrolling detected
       else {
-        document.querySelector('.chat-lines-wrapper').style.overflowY = 'hidden';
+        let ChatLines = document.querySelector('.chat-lines-wrapper')
+        if (ChatLines) ChatLines.style.overflowY = 'hidden';
+
         ChatWindow.style.transition = 'width 1s';
         ChatWindow.style.opacity = 1;
       }
@@ -125,7 +127,9 @@ function AppOverlay() {
     const ChatWindow = document.querySelector('.chat-window');
     ChatWindow.style.transition = 'width 1s, left 0.15s';
     ChatWindow.addEventListener('transitionend', handleChatTransitionEnd);
-    document.querySelector('.chat-lines-wrapper').style.overflowY = 'auto';
+
+    let ChatLines = document.querySelector('.chat-lines-wrapper')
+      if (ChatLines) ChatLines.style.overflowY = 'auto';
 
     let dragVelocity = ((getMouseCoords(e).x - initialClickPosRef.current.x) / (Date.now() - startTimestamp.current));
     let finalDragPos = ChatWindow.getBoundingClientRect().left;
@@ -153,7 +157,8 @@ function AppOverlay() {
       else {
         ChatWindow.style.left = 'calc(100% - 90px)'; // hiding position
         isChatHidden.current = true;
-        document.querySelector('.textarea-input').blur();
+        let ChatInput = document.querySelector('.textarea-input')
+        if (ChatInput) ChatLines.blur();
       }
     }
     // Chat is visible
@@ -162,7 +167,8 @@ function AppOverlay() {
       if ((finalDragPos > halfDocument) || (dragVelocity > 0.5)) {
         ChatWindow.style.left = 'calc(100% - 90px)';
         isChatHidden.current = true;
-        document.querySelector('.textarea-input').blur();
+        let ChatInput = document.querySelector('.textarea-input')
+        if (ChatInput) ChatLines.blur();
       }
       // Nothing happens, chat still open
       else {

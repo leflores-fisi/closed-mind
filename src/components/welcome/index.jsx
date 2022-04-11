@@ -39,26 +39,3 @@ function WelcomeWindow() {
 }
 
 export default WelcomeWindow;
-
-/*
-<div className='card'>
-  <ul className='features'>
-    <li className='snippet'>
-      <div className='command'>{`/create`}</div>
-      <div className='argument'>{`<room-name>`}</div>
-    </li>
-    <li className='snippet'>
-      <div className='command'>{`/join`}</div>
-      <div className='argument'>{`<room-name>`}</div>
-    </li>
-    <li className='snippet'>
-      <div className='command'>{`/leave`}</div>
-      <div className='argument'>{`<farewell>`}</div>
-    </li>
-    <li className='snippet'>
-      <div className='command'>{`/ban`}</div>
-      <div className='argument'>{`<dummy-user>`}</div>
-    </li>
-  </ul>
-</div>
-*/
