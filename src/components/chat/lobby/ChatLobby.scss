@@ -9,7 +9,7 @@
   .joining-options-container {
     display: flex;
     justify-content: space-evenly;
-    margin: 2.5rem auto;
+    margin: 2.5rem auto 1rem auto;
     padding: 0 25px;
     max-width: 800px;
 
@@ -131,7 +131,7 @@
       
       header {
         display: flex;
-        justify-content: end;
+        justify-content: start;
         margin-left: 2px;
         font-size: 0.8rem;
         text-align: end;
@@ -147,16 +147,18 @@
         .public-rooms-list {
           
           .room-item {
+            height: 40px;
             list-style: none;
+            margin: 4px 0px;
+            height: 38px;
             
             .join-to-room-btn {
               width: 100%;
               display: flex;
               align-items: center;
               justify-content: space-between;
-              margin: 5px 0px;
-              height: 2.2rem;
               padding: 0;
+              height: 100%;
               border-radius: 5px;
               background-color: #141515;
               overflow: hidden;
@@ -197,6 +199,16 @@
               }
             }
           }
+        }
+      }
+      .navigation {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+
+        button {
+          font-size: 0.8rem;
+          background-color: transparent;
         }
       }
     }

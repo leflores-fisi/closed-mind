@@ -45,9 +45,9 @@ router.get('/public_rooms/:index?', (req, res) => {
   if (!index || index < 0) index = 0;
   
   ChatRoom.find({ privacy: 'public'})
-    .limit(5)
-    .sort({ usersOnline: -1, messagesCount: -1 })
+    .sort({ usersOnline: -1, messagesCount: -1, _id: 1 })
     .skip(5 * index)
+    .limit(5)
     .then(publicRooms => {
       res.json({
         results: publicRooms.map(room => ({
