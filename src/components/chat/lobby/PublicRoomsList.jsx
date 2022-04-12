@@ -14,7 +14,7 @@ function PublicRoomsList() {
   const [isFetching, setIsFetching] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isEndReached, setIsEndReached] = useState(false);
-  const ROOMS_PER_PAGE = 5;
+  const ROOMS_PER_PAGE = 6;
   const { store } = useAppReducer();
 
   const handleJoiningRoom = (room_code) => {
@@ -28,7 +28,8 @@ function PublicRoomsList() {
   }
   const fetchPublicRooms = (offset, fromRefreshing = false) => {
     let initialDate = Date.now();
-    console.log('fetching with index', offset)
+    console.log('fetching with index', offset);
+    //if (isEndReached) return;
 
     if (fromRefreshing) setIsRefreshing(true);
     else setIsFetching(true);
@@ -80,7 +81,7 @@ function PublicRoomsList() {
             baseColor='#141515'
             highlightColor='#1b1c1d'
             height={34}
-            count={5}
+            count={6}
           /> :
           !isEndReached > 0
           ? <ul className='public-rooms-list'>
@@ -108,15 +109,15 @@ function PublicRoomsList() {
                 ))
               }
             </ul>
-          : <div>
-              <div>Looks like you reached the end</div>
+          : <div className='end-reached'>
+              <div className='title'>Looks like you reached the end</div>
               <button onClick={() => setSearchIndex(0)}>Take me back</button>
             </div>
         }
       </div>
       <footer>
         <div className='navigation'>
-          <div className='rooms-count'>{searchIndex}</div>
+          <div className='rooms-count'>{searchIndex+1}</div>
           <button onClick={() => setSearchIndex(prev => (prev > 0 ? prev-1 : prev))}>
             <RiArrowLeftLine/> Back
           </button>

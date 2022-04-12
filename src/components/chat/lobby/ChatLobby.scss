@@ -126,7 +126,9 @@
     margin: 0 auto;
     
     .public-rooms-container {
+      display: grid;
       padding: 0 25px;
+      //height: 16rem;
       width: 100%;
       
       header {
@@ -143,14 +145,15 @@
         }
       }
       .public-rooms-list-wrapper {
-  
+        height: calc(6 * 2.7rem);
+
         .public-rooms-list {
-          
+          width: 100%;
           .room-item {
             height: 40px;
             list-style: none;
             margin: 4px 0px;
-            height: 38px;
+            height: 2.34rem;
             
             .join-to-room-btn {
               width: 100%;
@@ -201,7 +204,7 @@
           }
         }
       }
-      .navigation {
+      footer .navigation {
         display: flex;
         flex-direction: row;
         justify-content: end;
@@ -210,6 +213,14 @@
           font-size: 0.8rem;
           background-color: transparent;
         }
+      }
+      .end-reached {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
       }
     }
     .rooms-history {
