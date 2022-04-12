@@ -62,10 +62,11 @@ export const emitSocketEvent = {
    * @param {string} params.user.user_id the user id
    * @param {string} params.user.user_color the user color
    */
-  "joining-to-chat": ({ room_code, user }) => {
+  "joining-to-chat": ({ room_code, user, fromPublicList }) => {
     userSocket.emit('joining-to-chat', {
       room_code,
-      user
+      user,
+      fromPublicList
     });
   },
   /**

@@ -22,7 +22,8 @@ function RoomsHistory() {
       user: {
         user_id:    user_id,
         user_color: user_color
-      }
+      },
+      fromPublicList: false
     })
   }
 

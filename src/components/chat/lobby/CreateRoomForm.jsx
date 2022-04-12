@@ -8,12 +8,14 @@ function CreateRoomForm() {
 
   const [roomNameToCreate, setRoomNameToCreate] = useState('');
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
+  const [joiningError, setJoiningError] = useState('');
   const [validCode, setValidCode] = useState(false);
   const inputRef = useRef(null);
   const { store } = useAppReducer();
 
   const handleChange = (e) => {
     let nameInput = e.target.value;
+    if (joiningError) setJoiningError('');
     if (nameInput.length > 1) setValidCode(true);
     else setValidCode(false);
     
@@ -43,7 +45,7 @@ function CreateRoomForm() {
       });
     }
     else {
-
+      setJoiningError('And your room name is...?');
     }
   }
   
@@ -79,6 +81,7 @@ function CreateRoomForm() {
                 onChange={handleChange}
               />
             </div>
+            { joiningError && <div className='red'>{joiningError}</div> }
             <button type='submit' form='create-room' disabled={!validCode}>Create</button>
           </motion.form>
         }

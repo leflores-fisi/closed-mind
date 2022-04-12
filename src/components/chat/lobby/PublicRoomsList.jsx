@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { API_URL, emitSocketEvent } from '@/services/userSocket';
+import { API_URL, emitSocketEvent, userSocket } from '@/services/userSocket';
 import useAppReducer from '@/hooks/useAppReducer';
 import { HiUsers } from 'react-icons/hi';
 import { ImSpinner2 } from 'react-icons/im';
@@ -14,6 +14,8 @@ function PublicRoomsList() {
   const [isFetching, setIsFetching] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [isEndReached, setIsEndReached] = useState(false);
+  const [joiningError, setJoiningError] = useState('');
+
   const ROOMS_PER_PAGE = 6;
   const { store } = useAppReducer();
 
@@ -23,7 +25,8 @@ function PublicRoomsList() {
       user: {
         user_id: store.user_id,
         user_color: store.user_color
-      }
+      },
+      fromPublicList: true
     })
   }
   const fetchPublicRooms = (offset, fromRefreshing = false) => {
@@ -50,6 +53,15 @@ function PublicRoomsList() {
         else setTimeout(() => setIsFetching(false), 500);
       })
   }
+
+  // Joining to room error handler
+  const handleError = ({ message }) => setJoiningError(message);
+  useEffect(() => {
+    userSocket.on('joining-error', handleError);
+    return () => {
+      userSocket.removeListener('joining-error', handleError)
+    }
+  }, [])
 
   useEffect(() => {
     console.log('Setting interval for fetching public rooms with 😳', searchIndex);
@@ -116,6 +128,7 @@ function PublicRoomsList() {
         }
       </div>
       <footer>
+        { joiningError && <div className='red'>{joiningError}</div> }
         <div className='navigation'>
           <div className='rooms-count'>{searchIndex+1}</div>
           <button onClick={() => setSearchIndex(prev => (prev > 0 ? prev-1 : prev))}>

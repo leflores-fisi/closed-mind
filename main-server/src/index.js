@@ -70,17 +70,24 @@ function main() {
         socket.emit('room-created', {createdChatRoom})
       })
     })
-    socket.on('joining-to-chat', ({ room_code, user }) => {
+    socket.on('joining-to-chat', ({ room_code, user, fromPublicList }) => {
 
       console.log('😖 Fetching room to database');
       console.time('fetching');
 
       ChatRoom.findOne({code: room_code}).then((room) => {
         if (!room) {
-          socket.emit('error', {
+          socket.emit('joining-error', {
             message: 'Room not founded'
           });
           console.log('😐 Not founded');
+          console.timeEnd('fetching');
+        }
+        else if (room.privacy === 'private' && fromPublicList) {
+          socket.emit('joining-error', {
+            message: `${room.name} is not public anymore`
+          });
+          console.log('😐 Room is private');
           console.timeEnd('fetching');
         }
         else {

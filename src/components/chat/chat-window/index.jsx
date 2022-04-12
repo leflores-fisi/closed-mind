@@ -116,9 +116,6 @@ function ChatWindow() {
       console.log('REACTION REMOVED FROM SERVER:', emote);
       dispatch(actions.deleteReactionFromMessage({message_id, emote, from}));
     });
-    userSocket.on('error', ({ message }) => {
-      dispatch(actions.appendErrorMessage({ message }));
-    });
     userSocket.on('pong', ({ timestamp, server_log }) => {
       const ping_log = {...server_log, text: server_log.text.concat(`${(Date.now() - timestamp)} ms`)};
       dispatch(actions.appendMessage(ping_log));

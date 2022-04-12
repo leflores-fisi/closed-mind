@@ -138,7 +138,8 @@ export function formatDate(date) {
 }
 
 export function getRoomsHistory() {
-  return JSON.parse(localStorage.getItem('rooms_history')).splice(0, 5) || [];
+  // 5 limit on history
+  return (JSON.parse(localStorage.getItem('rooms_history')) || []).splice(0, 5);
 }
 
 export function removeRoomFromHistory(room_code) {

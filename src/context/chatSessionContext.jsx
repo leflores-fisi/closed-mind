@@ -12,7 +12,7 @@ export function ChatSessionContextProvider ({ children }) {
     user_id: '',    // "myUsername#af12"
     user_color: 'default', // css var name
 
-    room_code: '',  // "#10a2",
+    room_code: '',  // "10a2",
     room_name: '', // "myEpicRoom"
     host: '',
     created_date: undefined,

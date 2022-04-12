@@ -9,6 +9,6 @@ function randomRoomCode() {
     	? numbers[(~~(numbers.length * Math.random()))]
     	: chars[(~~(chars.length * Math.random()))];
   }
-  return `#${code}`;
+  return code;
 }
 module.exports = randomRoomCode;

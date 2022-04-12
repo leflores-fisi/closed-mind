@@ -22,7 +22,8 @@ function InvitationPage({ params }) {
       user: {
         user_id: userId,
         user_color: userColor
-      }
+      },
+      fromPublicList: false
     });
     setLocation('/');
   };

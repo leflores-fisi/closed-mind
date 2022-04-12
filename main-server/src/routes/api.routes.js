@@ -23,9 +23,9 @@ router.get('/rooms', (req, res) => {
 
 router.get('/room_info/:code', (req, res) => {
   const { code } = req.params.code;
-  if (!code || code.length !== 5 || code[0] !== '#') {
+  if (!code || code.length !== 4) {
     res.status(400).send({
-      message: 'Bad request, room code must have the format #xxxx'
+      message: 'Bad request, room code must have the format xxxx'
     })
   }
   else {

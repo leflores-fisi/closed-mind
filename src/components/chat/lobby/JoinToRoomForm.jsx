@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useAppReducer from '@/hooks/useAppReducer';
-import { emitSocketEvent } from '@/services/userSocket';
+import { emitSocketEvent, userSocket } from '@/services/userSocket';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SiAddthis } from 'react-icons/si';
 import { BsHash } from 'react-icons/bs';
@@ -9,12 +9,14 @@ function JoinToRoomForm() {
   
   const [codeToJoin, setCodeToJoin] = useState('');
   const [isCreatingRoom, setIsCreatingRoom] = useState(false);
+  const [joiningError, setJoiningError] = useState('');
   const [validCode, setValidCode] = useState(false);
   const inputRef = useRef(null);
   const { store } = useAppReducer();
 
   const handleChange = (e) => {
     let code = e.target.value;
+    if (joiningError) setJoiningError('');
     if (code.length === 4) setValidCode(true);
     else setValidCode(false);
 
@@ -31,9 +33,19 @@ function JoinToRoomForm() {
       user: {
         user_id: store.user_id,
         user_color: store.user_color
-      }
+      },
+      fromPublicList: false
     })
   }
+  
+  // Joining to room error handler
+  const handleError = ({ message }) => setJoiningError(message);
+  useEffect(() => {
+    userSocket.on('joining-error', handleError);
+    return () => {
+      userSocket.removeListener('joining-error', handleError)
+    }
+  }, [])
   
   return (
     <div className='join-to-room-container'>
@@ -68,6 +80,7 @@ function JoinToRoomForm() {
                 onChange={handleChange}
               />
             </div>
+            { joiningError && <div className='red'>{joiningError}</div> }
             <button type='submit' form='join-to-room' disabled={!validCode}>Join</button>
           </motion.form>
         }
