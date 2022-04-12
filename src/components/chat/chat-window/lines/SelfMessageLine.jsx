@@ -47,7 +47,6 @@ function SelMessageLine({ text, date, id, reactions, replyingTo, filesToSubmit }
       console.log('Posting with', formData);
       axios.post(`${CLOUD_API_URL}/attachments`, formData, {
         headers: { 'Content-type': 'multipart/form-data' },
-        timeout: 5000,
         onUploadProgress(e) {
           setSubmitProgress((e.loaded/e.total)*100);
           console.log(`${(e.loaded/e.total)*100}%`, e)
